@@ -27,7 +27,7 @@ else
   endif
 endif
 
-MODEL_PYTHON=python
+MODEL_PYTHON=python3.6
 
 # Increase this to improve accuracy
 TRAINING_EPOCHS=1

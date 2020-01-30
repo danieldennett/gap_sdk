@@ -1,0 +1,27 @@
+var group__DotP =
+[
+    [ "__builtin_pulp_dotsp2", "group__DotP.html#gab7be6a466dd9a3751862ce2e7333bc64", null ],
+    [ "__builtin_pulp_dotsp4", "group__DotP.html#ga3ab66117eb6c993da840ec40048d1147", null ],
+    [ "__builtin_pulp_dotspsc2", "group__DotP.html#ga5869dea3b9e96b4aac1366e193b686ec", null ],
+    [ "__builtin_pulp_dotspsc4", "group__DotP.html#ga37f99f136dc448a095d7d72f2c91cbcc", null ],
+    [ "__builtin_pulp_dotup2", "group__DotP.html#ga6a906c03eea01a20722ef8afbf38a2e1", null ],
+    [ "__builtin_pulp_dotup4", "group__DotP.html#gab41e6da9e0ba5aaa7e14b181f7b2ab5c", null ],
+    [ "__builtin_pulp_dotupsc2", "group__DotP.html#ga72d5899a90028c4b5d0a00c68b274b30", null ],
+    [ "__builtin_pulp_dotupsc4", "group__DotP.html#ga4d5abe95061d3461d1586b25fb3f1dcf", null ],
+    [ "__builtin_pulp_dotusp2", "group__DotP.html#gad71fb9eec4db6148b1543f5c8c7b69e9", null ],
+    [ "__builtin_pulp_dotusp4", "group__DotP.html#gaf88d48fa97e8578c10e953bffeea98f7", null ],
+    [ "__builtin_pulp_dotuspsc2", "group__DotP.html#ga21f33c7f08d9525049d9dd9211515de8", null ],
+    [ "__builtin_pulp_dotuspsc4", "group__DotP.html#gabc9b237b1d5ef6e31527a5b760710fdc", null ],
+    [ "__builtin_pulp_sdotsp2", "group__DotP.html#gacdfd5ac0cc37b21067fce96ca7f2ecc2", null ],
+    [ "__builtin_pulp_sdotsp4", "group__DotP.html#ga5c4d03dfd1d517969dded811babde5b5", null ],
+    [ "__builtin_pulp_sdotspsc2", "group__DotP.html#ga7d06b2f169a7dd2ee2a05ec5110e77f5", null ],
+    [ "__builtin_pulp_sdotspsc4", "group__DotP.html#ga4a70a165211fd1ea8717d1fe6242532f", null ],
+    [ "__builtin_pulp_sdotup2", "group__DotP.html#ga5dde0437ac790f6fbb5f931dedb7d313", null ],
+    [ "__builtin_pulp_sdotup4", "group__DotP.html#ga3bb7de406ecb2640effe25000b7615b5", null ],
+    [ "__builtin_pulp_sdotupsc2", "group__DotP.html#gaef62241a545cffeda328ea3453e026f4", null ],
+    [ "__builtin_pulp_sdotupsc4", "group__DotP.html#ga81e1f77d37935174bd85351bc26b40fe", null ],
+    [ "__builtin_pulp_sdotusp2", "group__DotP.html#ga7616abf64c1494284d26e309a6fa7cd5", null ],
+    [ "__builtin_pulp_sdotusp4", "group__DotP.html#ga914f7c31beb9d4d7a1c99650d475501b", null ],
+    [ "__builtin_pulp_sdotuspsc2", "group__DotP.html#gaaa8dcd8878b7e83469f1a48bfaca5707", null ],
+    [ "__builtin_pulp_sdotuspsc4", "group__DotP.html#ga6be90aca2b54ae8d462f715812687bcc", null ]
+];

@@ -1,0 +1,27 @@
+var group__SPIM__Peripheral__Access__Layer =
+[
+    [ "UART Peripheral Access Layer", "group__UART__Peripheral__Access__Layer.html", "group__UART__Peripheral__Access__Layer" ],
+    [ "I2S Peripheral Access Layer", "group__I2S__Peripheral__Access__Layer.html", "group__I2S__Peripheral__Access__Layer" ],
+    [ "QSPIM_BASE_PTRS", "group__SPIM__Peripheral__Access__Layer.html#ga0152f7918bd1a7ab3bebe764376eefa3", null ],
+    [ "SPI_1_WORD_FORMAT", "group__SPIM__Peripheral__Access__Layer.html#ga763cec07ba4c6d2a82a414987859793d", null ],
+    [ "SPI_2_WORD_FORMAT", "group__SPIM__Peripheral__Access__Layer.html#ga6cdd7b8269fafee61ffd8df8516ff462", null ],
+    [ "SPI_4_WORD_FORMAT", "group__SPIM__Peripheral__Access__Layer.html#ga4c08c3448aa50d3b4bb80173952627d8", null ],
+    [ "SPIM0", "group__SPIM__Peripheral__Access__Layer.html#ga137f1083cad71a3704fb70dc757be9d2", null ],
+    [ "SPIM0_BASE", "group__SPIM__Peripheral__Access__Layer.html#ga168a52ca358c2df030379f17fe4055f5", null ],
+    [ "SPIM0_OFFSET", "group__SPIM__Peripheral__Access__Layer.html#ga547bfac64f33f3138d110ba3fb029e5a", null ],
+    [ "SPIM1", "group__SPIM__Peripheral__Access__Layer.html#ga83ad9b5a0e15d2a5e22734fbcc987f95", null ],
+    [ "SPIM1_BASE", "group__SPIM__Peripheral__Access__Layer.html#gac42fa2aaceb01a7d3bdbcb427011de22", null ],
+    [ "SPIM1_OFFSET", "group__SPIM__Peripheral__Access__Layer.html#gad4f277aed67bb6777a560ef07fc4b8bf", null ],
+    [ "SPIM2", "group__SPIM__Peripheral__Access__Layer.html#ga30fcaf3d6082f9ddaf08c414d5135227", null ],
+    [ "SPIM2_BASE", "group__SPIM__Peripheral__Access__Layer.html#ga4960c9ae3f8c049dc6f716cfc8b34b0b", null ],
+    [ "SPIM2_OFFSET", "group__SPIM__Peripheral__Access__Layer.html#gaa83d4759677840ee976bda953279c57d", null ],
+    [ "SPIM3", "group__SPIM__Peripheral__Access__Layer.html#ga328647b78ab429810a3c2d79ceec7a6b", null ],
+    [ "SPIM3_BASE", "group__SPIM__Peripheral__Access__Layer.html#ga7b43fc2b6bac4e8a1275c770b7fcf11a", null ],
+    [ "SPIM3_OFFSET", "group__SPIM__Peripheral__Access__Layer.html#gaab07e56e928b6cece0b9fa632d6a20cb", null ],
+    [ "SPIM_BASE_ADDRS", "group__SPIM__Peripheral__Access__Layer.html#ga7b0c7e69f4aeee821556a44824197bc2", null ],
+    [ "SPIM_BASE_PTRS", "group__SPIM__Peripheral__Access__Layer.html#ga8acad3019b9c3dd92061a9b4ae4686fd", null ],
+    [ "SPIM_ID_POINTER", "group__SPIM__Peripheral__Access__Layer.html#ga0e608b400696e28a7d153ce4026f8d89", null ],
+    [ "SPIM_NUMBER", "group__SPIM__Peripheral__Access__Layer.html#gad0346e96522bb1162256d0b258ec9fe7", null ],
+    [ "SPIM_RX_IRQS", "group__SPIM__Peripheral__Access__Layer.html#gac107b2e2b57aae9b48ff88d8f9ea60b1", null ],
+    [ "SPIM_TX_IRQS", "group__SPIM__Peripheral__Access__Layer.html#gaa61c261d9cff3cc4e4f9e7797d953a05", null ]
+];

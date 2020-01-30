@@ -18,7 +18,7 @@ export BOARD_NAME=ai_deck
 export PULP_CURRENT_CONFIG=$BOARD_NAME@config_file=config/ai_deck.json
 export GVSOC_CONFIG=ai_deck
 export OPENOCD_CHIP_TARGET=target/gap8revb.tcl
-export OPENOCD_CABLE=interface/ftdi/olimex-arm-usb-ocd-h.cfg
+export OPENOCD_CABLE=interface/ftdi/olimex-arm-usb-tiny-h.cfg
 export PLPBRIDGE_CABLE=ftdi
 
 source $GAP_SDK_HOME/configs/common.sh
