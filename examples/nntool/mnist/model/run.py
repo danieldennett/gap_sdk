@@ -40,8 +40,9 @@ def create_parser():
 
     parser.add_argument('-i', '--image_file',
                         type=str,
-                        default="examples/1/1037.pgm",
+                        default="/home/zhouxin/gap_sdk/examples/nntool/mnist/samples/5223_5.pgm",
                         help='Image file')
+                        #  default='./samples/5223_5.pgm'
 
     parser.add_argument('-D', '--directory',
                         type=str,
@@ -147,9 +148,9 @@ def dump_weights(model, filename):
 
 def main():
     parser = create_parser()
-    argcomplete.autocomplete(parser)
+    argcomplete.autocomplete(parser)  #provides easy, extensible command line tab completion of arguments
     args = parser.parse_args()
-    
+
     model = load_model(args.h5_file[0])
 
     if args.list:

@@ -42,7 +42,7 @@ def create_parser():
                         help='training epochs')
     parser.add_argument('-c', '--clip',
                         action='store_true',
-                        help='clip input to 7 bits')
+                        help='clip input to 7 bits')        #what is this doing?
     parser.add_argument('-B', '--batch_norm',
                         action='store_true',
                         help='carry out batch normalization')
@@ -101,7 +101,7 @@ def train(args):
     model.add(Flatten())
     #model.add(Flatten(data_format='channels_first'))
     model.add(Dense(num_classes))
-    if args.batch_norm:
+    if args.batch_norm:                         #where is this extra similar if statement for?
         model.add(BatchNormalization())
     model.add(Activation('softmax'))
 
