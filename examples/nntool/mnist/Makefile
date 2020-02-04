@@ -71,6 +71,9 @@ pulpChip = GAP
 APP = mnist2
 USE_PMSIS_BSP=1
 
+export GAP_USE_OPENOCD=1
+io=host
+
 APP_SRCS += Mnist.c ImgIO.c $(MODEL_SRCS)
 
 APP_CFLAGS += -O3 -s -mno-memcpy -fno-tree-loop-distribute-patterns
