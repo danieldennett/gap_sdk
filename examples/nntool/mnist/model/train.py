@@ -92,8 +92,8 @@ def train(args):
     model = Sequential()
     model.add(Conv2D(32, kernel_size=(5, 5), input_shape=input_shape))
     model.add(Activation('relu'))
-    # model.add(Conv2D(32, kernel_size=(5, 5)))
-    # model.add(Activation('relu'))
+    model.add(Conv2D(32, kernel_size=(5, 5)))
+    model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Conv2D(64, kernel_size=(5, 5)))
     if args.batch_norm:
