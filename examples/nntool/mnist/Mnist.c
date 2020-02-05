@@ -30,6 +30,7 @@
 #endif
 #endif
 
+// #define CAMERA
 #define PRINT_IMAGE
 
 #define STACK_SIZE      2048
@@ -60,14 +61,20 @@ L2_MEM short int *ResOut;
 L2_MEM MNIST_IMAGE_IN_T *ImageIn;
 
 char *ImageName = NULL;
+
+//UART init param
 L2_MEM struct pi_uart_conf uart_conf;
 L2_MEM struct pi_device uart;
 L2_MEM uint8_t rec_digit = 0;
 
+//camera init parameters
 #define CAM_WIDTH    324
 #define CAM_HEIGHT   244
 
 L2_MEM struct pi_device himax;
+L2_MEM unsigned char *imgBuff0;
+L2_MEM struct pi_himax_conf cam_conf;
+int errors = 0;
 
 static void RunMnist()
 
@@ -118,27 +125,44 @@ void test_mnist(void)
     #endif  /* NO_IMAGE && LINK_IMAGE_HEADER */
     #endif  /* __EMUL__ */
 
-    pi_uart_conf_init(&uart_conf);
-    uart_conf.enable_tx = 1;
-    uart_conf.enable_rx = 0;
-    #if !defined(__PULP_OS__)
-    conf.src_clock_Hz = pi_fll_get_frequency(FLL_SOC);
-    #endif  /* __PULP_OS__ */
-    pi_open_from_conf(&uart, &uart_conf);
-    if (pi_uart_open(&uart))
+    #if defined CAMERA
+    printf("[CAMERA] Start\n");
+
+    imgBuff0 = (unsigned char *)pi_l2_malloc((CAM_WIDTH*CAM_HEIGHT)*sizeof(unsigned char));
+    if (imgBuff0 == NULL)
     {
-        printf("Uart open failed !\n");
-        pmsis_exit(-1);
+      printf("[CAMERA] Failed to allocate memory for image\n");
+      errors++;
+      goto end0;
     }
 
+    pi_himax_conf_init(&cam_conf);
 
+    cam_conf.i2c_itf = 0;
+
+    pi_open_from_conf(&himax, &cam_conf);
+
+    if (pi_camera_open(&himax))
+    {
+      printf("[CAMERA] Failed to open camera driver\n");
+      errors++;
+      goto end;
+    }
+    uint8_t value = 0x01;
+    pi_camera_control(&device, PI_CAMERA_CMD_START, 0);
+    pi_camera_capture(&device, imgBuff0, CAM_WIDTH*CAM_HEIGHT);
+    pi_camera_control(&device, PI_CAMERA_CMD_STOP, 0);
+    pi_camera_close(&device);
+
+    #endif
+
+    #if !defined CAMERA
     unsigned char *ImageInChar = (unsigned char *) pi_l2_malloc(sizeof(MNIST_IMAGE_IN_T) * W * H);
     if (ImageInChar == NULL)
     {
         printf("Failed to allocate Memory for Image (%d bytes)\n", sizeof(MNIST_IMAGE_IN_T) * W * H);
         pmsis_exit(-1);
     }
-
     #if !defined(NO_IMAGE)              //put camera image setup
     printf("Reading image\n");
     //Reading Image from Bridge
@@ -147,11 +171,7 @@ void test_mnist(void)
         printf("Failed to load image %s or dimension mismatch Expects [%dx%d], Got [%dx%d]\n", ImageName, W, H, Wi, Hi);
         pmsis_exit(-2);
     }
-    // else
-    // {
-    //   /* code */
-    // }
-    
+    #endif
 
     printf("Finished reading image\n");
     #endif  /* NO_IMAGE */
@@ -193,6 +213,20 @@ void test_mnist(void)
     #error No bit size selected
     #endif  /* MNIST_16BIT */
     #endif  /* MNIST_8BIT */
+
+//  UART configure init
+    pi_uart_conf_init(&uart_conf);
+    uart_conf.enable_tx = 1;
+    uart_conf.enable_rx = 0;
+    #if !defined(__PULP_OS__)
+    conf.src_clock_Hz = pi_fll_get_frequency(FLL_SOC);
+    #endif  /* __PULP_OS__ */
+    pi_open_from_conf(&uart, &uart_conf);
+    if (pi_uart_open(&uart))
+    {
+        printf("Uart open failed !\n");
+        pmsis_exit(-1);
+    }
 
     #if !defined(__EMUL__)
     /* Configure And open cluster. */
