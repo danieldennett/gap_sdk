@@ -207,6 +207,9 @@
  /home/zhouxin/gap_sdk/install/GAP8_V2/include/pmsis_backend/pmsis_backend_native_types.h \
  /home/zhouxin/gap_sdk/install/GAP8_V2/include/hal/utils.h \
  /home/zhouxin/gap_sdk/install/GAP8_V2/include/pmsis/cluster/cluster_sync/cl_synchronisation.h \
+ /home/zhouxin/gap_sdk/install/GAP8_V2/include/bsp/camera/himax.h \
+ /home/zhouxin/gap_sdk/install/GAP8_V2/include/bsp/camera.h \
+ /home/zhouxin/gap_sdk/install/GAP8_V2/include/pmsis/drivers/i2c.h \
  /home/zhouxin/gap_sdk/tools/autotiler_v3/include/Gap.h \
  /home/zhouxin/gap_sdk/tools/autotiler_v3/include/at_api.h \
  /home/zhouxin/gap_sdk/tools/autotiler_v3/include/at_api_pmsis.h \
@@ -636,6 +639,12 @@
 /home/zhouxin/gap_sdk/install/GAP8_V2/include/hal/utils.h:
 
 /home/zhouxin/gap_sdk/install/GAP8_V2/include/pmsis/cluster/cluster_sync/cl_synchronisation.h:
+
+/home/zhouxin/gap_sdk/install/GAP8_V2/include/bsp/camera/himax.h:
+
+/home/zhouxin/gap_sdk/install/GAP8_V2/include/bsp/camera.h:
+
+/home/zhouxin/gap_sdk/install/GAP8_V2/include/pmsis/drivers/i2c.h:
 
 /home/zhouxin/gap_sdk/tools/autotiler_v3/include/Gap.h:
 

@@ -14,6 +14,9 @@ ifndef MNIST_BITS
   MNIST_BITS=8
 endif
 
+define PRINT_IMAGE
+endef
+
 LINK_IMAGE=samples/5223_5.pgm
 
 export GAP_USE_OPENOCD=1

@@ -114,32 +114,32 @@
           {
             "__type": "QType",
             "bits": 8,
-            "q": 2,
+            "q": 3,
             "signed": true
           }
         ],
         "calc_q": {
           "__type": "QType",
           "bits": 16,
-          "q": 10,
+          "q": 11,
           "signed": true
         },
         "acc_q": {
           "__type": "QType",
           "bits": 16,
-          "q": 10,
+          "q": 11,
           "signed": true
         },
         "biases_q": {
           "__type": "QType",
           "bits": 8,
-          "q": 2,
+          "q": 3,
           "signed": true
         },
         "weights_q": {
           "__type": "QType",
           "bits": 8,
-          "q": 5,
+          "q": 6,
           "signed": true
         },
         "__type": "QuantizationRecord.FilterQuantizationRecord"
@@ -149,7 +149,7 @@
           {
             "__type": "QType",
             "bits": 8,
-            "q": 2,
+            "q": 3,
             "signed": true
           }
         ],
@@ -157,7 +157,7 @@
           {
             "__type": "QType",
             "bits": 8,
-            "q": 2,
+            "q": 3,
             "signed": true
           }
         ],
@@ -168,7 +168,7 @@
           {
             "__type": "QType",
             "bits": 8,
-            "q": 2,
+            "q": 3,
             "signed": true
           }
         ],
@@ -176,7 +176,7 @@
           {
             "__type": "QType",
             "bits": 8,
-            "q": 2,
+            "q": 3,
             "signed": true
           }
         ],
@@ -195,7 +195,7 @@
           {
             "__type": "QType",
             "bits": 8,
-            "q": 2,
+            "q": 3,
             "signed": true
           }
         ],
@@ -206,7 +206,7 @@
           {
             "__type": "QType",
             "bits": 8,
-            "q": 2,
+            "q": 3,
             "signed": true
           }
         ],
@@ -221,7 +221,7 @@
         "calc_q": {
           "__type": "QType",
           "bits": 16,
-          "q": 9,
+          "q": 10,
           "signed": true
         },
         "acc_q": {
@@ -287,7 +287,7 @@
           {
             "__type": "QType",
             "bits": 8,
-            "q": 2,
+            "q": 3,
             "signed": true
           }
         ],
@@ -321,13 +321,13 @@
         "calc_q": {
           "__type": "QType",
           "bits": 16,
-          "q": 9,
+          "q": 8,
           "signed": true
         },
         "acc_q": {
           "__type": "QType",
           "bits": 16,
-          "q": 9,
+          "q": 8,
           "signed": true
         },
         "biases_q": {
@@ -339,7 +339,7 @@
         "weights_q": {
           "__type": "QType",
           "bits": 8,
-          "q": 7,
+          "q": 6,
           "signed": true
         },
         "__type": "QuantizationRecord.FilterQuantizationRecord"

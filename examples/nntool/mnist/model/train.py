@@ -48,6 +48,13 @@ def create_parser():
                         help='carry out batch normalization')
     return parser
 
+def save_test_accuracy(output):
+    lst = []
+    with open ('test_accuracy.txt','w') as f:
+        lst.append(output)
+        print(lst)
+        f.write('test accuracy: '+ str(lst[0])+'\n')
+
 def train(args):
     batch_size = args.batch_size
     num_classes = 10
@@ -92,20 +99,25 @@ def train(args):
     model = Sequential()
     model.add(Conv2D(32, kernel_size=(5, 5), input_shape=input_shape))
     model.add(Activation('relu'))
-    model.add(Conv2D(32, kernel_size=(5, 5)))
+    # model.add(MaxPooling2D(pool_size=(1, 1)))
+#extra layer
+    model.add(Conv2D(64, kernel_size=(5, 5)))
+    if args.batch_norm:                             # must be before every layer
+        model.add(BatchNormalization())
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Conv2D(64, kernel_size=(5, 5)))
+
+    model.add(Conv2D(128, kernel_size=(3, 3)))
     if args.batch_norm:
         model.add(BatchNormalization())
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Flatten())
+    model.add(Flatten()) # converts al trainable parameters into one dimensional array
     #model.add(Flatten(data_format='channels_first'))
     model.add(Dense(num_classes))
-    if args.batch_norm:                         #where is this extra similar if statement for?
+    if args.batch_norm:                         #where is this extra similar if statement for ? A: adding
         model.add(BatchNormalization())
-    model.add(Activation('softmax'))
+    model.add(Activation('softmax'))            #when adding an extra here something goes wrong
 
     model.compile(loss=keras.losses.categorical_crossentropy,
                   optimizer=keras.optimizers.Adadelta(),
@@ -119,6 +131,7 @@ def train(args):
     score = model.evaluate(x_test, y_test, verbose=0)
     print('Test loss:', score[0])
     print('Test accuracy:', score[1])
+    save_test_accuracy(score[1])
     model.save(args.h5_file)
 
 def main():

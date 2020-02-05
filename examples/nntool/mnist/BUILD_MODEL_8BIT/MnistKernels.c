@@ -123,7 +123,7 @@ void  __attribute__ ((noinline)) S1_Conv2d_32x1x5x5_Relu(
 	AT_L2_WAIT(0, &DmaW_Evt1); /* Wait DMA write Out */
 	/*============================ End Write Tiles Epilog ===============================*/
 }
-void  __attribute__ ((noinline)) S2_Conv2d_32x32x5x5_MaxPool_2x2_Relu(
+void  __attribute__ ((noinline)) S2_Conv2d_64x32x5x5_MaxPool_2x2_Relu(
 		signed char * __restrict__ In,
 		signed char * __restrict__ Filter,
 		signed char * __restrict__ Bias,
@@ -161,29 +161,29 @@ void  __attribute__ ((noinline)) S2_Conv2d_32x32x5x5_MaxPool_2x2_Relu(
 	unsigned int _LN_In;
 	/*============================= Ker Arg Iter Spaces =========================================
 	User Kernel Iteration Space:
-		[D1 Dim: 2][Tile0 Dim: 1][D0 Dim: 4]
+		[D1 Dim: 4][Tile0 Dim: 1][D0 Dim: 4]
 	Ker Arg: Out, Tiled Space: Tile0
 		Min Pipe Depth: -1, Max Pipe Depth: 0
-		KerArgItSpace: 2 logical tiles, 2 physical tiles
-			Total Size: 3200 [D1, 2 x 1600][Tile0, 1:[10x10], 1]
+		KerArgItSpace: 4 logical tiles, 4 physical tiles
+			Total Size: 6400 [D1, 4 x 1600][Tile0, 1:[10x10], 1]
 		KerArgItSpace (User Kernel Iter Order):
-			[D1, 2 x 1600][Tile0, 1:[10x10], 1]
-		Tile0: [0, 1600, 100], Tile1: [1600, 1600, 100], Tile2; [0, 0, 0]
-		T0: [D1: 0][Tile0: 0], T1: [D1: 1][Tile0: 0], T2: [D1: 0][Tile0: 0]
+			[D1, 4 x 1600][Tile0, 1:[10x10], 1]
+		Tile0: [0, 1600, 100], Tile1: [1600, 1600, 100], Tile2; [3200, 1600, 100]
+		T0: [D1: 0][Tile0: 0], T1: [D1: 1][Tile0: 0], T2: [D1: 2][Tile0: 0]
 	Ker Arg: Bias, Tiled Space: D1
 		Min Pipe Depth: 0, Max Pipe Depth: 1
-		KerArgItSpace: 2 logical tiles, 2 physical tiles
-			Total Size: 32 [D1, 2 x 16]
+		KerArgItSpace: 4 logical tiles, 4 physical tiles
+			Total Size: 64 [D1, 4 x 16]
 		KerArgItSpace (User Kernel Iter Order):
-			[D1, 2 x 16]
-		Tile0: [0, 16, 16], Tile1: [16, 16, 16], Tile2; [0, 0, 0]
-		T0: [D1: 0], T1: [D1: 1], T2: [D1: 0]
+			[D1, 4 x 16]
+		Tile0: [0, 16, 16], Tile1: [16, 16, 16], Tile2; [32, 16, 16]
+		T0: [D1: 0], T1: [D1: 1], T2: [D1: 2]
 	Ker Arg: Filter, Tiled Space: D0
 		Min Pipe Depth: 0, Max Pipe Depth: 1
-		KerArgItSpace: 8 logical tiles, 8 physical tiles
-			Total Size: 25600 [D1, 2 x 12800][D0, 4 x 3200]
+		KerArgItSpace: 16 logical tiles, 16 physical tiles
+			Total Size: 51200 [D1, 4 x 12800][D0, 4 x 3200]
 		KerArgItSpace (User Kernel Iter Order):
-			[D1, 2 x 12800][D0, 4 x 3200]
+			[D1, 4 x 12800][D0, 4 x 3200]
 		Tile0: [0, 3200, 200], Tile1: [3200, 3200, 200], Tile2; [6400, 3200, 200]
 		T0: [D1: 0][D0: 0], T1: [D1: 0][D0: 1], T2: [D1: 0][D0: 2]
 	Ker Arg: In, Tiled Space: Tile0
@@ -196,11 +196,11 @@ void  __attribute__ ((noinline)) S2_Conv2d_32x32x5x5_MaxPool_2x2_Relu(
 		T0: [D0: 0][Tile0: 0], T1: [D0: 1][Tile0: 0], T2: [D0: 2][Tile0: 0]
 	Ker Arg: ConvOut, Tiled Space: Buffer
 		Min Pipe Depth: 0, Max Pipe Depth: 0
-		KerArgItSpace: 2 logical tiles, 1 physical tiles
-			Total Size: 51200 [D1, 2 x 25600][Tile0, 1:[20x20], 4]
+		KerArgItSpace: 4 logical tiles, 1 physical tiles
+			Total Size: 102400 [D1, 4 x 25600][Tile0, 1:[20x20], 4]
 		KerArgItSpace (User Kernel Iter Order):
-			[D1, 2 x 25600][Tile0, 1:[20x20], 4]
-		Tile0: [0, 51200, 51200], Tile1: [0, 0, 0], Tile2; [0, 0, 0]
+			[D1, 4 x 25600][Tile0, 1:[20x20], 4]
+		Tile0: [0, 102400, 102400], Tile1: [0, 0, 0], Tile2; [0, 0, 0]
 		T0: [D1: 0][Tile0: 0], T1: [D1: 0][Tile0: 0], T2: [D1: 0][Tile0: 0]
 	======================== End Ker Arg Iter Spaces =========================================*/
 	/*=========================== Call Kernel, Invariant assignment =====================*/
@@ -250,8 +250,8 @@ void  __attribute__ ((noinline)) S2_Conv2d_32x32x5x5_MaxPool_2x2_Relu(
 	_N_In=0;
 	AT_L2_COPY2D(0, ((AT_L2_EXT_ADDR_TYPE) In+0), ((AT_L2_INT_ADDR_TYPE) L1_Memory+0+0), 4608, 576, 576, 0, &DmaR_Evt3);
 	/*============================= End Read Tiles Prolog ===============================*/
-	for (D1Ind=0; D1Ind<2; D1Ind++, D1Ind_Total++) { /* Iteration on D1 */
-		int D1Ind_Last = (D1Ind==1), D1Ind_NextLast = ((D1Ind+1)==1);
+	for (D1Ind=0; D1Ind<4; D1Ind++, D1Ind_Total++) { /* Iteration on D1 */
+		int D1Ind_Last = (D1Ind==3), D1Ind_NextLast = ((D1Ind+1)==3);
 		/*================================= Prepare Tiles ===================================*/
 		_SN_Bias = 0;
 		if (!(D1Ind_Last)) {
@@ -341,7 +341,7 @@ void  __attribute__ ((noinline)) S2_Conv2d_32x32x5x5_MaxPool_2x2_Relu(
 	AT_L2_WAIT(0, &DmaW_Evt1); /* Wait previous DMA write Out */
 	/*============================ End Write Tiles Epilog ===============================*/
 }
-void  __attribute__ ((noinline)) S3_Conv2d_64x32x5x5_MaxPool_2x2_Relu(
+void  __attribute__ ((noinline)) S3_Conv2d_128x64x3x3_MaxPool_2x2_Relu(
 		signed char * __restrict__ In,
 		signed char * __restrict__ Filter,
 		signed char * __restrict__ Bias,
@@ -350,7 +350,7 @@ void  __attribute__ ((noinline)) S3_Conv2d_64x32x5x5_MaxPool_2x2_Relu(
 		unsigned int NormBias)
 
 {
-	/* Shared L1: 44384 bytes, L2 buffer: 42080 bytes */
+	/* Shared L1: 42592 bytes, L2 buffer: 34400 bytes */
 	/* Local variables used by this kernel */
 	AT_L2_EVENT DmaR_Evt1;
 	AT_L2_EVENT DmaR_Evt2;
@@ -378,82 +378,82 @@ void  __attribute__ ((noinline)) S3_Conv2d_64x32x5x5_MaxPool_2x2_Relu(
 	unsigned int _LN_In;
 	/*============================= Ker Arg Iter Spaces =========================================
 	User Kernel Iteration Space:
-		[D1 Dim: 1][Tile0 Dim: 1][D0 Dim: 3]
+		[D1 Dim: 1][Tile0 Dim: 1][D0 Dim: 6]
 	Ker Arg: Out, Tiled Space: Tile0
 		Min Pipe Depth: -1, Max Pipe Depth: 0
 		KerArgItSpace: 1 logical tiles, 1 physical tiles
-			Total Size: 576 [D1, 1 x 576][Tile0, 1:[3x3], 1]
+			Total Size: 2048 [D1, 1 x 2048][Tile0, 1:[4x4], 1]
 		KerArgItSpace (User Kernel Iter Order):
-			[D1, 1 x 576][Tile0, 1:[3x3], 1]
-		Tile0: [0, 576, 9], Tile1: [0, 0, 0], Tile2; [0, 0, 0]
+			[D1, 1 x 2048][Tile0, 1:[4x4], 1]
+		Tile0: [0, 2048, 16], Tile1: [0, 0, 0], Tile2; [0, 0, 0]
 		T0: [D1: 0][Tile0: 0], T1: [D1: 0][Tile0: 0], T2: [D1: 0][Tile0: 0]
 	Ker Arg: Bias, Tiled Space: D1
 		Min Pipe Depth: 0, Max Pipe Depth: 1
 		KerArgItSpace: 1 logical tiles, 1 physical tiles
-			Total Size: 64 [D1, 1 x 64]
+			Total Size: 128 [D1, 1 x 128]
 		KerArgItSpace (User Kernel Iter Order):
-			[D1, 1 x 64]
-		Tile0: [0, 64, 64], Tile1: [0, 0, 0], Tile2; [0, 0, 0]
+			[D1, 1 x 128]
+		Tile0: [0, 128, 128], Tile1: [0, 0, 0], Tile2; [0, 0, 0]
 		T0: [D1: 0], T1: [D1: 0], T2: [D1: 0]
 	Ker Arg: Filter, Tiled Space: D0
 		Min Pipe Depth: 0, Max Pipe Depth: 1
-		KerArgItSpace: 3 logical tiles, 3 physical tiles
-			Total Size: 51200 [D1, 1 x 51200][D0, 3 x 19200]
+		KerArgItSpace: 6 logical tiles, 6 physical tiles
+			Total Size: 73728 [D1, 1 x 73728][D0, 6 x 13824]
 		KerArgItSpace (User Kernel Iter Order):
-			[D1, 1 x 51200][D0, 3 x 19200]
-		Tile0: [0, 19200, 300], Tile1: [19200, 19200, 300], Tile2; [25600, 12800, 200]
-		T0: [D1: 0][D0: 0], T1: [D1: 0][D0: 1], T2: [D1: 0][D0: 1]
+			[D1, 1 x 73728][D0, 6 x 13824]
+		Tile0: [0, 13824, 108], Tile1: [13824, 13824, 108], Tile2; [27648, 13824, 108]
+		T0: [D1: 0][D0: 0], T1: [D1: 0][D0: 1], T2: [D1: 0][D0: 2]
 	Ker Arg: In, Tiled Space: Tile0
 		Min Pipe Depth: 0, Max Pipe Depth: 1
-		KerArgItSpace: 3 logical tiles, 3 physical tiles
-			Total Size: 3200 [D0, 3 x 1200][Tile0, 1:[10x10], 1]
+		KerArgItSpace: 6 logical tiles, 6 physical tiles
+			Total Size: 6400 [D0, 6 x 1200][Tile0, 1:[10x10], 1]
 		KerArgItSpace (User Kernel Iter Order):
-			[Tile0, 1:[10x10], 1][D0, 3 x 1200]
-		Tile0: [0, 1200, 100], Tile1: [1200, 1200, 100], Tile2; [2400, 800, 100]
+			[Tile0, 1:[10x10], 1][D0, 6 x 1200]
+		Tile0: [0, 1200, 100], Tile1: [1200, 1200, 100], Tile2; [2400, 1200, 100]
 		T0: [D0: 0][Tile0: 0], T1: [D0: 1][Tile0: 0], T2: [D0: 2][Tile0: 0]
 	Ker Arg: ConvOut, Tiled Space: Buffer
 		Min Pipe Depth: 0, Max Pipe Depth: 0
 		KerArgItSpace: 1 logical tiles, 1 physical tiles
-			Total Size: 2304 [D1, 1 x 2304][Tile0, 1:[6x6], 1]
+			Total Size: 8192 [D1, 1 x 8192][Tile0, 1:[8x8], 1]
 		KerArgItSpace (User Kernel Iter Order):
-			[D1, 1 x 2304][Tile0, 1:[6x6], 1]
-		Tile0: [0, 2304, 2304], Tile1: [0, 0, 0], Tile2; [0, 0, 0]
+			[D1, 1 x 8192][Tile0, 1:[8x8], 1]
+		Tile0: [0, 8192, 8192], Tile1: [0, 0, 0], Tile2; [0, 0, 0]
 		T0: [D1: 0][Tile0: 0], T1: [D1: 0][Tile0: 0], T2: [D1: 0][Tile0: 0]
 	======================== End Ker Arg Iter Spaces =========================================*/
 	/*=========================== Call Kernel, Invariant assignment =====================*/
-	KerArg0->Out = (signed char * __restrict__) (L1_Memory+42080);
-	KerArg0->W = (unsigned short int) (6);
-	KerArg0->H = (unsigned short int) (6);
-	KerArg0->OutFeatures = (unsigned short int) (64);
+	KerArg0->Out = (signed char * __restrict__) (L1_Memory+34400);
+	KerArg0->W = (unsigned short int) (8);
+	KerArg0->H = (unsigned short int) (8);
+	KerArg0->OutFeatures = (unsigned short int) (128);
 	KerArg0->Norm = (unsigned char) (Norm);
 	KerArg0->NormBias = (unsigned char) (NormBias);
 	KerArg1->W = (unsigned short int) (10);
 	KerArg1->UsedW = (unsigned short int) (10);
 	KerArg1->H = (unsigned short int) (10);
 	KerArg1->UsedH = (unsigned short int) (10);
-	KerArg1->OutFeatures = (unsigned short int) (64);
-	KerArg1->Out = (signed char * __restrict__) (L1_Memory+42080);
+	KerArg1->OutFeatures = (unsigned short int) (128);
+	KerArg1->Out = (signed char * __restrict__) (L1_Memory+34400);
 	KerArg1->Norm = (unsigned char) (Norm);
 	KerArg1->Pad = (v4s) 0;
 	KerArg1->Orientation = (unsigned char) (1);
-	KerArg2->In = (signed char * __restrict__) (L1_Memory+42080);
-	KerArg2->W = (unsigned short int) (6);
-	KerArg2->UsedW = (unsigned short int) (6);
-	KerArg2->H = (unsigned short int) (6);
-	KerArg2->UsedH = (unsigned short int) (6);
-	KerArg2->OutFeatures = (unsigned short int) (64);
+	KerArg2->In = (signed char * __restrict__) (L1_Memory+34400);
+	KerArg2->W = (unsigned short int) (8);
+	KerArg2->UsedW = (unsigned short int) (8);
+	KerArg2->H = (unsigned short int) (8);
+	KerArg2->UsedH = (unsigned short int) (8);
+	KerArg2->OutFeatures = (unsigned short int) (128);
 	KerArg2->Pad = (v4s) 0;
 	KerArg2->Orientation = (unsigned char) (1);
 	KerArg2->Oper = (unsigned char) (1);
 	KerArg2->LB = (int) (0);
 	KerArg2->UB = (int) (127);
 	/*================================= Read Tiles Prolog ===============================*/
-	_C_Out=0; _SC_Out=576; _LC_Out=9;
+	_C_Out=0; _SC_Out=2048; _LC_Out=16;
 	_SP_Out=0;
 	_N_Bias=0;
-	AT_L2_COPY(0, ((AT_L2_EXT_ADDR_TYPE) Bias+0), ((AT_L2_INT_ADDR_TYPE) L1_Memory+2400+0), 64, 0, &DmaR_Evt1);
+	AT_L2_COPY(0, ((AT_L2_EXT_ADDR_TYPE) Bias+0), ((AT_L2_INT_ADDR_TYPE) L1_Memory+2400+0), 128, 0, &DmaR_Evt1);
 	_N_Filter=0;
-	AT_L2_COPY(0, ((AT_L2_EXT_ADDR_TYPE) Filter+0), ((AT_L2_INT_ADDR_TYPE) L1_Memory+2528+0), 19200, 0, &DmaR_Evt2);
+	AT_L2_COPY(0, ((AT_L2_EXT_ADDR_TYPE) Filter+0), ((AT_L2_INT_ADDR_TYPE) L1_Memory+2656+0), 13824, 0, &DmaR_Evt2);
 	_N_In=0;
 	AT_L2_COPY2D(0, ((AT_L2_EXT_ADDR_TYPE) In+0), ((AT_L2_INT_ADDR_TYPE) L1_Memory+0+0), 1200, 100, 100, 0, &DmaR_Evt3);
 	/*============================= End Read Tiles Prolog ===============================*/
@@ -466,36 +466,36 @@ void  __attribute__ ((noinline)) S3_Conv2d_64x32x5x5_MaxPool_2x2_Relu(
 		/*================================= Read Tiles ======================================*/
 		AT_L2_WAIT(0, &DmaR_Evt1); /* Wait previous DMA read Bias */
 		if (_SN_Bias) {
-			AT_L2_COPY(0, ((AT_L2_EXT_ADDR_TYPE) Bias+_N_Bias), ((AT_L2_INT_ADDR_TYPE) L1_Memory+2400+64*((D1Ind_Total+1)%2)),
+			AT_L2_COPY(0, ((AT_L2_EXT_ADDR_TYPE) Bias+_N_Bias), ((AT_L2_INT_ADDR_TYPE) L1_Memory+2400+128*((D1Ind_Total+1)%2)),
 					_SN_Bias, 0, &DmaR_Evt1);
 		}
 		/*============================= End Read Tiles ======================================*/
 		{ /* Single iteration on Tile0 */
 			int T0Ind_Last = 1, T0Ind_NextLast = 1;
 			/*====================== Call Kernel LOC_D0_PROLOG =========================*/
-			KerArg0->Bias = (signed char * __restrict__) (L1_Memory+2400+64*((D1Ind_Total)%2));
+			KerArg0->Bias = (signed char * __restrict__) (L1_Memory+2400+128*((D1Ind_Total)%2));
 			AT_FORK(gap_ncore(), (void *) KerParSetBias_fps, (void *) KerArg0);
 			__CALL(KerParSetBias_fps, KerArg0);
-			for (D0Ind=0; D0Ind<3; D0Ind++, D0Ind_Total++) { /* Iteration on D0 */
-				int D0Ind_Last = (D0Ind==2), D0Ind_NextLast = ((D0Ind+1)==2);
+			for (D0Ind=0; D0Ind<6; D0Ind++, D0Ind_Total++) { /* Iteration on D0 */
+				int D0Ind_Last = (D0Ind==5), D0Ind_NextLast = ((D0Ind+1)==5);
 				/*================================= Prepare Tiles ===================================*/
 				_SN_Filter = 0;
 				if (!(D0Ind_Last)) {
-					_N_Filter = _N_Filter + (19200); _LN_Filter = ((D0Ind_NextLast)?200:300); _SN_Filter = (64*_LN_Filter); 
+					_N_Filter = _N_Filter + (13824); _LN_Filter = ((D0Ind_NextLast)?36:108); _SN_Filter = (128*_LN_Filter); 
 				} else if (!((1))) {
-					_N_Filter = _N_Filter + (-38400); _LN_Filter = (300); _SN_Filter = (64*_LN_Filter); 
+					_N_Filter = _N_Filter + (-69120); _LN_Filter = (108); _SN_Filter = (128*_LN_Filter); 
 				}
 				_SN_In = 0;
 				if (!(D0Ind_Last)) {
-					_N_In = _N_In + (1200); _LN_In = (100); _SN_In = (((D0Ind_NextLast)?8:12)*_LN_In); 
+					_N_In = _N_In + (1200); _LN_In = (100); _SN_In = (((D0Ind_NextLast)?4:12)*_LN_In); 
 				} else if (!(1)) {
-					_N_In = _N_In + (-2400); _LN_In = (100); _SN_In = (12*_LN_In); 
+					_N_In = _N_In + (-6000); _LN_In = (100); _SN_In = (12*_LN_In); 
 				}
 				/*============================= End Prepare Tiles ===================================*/
 				/*================================= Read Tiles ======================================*/
 				AT_L2_WAIT(0, &DmaR_Evt2); /* Wait previous DMA read Filter */
 				if (_SN_Filter) {
-					AT_L2_COPY(0, ((AT_L2_EXT_ADDR_TYPE) Filter+_N_Filter), ((AT_L2_INT_ADDR_TYPE) L1_Memory+2528+19200*((D0Ind_Total+1)%2)),
+					AT_L2_COPY(0, ((AT_L2_EXT_ADDR_TYPE) Filter+_N_Filter), ((AT_L2_INT_ADDR_TYPE) L1_Memory+2656+13824*((D0Ind_Total+1)%2)),
 							_SN_Filter, 0, &DmaR_Evt2);
 				}
 				AT_L2_WAIT(0, &DmaR_Evt3); /* Wait previous DMA read In */
@@ -506,24 +506,24 @@ void  __attribute__ ((noinline)) S3_Conv2d_64x32x5x5_MaxPool_2x2_Relu(
 				/*============================= End Read Tiles ======================================*/
 				/*====================== Call Kernel LOC_D0 =========================*/
 				KerArg1->In = (signed char * __restrict__) (L1_Memory+0+1200*((D0Ind_Total)%2));
-				KerArg1->InFeatures = (unsigned short int) (D0Ind_Last?8:12);
-				KerArg1->Filter = (signed char * __restrict__) (L1_Memory+2528+19200*((D0Ind_Total)%2));
-				KerArg1->TotalInFeatures = (short int) (D0Ind_Last?8:12);
-				AT_FORK(gap_ncore(), (void *) KerParConv5x5Stride1_fps, (void *) KerArg1);
-				__CALL(KerParConv5x5Stride1_fps, KerArg1);
+				KerArg1->InFeatures = (unsigned short int) (D0Ind_Last?4:12);
+				KerArg1->Filter = (signed char * __restrict__) (L1_Memory+2656+13824*((D0Ind_Total)%2));
+				KerArg1->TotalInFeatures = (short int) (D0Ind_Last?4:12);
+				AT_FORK(gap_ncore(), (void *) KerParConv3x3Stride1_fps, (void *) KerArg1);
+				__CALL(KerParConv3x3Stride1_fps, KerArg1);
 				/*================================= Update Arg Pipeline =============================*/
 				
 				
 				/*============================= End Update Arg Pipeline =============================*/
 			} /* End iteration on D0 */
 			/*====================== Call Kernel LOC_D0_EPILOG =========================*/
-			KerArg2->Out = (signed char * __restrict__) (L1_Memory+40928+576*((T0Ind_Total)%2));
+			KerArg2->Out = (signed char * __restrict__) (L1_Memory+30304+2048*((T0Ind_Total)%2));
 			AT_FORK(gap_ncore(), (void *) KerParPool2x2Stride2_fps, (void *) KerArg2);
 			__CALL(KerParPool2x2Stride2_fps, KerArg2);
 			/*================================= Write Tiles =====================================*/
 			if (_SP_Out) AT_L2_WAIT(0, &DmaW_Evt1); /* Wait previous DMA write Out */
-			AT_L2_COPY2D(0, ((AT_L2_EXT_ADDR_TYPE) Out+_C_Out), ((AT_L2_INT_ADDR_TYPE) L1_Memory+40928+576*((T0Ind_Total)%2)),
-					_SC_Out, 9, _LC_Out, 1, &DmaW_Evt1);
+			AT_L2_COPY2D(0, ((AT_L2_EXT_ADDR_TYPE) Out+_C_Out), ((AT_L2_INT_ADDR_TYPE) L1_Memory+30304+2048*((T0Ind_Total)%2)),
+					_SC_Out, 16, _LC_Out, 1, &DmaW_Evt1);
 			/*============================= End Write Tiles =====================================*/
 			/*================================= Update Arg Pipeline =============================*/
 			_SP_Out = _SC_Out;_LP_Out = _LC_Out;
@@ -543,7 +543,7 @@ void  __attribute__ ((noinline)) S3_Conv2d_64x32x5x5_MaxPool_2x2_Relu(
 	AT_L2_WAIT(0, &DmaW_Evt1); /* Wait previous DMA write Out */
 	/*============================ End Write Tiles Epilog ===============================*/
 }
-void  __attribute__ ((noinline)) S4_Linear_10x64x3x3(
+void  __attribute__ ((noinline)) S4_Linear_10x128x4x4(
 		signed char * __restrict__ In,
 		signed char * __restrict__ Filter,
 		signed char * __restrict__ Bias,
@@ -552,7 +552,7 @@ void  __attribute__ ((noinline)) S4_Linear_10x64x3x3(
 		unsigned int NormBias)
 
 {
-	/* Shared L1: 6360 bytes, L2 buffer: 6360 bytes */
+	/* Shared L1: 22552 bytes, L2 buffer: 22552 bytes */
 	/* Local variables used by this kernel */
 	AT_L2_EVENT DmaR_Evt1;
 	AT_L2_EVENT DmaR_Evt2;
@@ -570,18 +570,18 @@ void  __attribute__ ((noinline)) S4_Linear_10x64x3x3(
 	Ker Arg: In, Tiled Space: Buffer
 		Min Pipe Depth: 0, Max Pipe Depth: 0
 		KerArgItSpace: 1 logical tiles, 1 physical tiles
-			Total Size: 576 [Tile0, 1:[1x1], 576]
+			Total Size: 2048 [Tile0, 1:[1x1], 2048]
 		KerArgItSpace (User Kernel Iter Order):
-			[Tile0, 1:[1x1], 576]
-		Tile0: [0, 576, 576], Tile1: [0, 0, 0], Tile2; [0, 0, 0]
+			[Tile0, 1:[1x1], 2048]
+		Tile0: [0, 2048, 2048], Tile1: [0, 0, 0], Tile2; [0, 0, 0]
 		T0: [Tile0: 0], T1: [Tile0: 0], T2: [Tile0: 0]
 	Ker Arg: Filter, Tiled Space: Buffer
 		Min Pipe Depth: 0, Max Pipe Depth: 0
 		KerArgItSpace: 1 logical tiles, 1 physical tiles
-			Total Size: 5760 [D0, 1 x 5760]
+			Total Size: 20480 [D0, 1 x 20480]
 		KerArgItSpace (User Kernel Iter Order):
-			[D0, 1 x 5760]
-		Tile0: [0, 5760, 5760], Tile1: [0, 0, 0], Tile2; [0, 0, 0]
+			[D0, 1 x 20480]
+		Tile0: [0, 20480, 20480], Tile1: [0, 0, 0], Tile2; [0, 0, 0]
 		T0: [D0: 0], T1: [D0: 0], T2: [D0: 0]
 	Ker Arg: Bias, Tiled Space: Buffer
 		Min Pipe Depth: 0, Max Pipe Depth: 0
@@ -602,22 +602,22 @@ void  __attribute__ ((noinline)) S4_Linear_10x64x3x3(
 	======================== End Ker Arg Iter Spaces =========================================*/
 	/*=========================== Call Kernel, Invariant assignment =====================*/
 	KerArg0->In = (signed char * __restrict__) (L1_Memory+0);
-	KerArg0->InSize = (unsigned short int) (576);
-	KerArg0->TotalInSize = (unsigned short int) (576);
+	KerArg0->InSize = (unsigned short int) (2048);
+	KerArg0->TotalInSize = (unsigned short int) (2048);
 	KerArg0->OutSize = (unsigned short int) (10);
-	KerArg0->Filter = (signed char * __restrict__) (L1_Memory+576);
-	KerArg0->Bias = (signed char * __restrict__) (L1_Memory+6336);
-	KerArg0->Out = (signed char * __restrict__) (L1_Memory+6348);
+	KerArg0->Filter = (signed char * __restrict__) (L1_Memory+2048);
+	KerArg0->Bias = (signed char * __restrict__) (L1_Memory+22528);
+	KerArg0->Out = (signed char * __restrict__) (L1_Memory+22540);
 	KerArg0->Norm = (unsigned char) (Norm);
 	KerArg0->NormBias = (unsigned char) (NormBias);
 	KerArg0->LB = (int) (-128);
 	KerArg0->UB = (int) (127);
 	/*================================= Read Tiles Prolog ===============================*/
-	AT_L2_COPY(0, ((AT_L2_EXT_ADDR_TYPE) In+0), ((AT_L2_INT_ADDR_TYPE) L1_Memory+0), 576, 0, &DmaR_Evt1);
+	AT_L2_COPY(0, ((AT_L2_EXT_ADDR_TYPE) In+0), ((AT_L2_INT_ADDR_TYPE) L1_Memory+0), 2048, 0, &DmaR_Evt1);
 	AT_L2_WAIT(0, &DmaR_Evt1); /* Wait previous DMA read In */
-	AT_L2_COPY(0, ((AT_L2_EXT_ADDR_TYPE) Filter+0), ((AT_L2_INT_ADDR_TYPE) L1_Memory+576), 5760, 0, &DmaR_Evt2);
+	AT_L2_COPY(0, ((AT_L2_EXT_ADDR_TYPE) Filter+0), ((AT_L2_INT_ADDR_TYPE) L1_Memory+2048), 20480, 0, &DmaR_Evt2);
 	AT_L2_WAIT(0, &DmaR_Evt2); /* Wait previous DMA read Filter */
-	AT_L2_COPY(0, ((AT_L2_EXT_ADDR_TYPE) Bias+0), ((AT_L2_INT_ADDR_TYPE) L1_Memory+6336), 10, 0, &DmaR_Evt3);
+	AT_L2_COPY(0, ((AT_L2_EXT_ADDR_TYPE) Bias+0), ((AT_L2_INT_ADDR_TYPE) L1_Memory+22528), 10, 0, &DmaR_Evt3);
 	AT_L2_WAIT(0, &DmaR_Evt3); /* Wait previous DMA read Bias */
 	/*============================= End Read Tiles Prolog ===============================*/
 	{ /* Single iteration on D0 */
@@ -630,7 +630,7 @@ void  __attribute__ ((noinline)) S4_Linear_10x64x3x3(
 		} /* End iteration on Tile0 */
 	} /* End iteration on D0 */
 	/*================================ Write Tiles Epilog ===============================*/
-	AT_L2_COPY(0, ((AT_L2_EXT_ADDR_TYPE) Out+0), ((AT_L2_INT_ADDR_TYPE) L1_Memory+6348), 10, 1, &DmaW_Evt1);
+	AT_L2_COPY(0, ((AT_L2_EXT_ADDR_TYPE) Out+0), ((AT_L2_INT_ADDR_TYPE) L1_Memory+22540), 10, 1, &DmaW_Evt1);
 	AT_L2_WAIT(0, &DmaW_Evt1); /* Wait DMA write Out */
 	/*============================ End Write Tiles Epilog ===============================*/
 }
@@ -698,38 +698,38 @@ int MnistCNN_Construct()
 	AT_HYPERFLASH_FS_CONF_INIT(&HyperFlashConf, AT_MEM_L3_HFLASH, 0);
 	AT_HYPERFLASH_FS_OPEN(&HyperFlash, &HyperFlashConf, "Mnist_L3_Flash_Const.dat", &Error);
 	if (Error) return 1;
-	Mnist_L2_Memory = (AT_L2_POINTER) AT_L2_ALLOC(0, 105130);
+	Mnist_L2_Memory = (AT_L2_POINTER) AT_L2_ALLOC(0, 171274);
 	L1_Memory = (AT_L1_POINTER) AT_L1_ALLOC(0, 44448);
-	/* Moving Step1Weights, size 800 from HyperFlash at 82560 to (size 800) L2 at 104192 */
-	AT_HYPERFLASH_FS_FC_COPY(&HyperFlash, ((AT_HYPERFLASH_FS_EXT_ADDR_TYPE) Mnist_L3_Flash + 82560), ((AT_HYPERFLASH_FS_INT_ADDR_TYPE) Mnist_L2_Memory + 104192), 800, 0, &Uchan1);
+	/* Moving Step1Weights, size 800 from HyperFlash at 145408 to (size 800) L2 at 170240 */
+	AT_HYPERFLASH_FS_FC_COPY(&HyperFlash, ((AT_HYPERFLASH_FS_EXT_ADDR_TYPE) Mnist_L3_Flash + 145408), ((AT_HYPERFLASH_FS_INT_ADDR_TYPE) Mnist_L2_Memory + 170240), 800, 0, &Uchan1);
 	AT_HYPERFLASH_FS_FC_WAIT(&HyperFlash, &Uchan1);
-	/* Moving Step1Biases, size 32 from HyperFlash at 83424 to (size 32) L2 at 105056 */
-	AT_HYPERFLASH_FS_FC_COPY(&HyperFlash, ((AT_HYPERFLASH_FS_EXT_ADDR_TYPE) Mnist_L3_Flash + 83424), ((AT_HYPERFLASH_FS_INT_ADDR_TYPE) Mnist_L2_Memory + 105056), 32, 0, &Uchan1);
+	/* Moving Step1Biases, size 32 from HyperFlash at 146400 to (size 32) L2 at 171232 */
+	AT_HYPERFLASH_FS_FC_COPY(&HyperFlash, ((AT_HYPERFLASH_FS_EXT_ADDR_TYPE) Mnist_L3_Flash + 146400), ((AT_HYPERFLASH_FS_INT_ADDR_TYPE) Mnist_L2_Memory + 171232), 32, 0, &Uchan1);
 	AT_HYPERFLASH_FS_FC_WAIT(&HyperFlash, &Uchan1);
-	/* Moving Step2Weights, size 25600 from HyperFlash at 51200 to (size 25600) L2 at 72832 */
-	AT_HYPERFLASH_FS_FC_COPY(&HyperFlash, ((AT_HYPERFLASH_FS_EXT_ADDR_TYPE) Mnist_L3_Flash + 51200), ((AT_HYPERFLASH_FS_INT_ADDR_TYPE) Mnist_L2_Memory + 72832), 25600, 0, &Uchan1);
+	/* Moving Step2Weights, size 51200 from HyperFlash at 73728 to (size 51200) L2 at 98560 */
+	AT_HYPERFLASH_FS_FC_COPY(&HyperFlash, ((AT_HYPERFLASH_FS_EXT_ADDR_TYPE) Mnist_L3_Flash + 73728), ((AT_HYPERFLASH_FS_INT_ADDR_TYPE) Mnist_L2_Memory + 98560), 51200, 0, &Uchan1);
 	AT_HYPERFLASH_FS_FC_WAIT(&HyperFlash, &Uchan1);
-	/* Moving Step2Biases, size 32 from HyperFlash at 83456 to (size 32) L2 at 105088 */
-	AT_HYPERFLASH_FS_FC_COPY(&HyperFlash, ((AT_HYPERFLASH_FS_EXT_ADDR_TYPE) Mnist_L3_Flash + 83456), ((AT_HYPERFLASH_FS_INT_ADDR_TYPE) Mnist_L2_Memory + 105088), 32, 0, &Uchan1);
+	/* Moving Step2Biases, size 64 from HyperFlash at 146336 to (size 64) L2 at 171168 */
+	AT_HYPERFLASH_FS_FC_COPY(&HyperFlash, ((AT_HYPERFLASH_FS_EXT_ADDR_TYPE) Mnist_L3_Flash + 146336), ((AT_HYPERFLASH_FS_INT_ADDR_TYPE) Mnist_L2_Memory + 171168), 64, 0, &Uchan1);
 	AT_HYPERFLASH_FS_FC_WAIT(&HyperFlash, &Uchan1);
-	/* Moving Step3Weights, size 51200 from HyperFlash at 0 to (size 51200) L2 at 21632 */
-	AT_HYPERFLASH_FS_FC_COPY(&HyperFlash, ((AT_HYPERFLASH_FS_EXT_ADDR_TYPE) Mnist_L3_Flash + 0), ((AT_HYPERFLASH_FS_INT_ADDR_TYPE) Mnist_L2_Memory + 21632), 51200, 0, &Uchan1);
+	/* Moving Step3Weights, size 73728 from HyperFlash at 0 to (size 73728) L2 at 24832 */
+	AT_HYPERFLASH_FS_FC_COPY(&HyperFlash, ((AT_HYPERFLASH_FS_EXT_ADDR_TYPE) Mnist_L3_Flash + 0), ((AT_HYPERFLASH_FS_INT_ADDR_TYPE) Mnist_L2_Memory + 24832), 73728, 0, &Uchan1);
 	AT_HYPERFLASH_FS_FC_WAIT(&HyperFlash, &Uchan1);
-	/* Moving Step3Biases, size 64 from HyperFlash at 83360 to (size 64) L2 at 104992 */
-	AT_HYPERFLASH_FS_FC_COPY(&HyperFlash, ((AT_HYPERFLASH_FS_EXT_ADDR_TYPE) Mnist_L3_Flash + 83360), ((AT_HYPERFLASH_FS_INT_ADDR_TYPE) Mnist_L2_Memory + 104992), 64, 0, &Uchan1);
+	/* Moving Step3Biases, size 128 from HyperFlash at 146208 to (size 128) L2 at 171040 */
+	AT_HYPERFLASH_FS_FC_COPY(&HyperFlash, ((AT_HYPERFLASH_FS_EXT_ADDR_TYPE) Mnist_L3_Flash + 146208), ((AT_HYPERFLASH_FS_INT_ADDR_TYPE) Mnist_L2_Memory + 171040), 128, 0, &Uchan1);
 	AT_HYPERFLASH_FS_FC_WAIT(&HyperFlash, &Uchan1);
-	/* Moving Step4Weights, size 5760 from HyperFlash at 76800 to (size 5760) L2 at 98432 */
-	AT_HYPERFLASH_FS_FC_COPY(&HyperFlash, ((AT_HYPERFLASH_FS_EXT_ADDR_TYPE) Mnist_L3_Flash + 76800), ((AT_HYPERFLASH_FS_INT_ADDR_TYPE) Mnist_L2_Memory + 98432), 5760, 0, &Uchan1);
+	/* Moving Step4Weights, size 20480 from HyperFlash at 124928 to (size 20480) L2 at 149760 */
+	AT_HYPERFLASH_FS_FC_COPY(&HyperFlash, ((AT_HYPERFLASH_FS_EXT_ADDR_TYPE) Mnist_L3_Flash + 124928), ((AT_HYPERFLASH_FS_INT_ADDR_TYPE) Mnist_L2_Memory + 149760), 20480, 0, &Uchan1);
 	AT_HYPERFLASH_FS_FC_WAIT(&HyperFlash, &Uchan1);
-	/* Moving Step4Biases, size 10 from HyperFlash at 83488 to (size 10) L2 at 105120 */
-	AT_HYPERFLASH_FS_FC_COPY(&HyperFlash, ((AT_HYPERFLASH_FS_EXT_ADDR_TYPE) Mnist_L3_Flash + 83488), ((AT_HYPERFLASH_FS_INT_ADDR_TYPE) Mnist_L2_Memory + 105120), 10, 0, &Uchan1);
+	/* Moving Step4Biases, size 10 from HyperFlash at 146432 to (size 10) L2 at 171264 */
+	AT_HYPERFLASH_FS_FC_COPY(&HyperFlash, ((AT_HYPERFLASH_FS_EXT_ADDR_TYPE) Mnist_L3_Flash + 146432), ((AT_HYPERFLASH_FS_INT_ADDR_TYPE) Mnist_L2_Memory + 171264), 10, 0, &Uchan1);
 	AT_HYPERFLASH_FS_FC_WAIT(&HyperFlash, &Uchan1);
 	return 0;
 }
 int MnistCNN_Destruct()
 
 {
-	AT_L2_FREE(0, Mnist_L2_Memory, 105130);
+	AT_L2_FREE(0, Mnist_L2_Memory, 171274);
 	AT_L1_FREE(0, L1_Memory, 44448);
 	AT_HYPERFLASH_FS_CLOSE(&HyperFlash);
 	return 0;
@@ -737,16 +737,16 @@ int MnistCNN_Destruct()
 unsigned int MnistPerf[5];
 unsigned int MnistOperCount[5] = {
 	479232,
-	10256000,
-	1846080,
-	5760,
+	20512000,
+	4728832,
+	20480,
 	10,
 };
 char *MnistLName[5] = {
 	"S1_Conv2d_32x1x5x5_Relu",
-	"S2_Conv2d_32x32x5x5_MaxPool_2x2_Relu",
-	"S3_Conv2d_64x32x5x5_MaxPool_2x2_Relu",
-	"S4_Linear_10x64x3x3",
+	"S2_Conv2d_64x32x5x5_MaxPool_2x2_Relu",
+	"S3_Conv2d_128x64x3x3_MaxPool_2x2_Relu",
+	"S4_Linear_10x128x4x4",
 	"S5_SoftMax",
 };
 int MnistCNN(
@@ -757,41 +757,41 @@ int MnistCNN(
 	MnistPerf[0] = gap_cl_readhwtimer();
 	S1_Conv2d_32x1x5x5_Relu(
 		(signed char *__restrict__) Input_1, /* In */
-		(signed char *__restrict__) (Mnist_L2_Memory+104192), /* Filter */
-		(signed char *__restrict__) (Mnist_L2_Memory+105056), /* Bias */
-		(signed char *__restrict__) (Mnist_L2_Memory+3200), /* Out */
+		(signed char *__restrict__) (Mnist_L2_Memory+170240), /* Filter */
+		(signed char *__restrict__) (Mnist_L2_Memory+171232), /* Bias */
+		(signed char *__restrict__) (Mnist_L2_Memory+6400), /* Out */
 		8, /* Norm */
 		8 /* NormBias */
 	);
 	MnistPerf[0] = gap_cl_readhwtimer() - MnistPerf[0];
 	MnistPerf[1] = gap_cl_readhwtimer();
-	S2_Conv2d_32x32x5x5_MaxPool_2x2_Relu(
-		(signed char *__restrict__) (Mnist_L2_Memory+3200), /* In */
-		(signed char *__restrict__) (Mnist_L2_Memory+72832), /* Filter */
-		(signed char *__restrict__) (Mnist_L2_Memory+105088), /* Bias */
+	S2_Conv2d_64x32x5x5_MaxPool_2x2_Relu(
+		(signed char *__restrict__) (Mnist_L2_Memory+6400), /* In */
+		(signed char *__restrict__) (Mnist_L2_Memory+98560), /* Filter */
+		(signed char *__restrict__) (Mnist_L2_Memory+171168), /* Bias */
 		(signed char *__restrict__) (Mnist_L2_Memory+0), /* Out */
 		8, /* Norm */
 		8 /* NormBias */
 	);
 	MnistPerf[1] = gap_cl_readhwtimer() - MnistPerf[1];
 	MnistPerf[2] = gap_cl_readhwtimer();
-	S3_Conv2d_64x32x5x5_MaxPool_2x2_Relu(
+	S3_Conv2d_128x64x3x3_MaxPool_2x2_Relu(
 		(signed char *__restrict__) (Mnist_L2_Memory+0), /* In */
-		(signed char *__restrict__) (Mnist_L2_Memory+21632), /* Filter */
-		(signed char *__restrict__) (Mnist_L2_Memory+104992), /* Bias */
-		(signed char *__restrict__) (Mnist_L2_Memory+3200), /* Out */
-		7, /* Norm */
-		7 /* NormBias */
+		(signed char *__restrict__) (Mnist_L2_Memory+24832), /* Filter */
+		(signed char *__restrict__) (Mnist_L2_Memory+171040), /* Bias */
+		(signed char *__restrict__) (Mnist_L2_Memory+6400), /* Out */
+		8, /* Norm */
+		8 /* NormBias */
 	);
 	MnistPerf[2] = gap_cl_readhwtimer() - MnistPerf[2];
 	MnistPerf[3] = gap_cl_readhwtimer();
-	S4_Linear_10x64x3x3(
-		(signed char *__restrict__) (Mnist_L2_Memory+3200), /* In */
-		(signed char *__restrict__) (Mnist_L2_Memory+98432), /* Filter */
-		(signed char *__restrict__) (Mnist_L2_Memory+105120), /* Bias */
+	S4_Linear_10x128x4x4(
+		(signed char *__restrict__) (Mnist_L2_Memory+6400), /* In */
+		(signed char *__restrict__) (Mnist_L2_Memory+149760), /* Filter */
+		(signed char *__restrict__) (Mnist_L2_Memory+171264), /* Bias */
 		(signed char *__restrict__) (Mnist_L2_Memory+0), /* Out */
-		8, /* Norm */
-		8 /* NormBias */
+		7, /* Norm */
+		7 /* NormBias */
 	);
 	MnistPerf[3] = gap_cl_readhwtimer() - MnistPerf[3];
 	MnistPerf[4] = gap_cl_readhwtimer();

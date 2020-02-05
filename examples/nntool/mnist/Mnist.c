@@ -10,6 +10,8 @@
 #ifndef __EMUL__
 /* PMSIS includes. */
 #include "pmsis.h"
+#include "pmsis/drivers/uart.h"
+#include "bsp/camera/himax.h"
 #endif  /* __EMUL__ */
 
 /* Autotiler includes. */
@@ -28,6 +30,7 @@
 #endif
 #endif
 
+#define PRINT_IMAGE
 
 #define STACK_SIZE      2048
 
@@ -57,6 +60,14 @@ L2_MEM short int *ResOut;
 L2_MEM MNIST_IMAGE_IN_T *ImageIn;
 
 char *ImageName = NULL;
+L2_MEM struct pi_uart_conf uart_conf;
+L2_MEM struct pi_device uart;
+L2_MEM uint8_t rec_digit = 0;
+
+#define CAM_WIDTH    324
+#define CAM_HEIGHT   244
+
+L2_MEM struct pi_device himax;
 
 static void RunMnist()
 
@@ -73,7 +84,6 @@ static void RunMnist()
   //Checki Results            
   //here the highest probability of the 10 digits is selected
   //from here the result can also be send to the CF via UART
-  int rec_digit = 0;
   short int highest = ResOut[0];
   for(int i = 1; i < 10; i++) {
     if(ResOut[i] > highest) {
@@ -83,7 +93,10 @@ static void RunMnist()
   }
   printf("\n");
 
-  printf("Recognized: %d\n", rec_digit);
+  printf("Recognized digit: %d with softmax output %d\n", rec_digit, highest);
+  for(int j = -20; j < 20; j++){
+    printf("digit %d and its softmax output %d\n", j, ResOut[j]);
+  }
 #else
   printf("image loading disabled so no sensible result\n");
 #endif
@@ -105,6 +118,20 @@ void test_mnist(void)
     #endif  /* NO_IMAGE && LINK_IMAGE_HEADER */
     #endif  /* __EMUL__ */
 
+    pi_uart_conf_init(&uart_conf);
+    uart_conf.enable_tx = 1;
+    uart_conf.enable_rx = 0;
+    #if !defined(__PULP_OS__)
+    conf.src_clock_Hz = pi_fll_get_frequency(FLL_SOC);
+    #endif  /* __PULP_OS__ */
+    pi_open_from_conf(&uart, &uart_conf);
+    if (pi_uart_open(&uart))
+    {
+        printf("Uart open failed !\n");
+        pmsis_exit(-1);
+    }
+
+
     unsigned char *ImageInChar = (unsigned char *) pi_l2_malloc(sizeof(MNIST_IMAGE_IN_T) * W * H);
     if (ImageInChar == NULL)
     {
@@ -112,7 +139,7 @@ void test_mnist(void)
         pmsis_exit(-1);
     }
 
-    #if !defined(NO_IMAGE)
+    #if !defined(NO_IMAGE)              //put camera image setup
     printf("Reading image\n");
     //Reading Image from Bridge
     if ((ReadImageFromFile(ImageName, &Wi, &Hi, ImageInChar, W*H*sizeof(unsigned char))==0) || (Wi!=W) || (Hi!=H))
@@ -120,6 +147,12 @@ void test_mnist(void)
         printf("Failed to load image %s or dimension mismatch Expects [%dx%d], Got [%dx%d]\n", ImageName, W, H, Wi, Hi);
         pmsis_exit(-2);
     }
+    // else
+    // {
+    //   /* code */
+    // }
+    
+
     printf("Finished reading image\n");
     #endif  /* NO_IMAGE */
 
@@ -189,6 +222,7 @@ void test_mnist(void)
     task.stack_size = (unsigned int) STACK_SIZE;
 
     pi_cluster_send_task_to_cl(&cluster_dev, &task);
+    pi_uart_write(&uart, &rec_digit, 1);
 
     MnistCNN_Destruct();
 
@@ -206,6 +240,8 @@ void test_mnist(void)
         printf("\n");
     }
     #endif  /* PERF */
+
+    pi_uart_close(&uart);
 
     // Close the cluster
     pi_cluster_close(&cluster_dev);
