@@ -114,61 +114,42 @@
           {
             "__type": "QType",
             "bits": 8,
-            "q": 3,
+            "q": 2,
             "signed": true
           }
         ],
         "calc_q": {
           "__type": "QType",
           "bits": 16,
-          "q": 11,
+          "q": 10,
           "signed": true
         },
         "acc_q": {
           "__type": "QType",
           "bits": 16,
-          "q": 11,
+          "q": 10,
           "signed": true
         },
         "biases_q": {
           "__type": "QType",
           "bits": 8,
-          "q": 3,
+          "q": 2,
           "signed": true
         },
         "weights_q": {
           "__type": "QType",
           "bits": 8,
-          "q": 6,
+          "q": 5,
           "signed": true
         },
         "__type": "QuantizationRecord.FilterQuantizationRecord"
-      },
-      "NodeId_CONV_2D_0_1_fusion###CONV_2D_0_1_activation": {
-        "in_qs": [
-          {
-            "__type": "QType",
-            "bits": 8,
-            "q": 3,
-            "signed": true
-          }
-        ],
-        "out_qs": [
-          {
-            "__type": "QType",
-            "bits": 8,
-            "q": 3,
-            "signed": true
-          }
-        ],
-        "__type": "QuantizationRecord.QuantizationRecord"
       },
       "NodeId_CONV_2D_0_1_fusion###MAX_POOL_2D_0_2": {
         "in_qs": [
           {
             "__type": "QType",
             "bits": 8,
-            "q": 3,
+            "q": 2,
             "signed": true
           }
         ],
@@ -176,7 +157,26 @@
           {
             "__type": "QType",
             "bits": 8,
-            "q": 3,
+            "q": 2,
+            "signed": true
+          }
+        ],
+        "__type": "QuantizationRecord.QuantizationRecord"
+      },
+      "NodeId_CONV_2D_0_1_fusion###MAX_POOL_2D_0_2_activation": {
+        "in_qs": [
+          {
+            "__type": "QType",
+            "bits": 8,
+            "q": 2,
+            "signed": true
+          }
+        ],
+        "out_qs": [
+          {
+            "__type": "QType",
+            "bits": 8,
+            "q": 2,
             "signed": true
           }
         ],
@@ -195,56 +195,13 @@
           {
             "__type": "QType",
             "bits": 8,
-            "q": 3,
+            "q": 2,
             "signed": true
           }
         ],
         "__type": "QuantizationRecord.QuantizationRecord"
       },
-      "NodeId_CONV_2D_0_3_fusion###CONV_2D_0_3": {
-        "in_qs": [
-          {
-            "__type": "QType",
-            "bits": 8,
-            "q": 3,
-            "signed": true
-          }
-        ],
-        "out_qs": [
-          {
-            "__type": "QType",
-            "bits": 8,
-            "q": 2,
-            "signed": true
-          }
-        ],
-        "calc_q": {
-          "__type": "QType",
-          "bits": 16,
-          "q": 10,
-          "signed": true
-        },
-        "acc_q": {
-          "__type": "QType",
-          "bits": 8,
-          "q": 2,
-          "signed": true
-        },
-        "biases_q": {
-          "__type": "QType",
-          "bits": 8,
-          "q": 2,
-          "signed": true
-        },
-        "weights_q": {
-          "__type": "QType",
-          "bits": 8,
-          "q": 7,
-          "signed": true
-        },
-        "__type": "QuantizationRecord.FilterQuantizationRecord"
-      },
-      "NodeId_CONV_2D_0_3_fusion###CONV_2D_0_3_activation": {
+      "NodeId_MAX_POOL_2D_0_3###": {
         "in_qs": [
           {
             "__type": "QType",
@@ -263,45 +220,7 @@
         ],
         "__type": "QuantizationRecord.QuantizationRecord"
       },
-      "NodeId_CONV_2D_0_3_fusion###MAX_POOL_2D_0_4": {
-        "in_qs": [
-          {
-            "__type": "QType",
-            "bits": 8,
-            "q": 2,
-            "signed": true
-          }
-        ],
-        "out_qs": [
-          {
-            "__type": "QType",
-            "bits": 8,
-            "q": 2,
-            "signed": true
-          }
-        ],
-        "__type": "QuantizationRecord.QuantizationRecord"
-      },
-      "NodeId_CONV_2D_0_3_fusion###": {
-        "in_qs": [
-          {
-            "__type": "QType",
-            "bits": 8,
-            "q": 3,
-            "signed": true
-          }
-        ],
-        "out_qs": [
-          {
-            "__type": "QType",
-            "bits": 8,
-            "q": 2,
-            "signed": true
-          }
-        ],
-        "__type": "QuantizationRecord.QuantizationRecord"
-      },
-      "NodeId_FULLY_CONNECTED_0_5###": {
+      "NodeId_FULLY_CONNECTED_0_4###": {
         "in_qs": [
           {
             "__type": "QType",
@@ -344,7 +263,7 @@
         },
         "__type": "QuantizationRecord.FilterQuantizationRecord"
       },
-      "NodeId_SOFTMAX_0_6###": {
+      "NodeId_SOFTMAX_0_5###": {
         "in_qs": [
           {
             "__type": "QType",

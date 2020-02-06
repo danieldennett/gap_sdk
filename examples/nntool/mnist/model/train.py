@@ -102,12 +102,12 @@ def train(args):
     # model.add(MaxPooling2D(pool_size=(1, 1)))
 #extra layer
     model.add(Conv2D(64, kernel_size=(5, 5)))
-    if args.batch_norm:                             # must be before every layer
-        model.add(BatchNormalization())
-    model.add(Activation('relu'))
+    # if args.batch_norm:                             # must be before every layer
+        # model.add(BatchNormalization())
+    # model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
 
-    model.add(Conv2D(128, kernel_size=(3, 3)))
+    # model.add(Conv2D(128, kernel_size=(3, 3)))
     if args.batch_norm:
         model.add(BatchNormalization())
     model.add(Activation('relu'))

@@ -31,6 +31,7 @@
 #endif
 
 #define CAMERA
+// #define MNIST_16BIT
 // #define PRINT_IMAGE
 
 #define STACK_SIZE      2048
@@ -72,7 +73,7 @@ L2_MEM uint8_t rec_digit = 0;
 #define CAM_HEIGHT   244
 
 L2_MEM struct pi_device himax;
-L2_MEM unsigned char *imgBuff0;
+// L2_MEM unsigned char *imgBuff0;
 L2_MEM struct pi_himax_conf cam_conf;
 L2_MEM uint8_t errors = 0;
 
@@ -101,7 +102,7 @@ static void RunMnist()
   printf("\n");
 
   printf("Recognized digit: %d with softmax output %d\n", rec_digit, highest);
-  for(int j = -20; j < 20; j++){
+  for(int j = 0; j < 10; j++){
     printf("digit %d and its softmax output %d\n", j, ResOut[j]);
   }
 #else
@@ -113,9 +114,17 @@ void test_mnist(void)
 {
     printf("Entering main controller\n");
 
+
     unsigned int Wi = 0, Hi = 0;
     /* Input image size. */
-    unsigned int W = 28, H = 28;
+  // #if !defined CAMERA
+    unsigned int W = 324, H = 244;
+  // #endif
+
+  // #if defined CAMERA  
+  //   unsigned int W = 324, H = 244;
+  // #endif
+
     #if !defined(__EMUL__)
     #if !defined(NO_IMAGE) && !defined(LINK_IMAGE_HEADER)
     BRIDGE_Init();
@@ -125,17 +134,15 @@ void test_mnist(void)
     #endif  /* NO_IMAGE && LINK_IMAGE_HEADER */
     #endif  /* __EMUL__ */
 
-// HIMAX STUFF
-    #if defined CAMERA
+// HIMAX CAMERA STUFF
+    #if defined(CAMERA)
     printf("[CAMERA] Start\n");
     // unsigned char *ImageInChar = (unsigned char *) pi_l2_malloc(sizeof(MNIST_IMAGE_IN_T) * W * H);
-    imgBuff0 = (unsigned char *)pi_l2_malloc((CAM_WIDTH*CAM_HEIGHT)*sizeof(unsigned char));
+    unsigned char *ImageInChar = (unsigned char *)pi_l2_malloc((CAM_WIDTH*CAM_HEIGHT)*sizeof(MNIST_IMAGE_IN_T));
     // unsigned char *imgBuff0 = (unsigned char *) pi_l2_malloc((CAM_WIDTH*CAM_HEIGHT)*sizeof(unsigned char));
-    if (imgBuff0 == NULL)
+    if (ImageInChar == NULL)
     {
       printf("[CAMERA] Failed to allocate memory for image\n");
-      errors++;
-      goto end0;
     }
 
     pi_himax_conf_init(&cam_conf);
@@ -148,63 +155,23 @@ void test_mnist(void)
       errors++;
       goto end;
     }
-    uint8_t value = 0x01;
     pi_camera_control(&himax, PI_CAMERA_CMD_START, 0);
-    pi_camera_capture(&himax, imgBuff0, CAM_WIDTH*CAM_HEIGHT);
+    pi_time_wait_us(2000000);
+    pi_camera_capture(&himax, ImageInChar, CAM_WIDTH*CAM_HEIGHT);
     pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);
-    pi_camera_close(&himax);
-    for (int i=2; i<CAM_WIDTH-2; i+=2)
-    {
-      uint32_t expected;
+    // pi_camera_close(&himax);
+  
+  #endif 
 
-      if (i < 52)
-        expected = 0x00000000;
-      else if (i < 106)
-        expected = 0x000000ff;
-      else if (i < 160)
-        expected = 0xff000000;
-      else if (i < 214)
-        expected = 0xff0000ff;
-      else if (i < 278)
-        expected = 0x00ffff00;
-      else
-        expected = 0x00ffffff;
-
-      for (int j=2; j<CAM_HEIGHT-2; j+=2)
-      {
-        uint32_t pattern = imgBuff0[j*CAM_WIDTH+i] | (imgBuff0[j*CAM_WIDTH+i+1] << 8) | (imgBuff0[(j+1)*CAM_WIDTH+i] << 16) | (imgBuff0[(j+1)*CAM_WIDTH+i+1] << 24);
-
-        if (expected != pattern)
-        {
-          errors++;
-          //printf("(%d, %d) %8.8lx %8.8lx\n", i, j, pattern, expected);
-        }
-      }
-    }
-
-    if (errors)
-      printf("[CAMERA] Didn't get expected image\n");
-
-  end:
-    pi_l2_free(imgBuff0, (CAM_WIDTH*CAM_HEIGHT)*sizeof(unsigned char));
-
-  end0:
-    if (errors)
-      printf("[CAMERA] Failed\n");
-    else
-      printf("[CAMERA] Passed\n");
-
-  #endif
-
-    #if !defined CAMERA
-
+    #if !defined(CAMERA)
+// allocating memory for the manual image upload 
     unsigned char *ImageInChar = (unsigned char *) pi_l2_malloc(sizeof(MNIST_IMAGE_IN_T) * W * H);
     if (ImageInChar == NULL)
     {
         printf("Failed to allocate Memory for Image (%d bytes)\n", sizeof(MNIST_IMAGE_IN_T) * W * H);
         pmsis_exit(-1);
     }
-    #if !defined(NO_IMAGE)              //put camera image setup
+    #if !defined(NO_IMAGE)              
     printf("Reading image\n");
     //Reading Image from Bridge
     if ((ReadImageFromFile(ImageName, &Wi, &Hi, ImageInChar, W*H*sizeof(unsigned char))==0) || (Wi!=W) || (Hi!=H))
@@ -215,8 +182,7 @@ void test_mnist(void)
 
     printf("Finished reading image\n");
     #endif  /* NO_IMAGE */
-
-    // #endif  /* CAMERA */
+    #endif  /* NO CAMERA */
 
     #if defined(PRINT_IMAGE)
     for (int i=0; i<H; i++)
@@ -255,7 +221,6 @@ void test_mnist(void)
     #error No bit size selected
     #endif  /* MNIST_16BIT */
     #endif  /* MNIST_8BIT */
-    #endif  /* CAMERA */
 
 //  UART configure init
     pi_uart_conf_init(&uart_conf);
@@ -319,6 +284,13 @@ void test_mnist(void)
     #endif  /* PERF */
 
     pi_uart_close(&uart);
+
+  #if defined CAMERA
+  end:
+    pi_l2_free(ImageInChar, (CAM_WIDTH*CAM_HEIGHT)*sizeof(unsigned char));
+    pi_camera_close(&himax);
+  #endif
+
 
     // Close the cluster
     pi_cluster_close(&cluster_dev);
