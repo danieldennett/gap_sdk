@@ -15,7 +15,7 @@ extern void S1_Conv2d_32x1x5x5_Relu(
 		signed char * __restrict__ Out,
 		unsigned int Norm,
 		unsigned int NormBias);
-extern void S2_Conv2d_32x32x5x5_MaxPool_2x2_Relu(
+extern void S2_Conv2d_64x32x5x5_MaxPool_2x2_Relu(
 		signed char * __restrict__ In,
 		signed char * __restrict__ Filter,
 		signed char * __restrict__ Bias,
@@ -25,7 +25,7 @@ extern void S2_Conv2d_32x32x5x5_MaxPool_2x2_Relu(
 extern void S3_MaxPool_2x2(
 		signed char * __restrict__ In,
 		signed char * __restrict__ Out);
-extern void S4_Linear_10x32x5x5(
+extern void S4_Linear_10x64x5x5(
 		signed char * __restrict__ In,
 		signed char * __restrict__ Filter,
 		signed char * __restrict__ Bias,

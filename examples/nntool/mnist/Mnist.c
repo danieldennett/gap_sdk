@@ -102,7 +102,7 @@ static void RunMnist()
   printf("\n");
 
   printf("Recognized digit: %d with softmax output %d\n", rec_digit, highest);
-  for(int j = 0; j < 10; j++){
+  for(int j = -10; j < 10; j++){
     printf("digit %d and its softmax output %d\n", j, ResOut[j]);
   }
 #else
@@ -156,7 +156,7 @@ void test_mnist(void)
       goto end;
     }
     pi_camera_control(&himax, PI_CAMERA_CMD_START, 0);
-    pi_time_wait_us(2000000);
+    pi_time_wait_us(4000000);
     pi_camera_capture(&himax, ImageInChar, CAM_WIDTH*CAM_HEIGHT);
     pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);
     // pi_camera_close(&himax);

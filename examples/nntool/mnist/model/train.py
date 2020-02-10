@@ -118,7 +118,7 @@ def train(args):
     if args.batch_norm:                         #where is this extra similar if statement for ? A: adding
         model.add(BatchNormalization())
     model.add(Activation('softmax'))            #when adding an extra here something goes wrong
-
+    # model.add(Activation('relu'))
     model.compile(loss=keras.losses.categorical_crossentropy,
                   optimizer=keras.optimizers.Adadelta(),
                   metrics=['accuracy'])
