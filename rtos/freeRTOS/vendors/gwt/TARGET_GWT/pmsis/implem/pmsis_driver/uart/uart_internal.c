@@ -28,16 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "pmsis.h"
-<<<<<<< HEAD
 #include "pmsis_driver/uart/uart_internal.h"
 #include "pmsis/rtos/event_kernel/event_kernel.h"
 #include "pmsis/rtos/os_frontend_api/os.h"
-=======
-#include DEFAULT_MALLOC_INC
-#include "pmsis_driver/uart/uart_internal.h"
-#include "pmsis/rtos/event_kernel/event_kernel.h"
-#include "pmsis/rtos/os_frontend_api/pmsis_task.h"
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 #include "pmsis_driver/pmsis_fc_event.h"
 #include "pmsis_hal/pmsis_hal.h"
 

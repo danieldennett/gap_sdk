@@ -81,7 +81,6 @@ void __pi_task_destroy(pi_task_t *task)
 
 void __pi_task_wait_on(pi_task_t *task)
 {
-<<<<<<< HEAD
     // FIXME: workaround for gcc bug
     hal_compiler_barrier();
     while (!task->done)
@@ -110,15 +109,6 @@ pi_task_t *pi_task_callback_no_mutex(pi_task_t *callback_task,
                                      void (*func)(void *), void *arg)
 {
     return pi_task_callback(callback_task, func, arg);
-=======
-    callback_task->id = PI_TASK_NONE_ID;
-    callback_task->done = 0;
-    pi_sem_init(&(callback_task->wait_on));
-    // lock the mutex so that task may be descheduled while waiting on it
-    callback_task->destroy = 1;
-    callback_task->core_id = -1;
-    return callback_task;
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 }
 
 pi_task_t *pi_task_block_no_mutex(pi_task_t *callback_task)
@@ -149,23 +139,6 @@ void pi_task_release(pi_task_t *task)
     {
        pi_cl_pi_task_notify_done(task);
     }
-<<<<<<< HEAD
-=======
-}
-
-void pi_cl_pi_task_wait(pi_task_t *task)
-{
-    while((*(volatile uint8_t *)&task->done) == 0)
-    {
-        hal_eu_evt_mask_wait_and_clr(1 << FC_NOTIFY_CLUSTER_EVENT);
-    }
-}
-
-void pi_cl_pi_task_notify_done(pi_task_t *task)
-{
-    (*(volatile uint8_t *)(&task->done)) = 1;
-    hal_eu_cluster_evt_trig_set(FC_NOTIFY_CLUSTER_EVENT, 0);
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 }
 
 void pi_cl_pi_task_wait(pi_task_t *task)

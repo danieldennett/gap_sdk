@@ -172,8 +172,8 @@ AC_ARG_ENABLE([werror],
   [gcc_werror=$enableval], [gcc_werror=$gcc_warnings])
 
 # set default verbose options, overridden by following options
-debug_usb_io=yes
-debug_usb_comms=yes
+debug_usb_io=no
+debug_usb_comms=no
 
 AC_ARG_ENABLE([verbose],
   AS_HELP_STRING([--enable-verbose],

@@ -73,11 +73,8 @@ void pi_gpio_print()
     DEBUG_PRINTF("GpioEn : %x\n", gpio_gpioen_get());
     DEBUG_PRINTF("Paddir|Padin|Padout : %x %x %x\n",
            gpio_paddir_get(), gpio_padin_get(), gpio_padout_get());
-<<<<<<< HEAD
     DEBUG_PRINTF("IRQ_Status : %x\nIRQ_Type : %x %x\n",
                  gpio_intstatus_get(), gpio_inttype_get(0), gpio_inttype_get(1));
-=======
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
     DEBUG_PRINTF("Padcfg :\n");
     for (uint32_t i=0; i<(uint32_t) ARCHI_GPIO_NB_PADCFG_REG; i+=4)
     {

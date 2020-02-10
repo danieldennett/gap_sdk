@@ -25,26 +25,18 @@
 #include "../extern_alloc.h"
 
 
-<<<<<<< HEAD
 #if !defined(POS_TRACE)
 #define POS_WARNING(x...)
 #endif
 
 #if !defined(__TRACE_ALL__) && !defined(__TRACE_RAM__) || !defined(POS_TRACE)
-=======
-#if !defined(__TRACE_ALL__) && !defined(__TRACE_RAM__)
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 #define RAM_TRACE(x...)
 #else
 #define RAM_TRACE(level, x...) POS_TRACE(level, "[RAM] " x)
 #endif
 
 
-<<<<<<< HEAD
 #define SPIRAM_CS_PULSE_WIDTH_NS 8000
-=======
-#define SPIRAM_CS_PULSE_WIDTH_NS 4000
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 
 typedef struct
 {
@@ -70,11 +62,7 @@ static int spiram_open(struct pi_device *device)
 
     struct pi_spiram_conf *conf = (struct pi_spiram_conf *)device->config;
 
-<<<<<<< HEAD
     spiram_t *spiram = (spiram_t *)pi_fc_l1_malloc(sizeof(spiram_t));
-=======
-    spiram_t *spiram = (spiram_t *)pi_fc_tcdm_malloc(sizeof(spiram_t));
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
     if (spiram == NULL)
     {
         POS_WARNING("[SPIRAM] Error during driver opening: failed to allocate memory for internal structure\n");
@@ -120,15 +108,9 @@ static int spiram_open(struct pi_device *device)
     // We take more margin for sending as the TX buffer is enqueued after the command buffer
     // which makes the time between CS low and the end of transfer unpredictable, e.g. a cache miss
     // can increase it.
-<<<<<<< HEAD
     spi_conf.max_snd_chunk_size = (chunk_size - 48) & ~0x3;
 
     spi_conf.max_baudrate = conf->baudrate*2;
-=======
-    spi_conf.max_snd_chunk_size = (chunk_size - 36) & ~0x3;
-
-    spi_conf.max_baudrate = conf->baudrate;
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 
     pi_open_from_conf(&spiram->spi_device, &spi_conf);
 
@@ -141,10 +123,7 @@ static int spiram_open(struct pi_device *device)
 
     // TODO once this can be tested on the board, clean-up these writes
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
     // SAFE_PADCFG8 for D2 , A11, B10, A10  -  HIGH drive, pull disabled
     #define SAFE_PADCFG8    ((uint32_t*)0x1A1041A0)
     *SAFE_PADCFG8 = 0x02020202;
@@ -152,7 +131,6 @@ static int spiram_open(struct pi_device *device)
     #define SAFE_PADCFG9    ((uint32_t*)0x1A1041A4)
     *SAFE_PADCFG9 = 0x02020202;
 
-<<<<<<< HEAD
     volatile int i;
     //for (i=0; i<1000000; i++);
     //pi_time_wait_us(100000);
@@ -169,19 +147,6 @@ static int spiram_open(struct pi_device *device)
 
     //for (i=0; i<1000000; i++);
     //pi_time_wait_us(100000);
-=======
-    //rt_time_wait_us(100000);
-
-    __spiram_send_cmd(spiram, 0x66, PI_SPI_CS_AUTO | PI_SPI_LINES_QUAD);
-
-    //rt_time_wait_us(100000);
-    __spiram_send_cmd(spiram, 0x99, PI_SPI_CS_AUTO | PI_SPI_LINES_QUAD);
-
-    //rt_time_wait_us(100000);
-    __spiram_send_cmd(spiram, 0x35, PI_SPI_CS_AUTO);
-
-    //rt_time_wait_us(100000);
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 
     uint32_t ucode[4];
 
@@ -221,11 +186,7 @@ error3:
 error2:
     pi_l2_free(spiram->buffer, sizeof(uint32_t));
 error1:
-<<<<<<< HEAD
     pi_fc_l1_free(spiram, sizeof(spiram_t));
-=======
-    pi_fc_tcdm_free(spiram, sizeof(spiram_t));
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 error0:
     return -1;
 }
@@ -238,11 +199,7 @@ static void spiram_close(struct pi_device *device)
     RAM_TRACE(POS_LOG_INFO, "Closing SPIRAM device (device: %p)\n", device);
     pi_spi_close(&spiram->spi_device);
     pi_l2_free(spiram->buffer, sizeof(uint32_t));
-<<<<<<< HEAD
     pi_fc_l1_free(spiram, sizeof(spiram_t));
-=======
-    pi_fc_tcdm_free(spiram, sizeof(spiram_t));
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 }
 
 

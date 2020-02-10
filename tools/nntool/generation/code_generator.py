@@ -144,26 +144,17 @@ class CodeGenerator():
     def project_name(self):
         return self.naming_convension.get_project_name()
 
-    def setL3Ram_ext_managed():
-        self.opts['memory_devices'].setL3Ram_ext_managed(True)
-
     def get_edge_name(self, eparams):
         return self.name_cache[eparams]['edge']
 
     def get_node_name(self, params, target):
         return self.name_cache[params][target]
 
-<<<<<<< HEAD
     def memory_device_generator(self, indent=0):
         self.opts['memory_devices'].set_l2_ram_ext_managed(self.opts['l2_ram_ext_managed'])
         self.opts['memory_devices'].set_l3_ram_ext_managed(self.opts['l3_ram_ext_managed'])
         self.opts['memory_devices'].set_l3_flash_ext_managed(self.opts['l3_flash_ext_managed'])
 
-=======
-    def memory_device_generator(self, indent=0,L3RamUserManaged=0,L3FlashUserManaged=0):
-        self.opts['memory_devices'].setL3RamExtManaged(L3RamUserManaged)
-        self.opts['memory_devices'].setL3FlashExtManaged(L3FlashUserManaged)
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
         code_block = CodeBlock(starting_indent=indent)
         self.opts['memory_devices'].gen(self.G, code_block)
         return str(code_block)
@@ -266,7 +257,6 @@ class CodeGenerator():
         code_block.write(")")
         return str(code_block)
 
-<<<<<<< HEAD
     def stack_generator(self, indent=0):
         if self.opts['at_ver'] < 2:
             LOG.warning("AutoTiler version is less than 3. Stacked tensors are not supported.")
@@ -287,21 +277,18 @@ class CodeGenerator():
         return str(code_block)
 
     def global_generator(self, indent=0):
-=======
-    def global_generator(self, indent=0,forceinputLocation='',forceoutputLocation=''):
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
         code_block = CodeBlock(starting_indent=indent + 1)
 
-        num_globals = self.generate_inputs(code_block,forceinputLocation)
+        num_globals = self.generate_inputs(code_block)
         num_globals = self.generate_constants(num_globals, code_block)
-        num_globals = self.generate_outputs(num_globals, code_block,forceoutputLocation)
+        num_globals = self.generate_outputs(num_globals, code_block)
 
         code_block.deindent()
         code_block.write_start("CArgs({},", num_globals)
         code_block.write(")")
         return str(code_block)
 
-    def generate_outputs(self, num_globals, code_block,forceoutputLocation):
+    def generate_outputs(self, num_globals, code_block):
         outputs = set()
         for node in self.G.outputs():
             in_qs = self.G.quantization[NodeId(node)].in_qs
@@ -314,16 +301,10 @@ class CodeGenerator():
                     code_block.append_last(',')
                 gen_output_decl(eparams,
                                 in_qs[edge.to_idx],
-<<<<<<< HEAD
                                 self.opts['default_output_home_location'],
                                 self.opts['default_output_exec_location'],
                                 code_block,
                                 allocate=node.at_options.allocate)
-=======
-                                self.opts['default_output_home_location'] if not forceoutputLocation else forceoutputLocation,
-                                self.opts['default_output_exec_location'] if not forceoutputLocation else forceoutputLocation,
-                                code_block)
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
                 num_globals += 1
         return num_globals
 
@@ -371,7 +352,7 @@ class CodeGenerator():
                 num_globals += 1
         return num_globals
 
-    def generate_inputs(self, code_block,forceinputLocation):
+    def generate_inputs(self, code_block):
         num_globals = 0
         inputs = set()
         for node in self.G.inputs():
@@ -385,16 +366,10 @@ class CodeGenerator():
                 inputs.add(eparams)
                 gen_input_decl(eparams,
                                out_qs[edge.from_idx],
-<<<<<<< HEAD
                                self.opts['default_input_home_location'],
                                self.opts['default_input_exec_location'],
                                code_block,
                                allocate=node.at_options.allocate)
-=======
-                               self.opts['default_input_home_location'] if not forceinputLocation else forceinputLocation,
-                               self.opts['default_input_exec_location'] if not forceinputLocation else forceinputLocation,
-                               code_block)
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
                 num_globals += 1
         return num_globals
 
@@ -647,7 +622,6 @@ class CodeGenerator():
         if out_q is None:
             out_q = conv_q
         self.bindings.append(
-<<<<<<< HEAD
             CommentBindingList("Node {} inq {} weightsq {} outq {} biasesq {}", cname,
                                conv_q.in_qs[0].q, conv_q.weights_q.q, out_q.out_qs[0].q, conv_q.biases_q.q)
         )
@@ -667,14 +641,6 @@ class CodeGenerator():
                                 Imm(norm),
                                 Imm(normbias)))
         if dump_tensors:
-=======
-            NodeBindingList(cname, GNodeArgEdge(in_eparams[0]), GNodeArgNode(params, 'weights'),
-                            GNodeArgNode(params, 'biases'),
-                            GNodeArgEdge(out_eparams[0], "GNA_OUT"),
-                            Imm(conv_q.in_qs[0].q + conv_q.weights_q.q - conv_q.out_qs[0].q),
-                            Imm(conv_q.in_qs[0].q + conv_q.weights_q.q - conv_q.out_qs[0].q) ))
-        if self.opts['dump_tensors']:
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
             self.add_dump_params_binding(cname, params, conv_q, step_idx)
 
     def set_fc_bindings(self, step_idx, in_eparams, out_eparams, cname, params, linear_q, out_q=None, dump_tensors=False):

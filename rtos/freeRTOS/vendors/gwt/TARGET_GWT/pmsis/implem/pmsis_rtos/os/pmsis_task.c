@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
  * Copyright (c) 2018, GreenWaves Technologies, Inc.
  * All rights reserved.
@@ -52,14 +51,6 @@ pi_task_t *__pi_task_block(pi_task_t *callback_task)
 
 pi_task_t *__pi_task_callback(pi_task_t *callback_task,
                               void (*func)(void *), void *arg)
-=======
-#include "pmsis.h"
-#include "pmsis/task.h"
-#include "pmsis/rtos/pmsis_os.h"
-#include "pmsis/rtos/os_frontend_api/pmsis_time.h"
-
-pi_task_t *pi_task_callback(pi_task_t *callback_task, void (*func)(void *), void *arg)
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 {
     callback_task->id = PI_TASK_CALLBACK_ID;
     callback_task->arg[0] = (uintptr_t)func;
@@ -71,7 +62,6 @@ pi_task_t *pi_task_callback(pi_task_t *callback_task, void (*func)(void *), void
     return callback_task;
 }
 
-<<<<<<< HEAD
 void __pi_task_destroy(pi_task_t *task)
 {
     if (task->destroy)
@@ -119,22 +109,6 @@ pi_task_t *pi_task_callback_no_mutex(pi_task_t *callback_task,
                                      void (*func)(void *), void *arg)
 {
     return pi_task_callback(callback_task, func, arg);
-=======
-pi_task_t *pi_task_callback_no_mutex(pi_task_t *callback_task, void (*func)(void *), void *arg)
-{
-    return pi_task_callback(callback_task, func, arg);
-}
-
-pi_task_t *__pi_task_block(pi_task_t *callback_task)
-{
-    callback_task->id = PI_TASK_NONE_ID;
-    callback_task->done = 0;
-    pi_sem_init(&(callback_task->wait_on));
-    // lock the mutex so that task may be descheduled while waiting on it
-    callback_task->destroy = 1;
-    callback_task->core_id = -1;
-    return callback_task;
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 }
 
 pi_task_t *pi_task_block_no_mutex(pi_task_t *callback_task)
@@ -181,26 +155,6 @@ void pi_cl_pi_task_notify_done(pi_task_t *task)
     hal_eu_cluster_evt_trig_set(FC_NOTIFY_CLUSTER_EVENT, 0);
 }
 
-<<<<<<< HEAD
-=======
-void pi_task_wait_on(pi_task_t *task)
-{
-    // FIXME: workaround for gcc bug
-    hal_compiler_barrier();
-    while (!task->done)
-    {
-        // if the underlying scheduler support it, deschedule the task
-        if (task->wait_on.sem_object != NULL)
-        {
-            pi_sem_take(&task->wait_on);
-        }
-        DEBUG_PRINTF("[%s] waited on sem\n", __func__);
-    }
-    hal_compiler_barrier();
-    __pi_task_destroy(task);
-}
-
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 void pi_task_wait_on_no_mutex(pi_task_t *task)
 {
     // if the mutex is only virtual (e.g. wait on soc event)
@@ -213,31 +167,6 @@ void pi_task_wait_on_no_mutex(pi_task_t *task)
     }
 }
 
-<<<<<<< HEAD
-=======
-void __pi_task_destroy(pi_task_t *task)
-{
-    if (task->destroy)
-    {
-        task->destroy = 0;
-        // if the mutex is only virtual (e.g. wait on soc event)
-        hal_compiler_barrier();
-        // if the sched support semaphore/mutexes
-        if(task->wait_on.sem_object)
-        {
-            pi_sem_deinit(&task->wait_on);
-            task->wait_on.sem_object = (void*)NULL;
-        }
-        hal_compiler_barrier();
-    }
-}
-
-void pi_task_push(pi_task_t *task)
-{
-    pi_task_push_delayed_us(task, 0);
-}
-
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 void pi_task_push_delayed_us(pi_task_t *task, uint32_t delay)
 {
     pi_time_wait_us(delay);

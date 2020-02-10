@@ -20,36 +20,23 @@
 #include "bsp/ble.h"
 
 /**
-<<<<<<< HEAD
  * @addtogroup BLE
-=======
- * \addtogroup BLE
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
  * @{
  */
 
 /**
  * @defgroup NINA_B112 NINA_B112
-<<<<<<< HEAD
  *
  * The nina_b112 driver provides support for for data transfer using a BLE module,
  * here a NINA B112 BLE module.
  * This module is interfaced on GAPPOC through UART.
  *
-=======
- */
-
-/**
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
  * @addtogroup NINA_B112
  * @{
  */
 
-<<<<<<< HEAD
 #define PI_AT_RESP_ARRAY_LENGTH ( 64 ) /*!< RESP array length. */
 
-=======
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 /**
  * \struct pi_nina_b112_conf
  *
@@ -77,7 +64,6 @@ struct pi_nina_b112_id
 
 typedef enum
 {
-<<<<<<< HEAD
     PI_NINA_B112_MODEL_INFO       = 0, /*!< BLE device info. */
     PI_NINA_B112_SERVER_CONFIGURE,     /*!< Configure BLE device as a server. */
     PI_NINA_B112_CLIENT_CONFIGURE,     /*!< Configure BLE device as a client. */
@@ -85,43 +71,23 @@ typedef enum
     PI_NINA_B112_DATA_MODE_ENTER,      /*!< Enter Data Mode. */
     PI_NINA_B112_DATA_MODE_EXIT,       /*!< Exit Data Mode. */
     PI_NINA_B112_WAIT_FOR_EVENT        /*!< Wait for some responses/events from BLE device. */
-=======
-    PI_NINA_B112_MODEL_INFO       = 0,
-    PI_NINA_B112_SERVER_CONFIGURE,
-    PI_NINA_B112_CLIENT_CONFIGURE,
-    PI_NINA_B112_UART_CONFIGURE,
-    PI_NINA_B112_DATA_MODE_ENTER,
-    PI_NINA_B112_DATA_MODE_EXIT,
-    PI_NINA_B112_WAIT_FOR_EVENT
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 } pi_ble_ioctl_cmd_e;
 
 
 /**
  * \brief Initialize NINA_B112 configuration structure.
  *
-<<<<<<< HEAD
  * \param device         Pointer to the BLE device structure.
-=======
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
  * \param conf           Pointer to NINA_B112 configuration structure.
  */
 void pi_ble_nina_b112_conf_init(struct pi_device *device, struct pi_nina_b112_conf *conf);
 
 /**
-<<<<<<< HEAD
  * @} addtogroup NINA_B112
  */
 
 /**
  * @} addtogroup BLE
-=======
- * @} end of NINA_B112
- */
-
-/**
- * @} end of BLE
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
  */
 
 #endif  /* __PI_BSP_BLE_NINA_B112_H__ */

@@ -2161,11 +2161,7 @@ static void KerGlobalMaxPoolDP_fps(
 		M = gap_max4(Vi[2*i], M);
 		M = gap_max4(Vi[2*i+1], M);
 	}
-<<<<<<< HEAD
 	if ((W*H)&0x4) M = gap_max4(Vi[(W*H)/4-1], M);
-=======
-	if ((W*H)&0x4) M = gap_max4(Vi[(W*H)/4], M);
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 	m = Max(Max(M[0], M[1]), Max(M[2], M[3]));
 	for (int i=((W*H)/4); i<(W*H); i++) m = Max(In[i], m);
 	*Out = m;
@@ -2186,11 +2182,7 @@ static void KerGlobalMaxPoolFullFeat_fps(
 		M = gap_max4(Vi[2*i],   M);
 		M = gap_max4(Vi[2*i+1], M);
 	}
-<<<<<<< HEAD
 	if ((W*H)&0x4) M = gap_max4(Vi[(W*H)/4-1], M);
-=======
-	if ((W*H)&0x4) M = gap_max4(Vi[(W*H)/4], M);
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 	m = Max(Max(M[0], M[1]), Max(M[2], M[3]));
 	for (int i=((W*H)/4); i<(W*H); i++) m = Max(In[i], m);
 	*Out = m;
@@ -2212,11 +2204,7 @@ static void KerGlobalAvgPoolDP_fps(
 		Sum = gap_sumdotp4(Vi[2*i], M, Sum);
 		Sum = gap_sumdotp4(Vi[2*i+1], M, Sum);
 	}
-<<<<<<< HEAD
 	if ((W*H)&0x4) Sum = gap_sumdotp4(Vi[(W*H)/4-1], M, Sum);
-=======
-	if ((W*H)&0x4) Sum = gap_sumdotp4(Vi[(W*H)/4], M, Sum);
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 	for (int i=((W*H)/4); i<(W*H); i++) Sum += In[i];
 	*Out = Sum;
 }
@@ -2236,11 +2224,7 @@ static void KerGlobalAvgPoolFullFeat_fps(
 		Sum = gap_sumdotp4(Vi[2*i], M, Sum);
 		Sum = gap_sumdotp4(Vi[2*i+1], M, Sum);
 	}
-<<<<<<< HEAD
 	if ((W*H)&0x4) Sum = gap_sumdotp4(Vi[(W*H)/4-1], M, Sum);
-=======
-	if ((W*H)&0x4) Sum = gap_sumdotp4(Vi[(W*H)/4], M, Sum);
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 	for (int i=((W*H)/4); i<(W*H); i++) Sum += In[i];
 	int N = 31-gap_clb(Sum);
 	int InvWH = (1<<N)/(W*H);

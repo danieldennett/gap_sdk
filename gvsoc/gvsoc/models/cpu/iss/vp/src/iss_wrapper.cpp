@@ -691,11 +691,7 @@ void iss_wrapper::handle_ebreak()
       }
       else
       {
-<<<<<<< HEAD
         vp::trace *trace = this->traces.get_trace_manager()->get_trace_from_path(path);
-=======
-        vp::trace *trace = this->traces.get_trace_manager()->get_trace(path);
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
         if (trace == NULL)
         {
           this->warning.force_warning("Invalid trace (path: %s)\n", path.c_str());
@@ -727,14 +723,10 @@ void iss_wrapper::handle_ebreak()
       break; 
     }
     
-<<<<<<< HEAD
     case GV_SEMIHOSTING_VCD_CONFIGURE: {
       int enabled = this->cpu.regfile.regs[11];
       this->traces.get_trace_manager()->set_global_enable(enabled);
     }
-=======
-    case GV_SEMIHOSTING_VCD_CONFIGURE:
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
     break;
 
     case GV_SEMIHOSTING_VCD_OPEN_TRACE: {

@@ -1,0 +1,1 @@
+/usr/bin/cc    CMakeFiles/mklfs.dir/lfs/lfs.c.o CMakeFiles/mklfs.dir/lfs/lfs_util.c.o CMakeFiles/mklfs.dir/mklfs.c.o  -o mklfs 

@@ -64,7 +64,6 @@ void bsp_hyperflash_conf_init(struct pi_hyperflash_conf *conf)
 int bsp_hyperflash_open(struct pi_hyperflash_conf *conf)
 {
   __bsp_init_pads();
-<<<<<<< HEAD
   return 0;
 }
 
@@ -82,8 +81,6 @@ void bsp_spiflash_conf_init(struct pi_spiflash_conf *conf)
 
 int bsp_spiflash_open(struct pi_spiflash_conf *conf)
 {
-=======
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
   return 0;
 }
 

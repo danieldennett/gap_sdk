@@ -10,10 +10,7 @@
 
   "config": {
     "vp_class": "devices/spiflash/spiflash",
-<<<<<<< HEAD
     "vp_component": "devices.spiflash.spiflash_impl",
-=======
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
     "type": "spiflash",
     "size": "0x00800000",
 

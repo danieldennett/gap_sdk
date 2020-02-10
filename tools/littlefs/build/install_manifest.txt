@@ -1,0 +1,2 @@
+/home/zhouxin/gap_sdk/install/workstation/bin/mklfs
+/home/zhouxin/gap_sdk/install/workstation/bin/lslfs

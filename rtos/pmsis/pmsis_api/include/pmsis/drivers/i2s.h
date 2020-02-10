@@ -100,7 +100,6 @@ enum pi_i2s_ioctl_cmd
     PI_I2S_IOCTL_STOP,
 };
 
-<<<<<<< HEAD
 /**
  * \struct pi_i2s_conf
  *
@@ -126,35 +125,6 @@ struct pi_i2s_conf
                                   - sampling_rate is the audio sampling rate(22050kHz, 44100kHZ, 48000kHZ,...).
                                   - pdm_decimation is the decimation factor to apply. */
     int8_t pdm_shift;           /*!< In PDM mode, the shift value to shift data when applying filter. */
-=======
-/** @struct pi_i2s_conf
- * @brief Interface configuration options.
- *
- * @param word_size Number of bits representing one data word.
- * @param channels Number of words per frame.
- * @param format Data stream format as defined by PI_I2S_FMT_* constants.
- * @param options Configuration options as defined by PI_I2S_OPT_* constants.
- * @param frame_clk_freq Frame clock (WS) frequency, this is sampling rate.
- * @param block_size Size of one RX/TX memory block (buffer) in bytes.
- * @param pingpong_buffers Pair of buffers used in double-buffering mode to
- *   capture the incoming samples.
- * @param pdm_decimation In PDM mode, this gives the decimation factor
- *   to be used, e.g. the number of bits on which the filter is applied.
- * @param pdm_shift In PDM mode, the shift value to shift data when applying
- *   filter.
- */
-struct pi_i2s_conf {
-    uint8_t word_size;
-    uint8_t channels;
-    uint8_t itf;
-    pi_i2s_fmt_t format;
-    pi_i2s_opt_t options;
-    uint32_t frame_clk_freq;
-    size_t block_size;
-    void *pingpong_buffers[2];
-    uint16_t pdm_decimation;
-    int8_t pdm_shift;
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 };
 
 /** \brief Setup specific I2S aspects.

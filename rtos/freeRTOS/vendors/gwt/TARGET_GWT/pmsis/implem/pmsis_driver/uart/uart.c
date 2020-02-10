@@ -29,19 +29,6 @@
  */
 
 #include "pmsis.h"
-<<<<<<< HEAD
-=======
-#include "pmsis/rtos/malloc/pmsis_l2_malloc.h"
-#if 0
-#include "pmsis_driver/uart/uart_internal.h"
-#include "pmsis/task.h"
-#include "pmsis/rtos/event_kernel/event_kernel.h"
-#include "pmsis/drivers/uart.h"
-#include "pmsis_driver/pmsis_fc_event.h"
-#include "pmsis_hal/udma/udma_uart.h"
-#include "pmsis_hal/soc_eu/pmsis_soc_eu.h"
-#endif
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 #ifdef FEATURE_CLUSTER
 #include "pmsis/cluster/cluster_sync/cl_to_fc_delegate.h"
 #endif

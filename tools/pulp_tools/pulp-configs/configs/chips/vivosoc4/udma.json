@@ -1,11 +1,7 @@
 {
   "includes": [ "ips/udma/udma_v3.json"],
 
-<<<<<<< HEAD
   "vp_component": "pulp.udma.udma_v3_vivosoc4_impl",
-=======
-  "vp_impl": "pulp.udma.udma_v3_vivosoc4_impl",
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 
   "nb_periphs": 9,
 

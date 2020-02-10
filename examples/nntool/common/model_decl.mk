@@ -24,16 +24,12 @@ endif
 MODEL_PYTHON=python3.6
 
 # Increase this to improve accuracy
-<<<<<<< HEAD:examples/nntool/common/model_decl.mk
 TRAINING_EPOCHS?=1
 MODEL_COMMON ?= ../common
 MODEL_COMMON_INC ?= $(MODEL_COMMON)/src
 MODEL_COMMON_SRC ?= $(MODEL_COMMON)/src
 MODEL_COMMON_SRC_FILES ?= ImgIO.c helpers.c
 MODEL_COMMON_SRCS = $(realpath $(addprefix $(MODEL_COMMON_SRC)/,$(MODEL_COMMON_SRC_FILES)))
-=======
-TRAINING_EPOCHS=5
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD:examples/nntool/mnist/model_decl.mk
 MODEL_TRAIN = model/train.py
 MODEL_BUILD = BUILD_MODEL$(MODEL_SUFFIX)
 MODEL_TRAIN_BUILD = BUILD_TRAIN$(TRAIN_SUFFIX)

@@ -10,7 +10,7 @@
 #undef BUILD_AMTJTAGACCEL
 
 /* 0 if you do not want the Olimex ARM-JTAG-EW Programmer. */
-#undef BUILD_ARMJTAGEW 1
+#undef BUILD_ARMJTAGEW
 
 /* 0 if you don't want at91rm9200. */
 #undef BUILD_AT91RM9200

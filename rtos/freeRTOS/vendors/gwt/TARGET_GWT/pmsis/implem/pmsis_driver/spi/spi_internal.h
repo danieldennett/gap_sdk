@@ -2,10 +2,6 @@
 #define __SPI_INTERNAL_H__
 
 #include "pmsis.h"
-<<<<<<< HEAD
-=======
-#include DEFAULT_MALLOC_INC
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 #include "stdlib.h"
 #include "pmsis_hal/pmsis_hal.h"
 

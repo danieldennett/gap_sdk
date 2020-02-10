@@ -1099,11 +1099,8 @@ class Runner(Platform):
 
         parser.add_argument("--trace-enable", dest="trace", action="store_true", help="Activate GVSOC traces")
 
-<<<<<<< HEAD
         parser.add_argument("--cmd", dest="cmd", action="store_true", help="Just display GVSOC command")
 
-=======
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
         parser.add_argument("--trace", dest="traces", default=[], action="append", help="Specify gvsoc trace")
 
         parser.add_argument("--trace-level", dest="trace_level", default=None, help="Specify trace level")
@@ -1226,11 +1223,7 @@ class Runner(Platform):
 
         comps_conf = self.get_json().get('**/fs/files')
 
-<<<<<<< HEAD
         if self.get_json().get('**/flash/preload_file') is None and (comps_conf is not None and len(comps_conf.get_dict()) != 0) or self.get_json().get_child_bool('**/runner/boot_from_flash'):
-=======
-        if (comps_conf is not None and len(comps_conf.get_dict()) != 0) or self.get_json().get_child_bool('**/runner/boot_from_flash'):
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
             self.gen_flash_stimuli = True
 
         if self.get_json().get('**/soc/debug_rom/stim_file') is not None:
@@ -1377,52 +1370,14 @@ class Runner(Platform):
                 self.get_json().get('**/plt_loader').set('start_value', '0x%x' % start_value)
 
         files_conf = self.get_json().get('**/fs/files')
-<<<<<<< HEAD
         if self.get_json().get('**/flash/preload_file') is None and ((files_conf is not None and len(files_conf.get_dict())) or self.get_json().get_child_bool('**/runner/boot_from_flash')):
-=======
-        if (files_conf is not None and len(files_conf.get_dict())) or self.get_json().get_child_bool('**/runner/boot_from_flash'):
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
             if self.get_json().get('**/flash') is not None:
                 self.get_json().get('**/flash').set('preload_file', self.get_flash_preload_file())
 
         gvsoc_config = self.get_json().get('gvsoc')
 
-<<<<<<< HEAD
         debug_mode = gvsoc_config.get_bool('trace-enable') or gvsoc_config.get_bool('vcd/active') or len(gvsoc_config.get('trace').get()) != 0 or len(gvsoc_config.get('event').get()) != 0
         self.get_json().get('**/gvsoc').set('debug-mode', debug_mode)
-=======
-        gen_gtkw_files(self.get_json(), gvsoc_config)
-
-        debug_mode = gvsoc_config.get_bool('trace-enable') or gvsoc_config.get_bool('vcd/active') or len(gvsoc_config.get('trace').get()) != 0 or len(gvsoc_config.get('event').get()) != 0
-
-        power_engine = vp.power_engine.component(name=None, config=gvsoc_config, debug=debug_mode)
-
-        time_engine = power_engine.new(
-            name=None,
-            component='vp.time_domain',
-            config=self.get_json()
-        )
-
-        trace_engine = time_engine.new(
-            name=None,
-            component='vp.trace_engine',
-            config=gvsoc_config
-        )
-
-        top_comp = time_engine.new(
-            name='sys',
-            component=top,
-            config=self.get_json().get('system_tree')
-        )
-
-        trace_engine.get_port('out').bind_to(top_comp.get_port('trace'))
-
-        power_engine.bind()
-
-        power_engine.post_post_build_all()
-
-        power_engine.pre_start_all()
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 
         plt_config = os.path.join(os.getcwd(), 'plt_config.json')
         os.environ['PULP_CONFIG_FILE'] = plt_config

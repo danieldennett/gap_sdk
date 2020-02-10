@@ -118,10 +118,7 @@ private:
   uint8_t reg = REG_NONE;
   int jedec_byte = -1;
   bool quad_command;
-<<<<<<< HEAD
   bool quad_address;
-=======
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
   uint32_t current_addr;
   uint8_t current_data;
   bool is_write = false;
@@ -278,12 +275,9 @@ void Spiflash::handle_command(uint8_t cmd)
 {
   this->trace_msg(this->trace, 2, "Handling command 0x%2.2x", this->current_cmd);
 
-<<<<<<< HEAD
   this->quad_command = false;
   this->quad_address = false;
 
-=======
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
   if (this->current_cmd == 0x35)
   {
     if(this->reset_enable)
@@ -418,10 +412,7 @@ void Spiflash::handle_command(uint8_t cmd)
   {
     this->trace_msg(this->trace, 1, "SPI fast quad read");
     this->quad_command = true;
-<<<<<<< HEAD
     this->quad_address = true;
-=======
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
     this->state = STATE_GET_ADDRESS;
     this->is_write = false;
     this->is_read = true;
@@ -479,10 +470,6 @@ void Spiflash::handle_reg_access(uint8_t reg, int64_t timestamp)
       this->current_data = ((this->timestamp_busy + this->busy_time) > timestamp)
         | ((this->block_protection << 0x2))
         | ((this->qpi << 0x6)) | ((this->status_protected << 0x7));
-<<<<<<< HEAD
-=======
-      
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
     }
     else if (this->reg == READ_PARAM_REG)
     {// set dummy cycles, hold#/reset# and read burst
@@ -531,11 +518,7 @@ void Spiflash::handle_clk_high(int64_t timestamp, int sdio0, int sdio1, int sdio
   }
   else if (this->state == STATE_GET_ADDRESS)
   {
-<<<<<<< HEAD
     if (this->qpi || this->quad_address)
-=======
-    if (this->qpi)
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
     {
       this->current_addr = (this->current_addr << 4) | (sdio0 << 0) | (sdio1 << 1) | (sdio2 << 2) | (sdio3 << 3);
       this->trace_msg(this->trace, 4, "Received address bits (count: %d, pending: %x, bit0: %d, bit1: %d, bit2: %d, bit3: %d)", this->cmd_count, this->current_addr, sdio0, sdio1, sdio2, sdio3);
@@ -586,11 +569,7 @@ void Spiflash::handle_clk_high(int64_t timestamp, int sdio0, int sdio1, int sdio
   {
     if (this->is_write)
     {
-<<<<<<< HEAD
       if (this->qpi | this->quad_command)
-=======
-      if (this->qpi)
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
       {
         this->current_data = (this->current_data << 4) | (sdio0 << 0) | (sdio1 << 1) | (sdio2 << 2) | (sdio3 << 3);
         this->trace_msg(this->trace, 4, "Received data bits (count: %d, pending: %x, bit0: %d, bit1: %d, bit2: %d, bit3: %d)", this->cmd_count, this->current_data, sdio0, sdio1, sdio2, sdio3);

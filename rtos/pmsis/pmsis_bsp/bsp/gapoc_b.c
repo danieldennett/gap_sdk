@@ -23,15 +23,9 @@
 #include "bsp/flash/hyperflash.h"
 #include "bsp/display/ili9341.h"
 #include "bsp/ram/hyperram.h"
-<<<<<<< HEAD
 #include "bsp/ram/spiram.h"
 #include "bsp/ble/nina_b112.h"
 #include "bsp/ble/nina_b112/nina_b112_old.h"
-=======
-#include "bsp/ble/nina_b112.h"
-#include "bsp/ble/nina_b112/nina_b112_old.h"
-#include "bsp/camera/thermeye.h"
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 
 
 static int __bsp_init_pads_done = 0;
@@ -150,8 +144,6 @@ int bsp_nina_b112_open(struct pi_nina_b112_conf *conf)
 {
     //__gpio_init();
     return 0;
-<<<<<<< HEAD
-=======
 }
 
 int bsp_nina_b112_open_old()
@@ -162,29 +154,6 @@ int bsp_nina_b112_open_old()
     return 0;
 }
 
-void bsp_thermeye_conf_init(struct pi_thermeye_conf *conf)
-{
-    conf->cpi_id = (uint8_t) CONFIG_THERMEYE_CPI_ID;
-    conf->i2c_id = (uint8_t) CONFIG_THERMEYE_I2C_ID;
-    conf->pwm_id = (uint8_t) CONFIG_THERMEYE_PWM_ID;
-    conf->pwm_channel = (uint8_t) CONFIG_THERMEYE_PWM_CH;
-    conf->gpio_power = (pi_gpio_e) CONFIG_THERMEYE_GPIO_POWER;
-    conf->gpio_reset = (pi_gpio_e) CONFIG_THERMEYE_GPIO_RESET;
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
-}
-
-int bsp_nina_b112_open_old()
-{
-    __bsp_init_pads();
-
-    pi_pad_set_function(CONFIG_HYPERBUS_DATA6_PAD, CONFIG_UART_RX_PAD_FUNC);
-    return 0;
-}
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 void bsp_init()
 {
   __bsp_init_pads();
@@ -200,8 +169,4 @@ void pi_bsp_init_profile(int profile)
 void pi_bsp_init()
 {
   pi_bsp_init_profile(PI_BSP_PROFILE_DEFAULT);
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD

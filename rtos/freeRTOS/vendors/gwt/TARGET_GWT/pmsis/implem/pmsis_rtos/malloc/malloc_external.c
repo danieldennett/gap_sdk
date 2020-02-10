@@ -38,11 +38,7 @@
 #include <stdint.h>
 #include <string.h>
 #include "pmsis.h"
-<<<<<<< HEAD
 #include "pmsis/rtos/malloc/l2_malloc.h"
-=======
-#include "pmsis/rtos/malloc/pmsis_l2_malloc.h"
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 
 #define ALIGN_UP(addr,size)   (((addr) + (size) - 1) & ~((size) - 1))
 #define ALIGN_DOWN(addr,size) ((addr) & ~((size) - 1))

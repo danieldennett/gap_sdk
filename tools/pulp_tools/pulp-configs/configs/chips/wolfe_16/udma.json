@@ -2,10 +2,7 @@
   "includes": [ "ips/udma/udma_v2.json"],
 
   "vp_impl": "pulp.udma.udma_v2_wolfe_impl",
-<<<<<<< HEAD
   "vp_component": "pulp.udma.udma_v2_wolfe_impl",
-=======
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 
   "nb_periphs": 8,
 

@@ -11,16 +11,10 @@ PLPBRIDGE_FLAGS        += -ftdi
 
 else ifeq ($(BOARD_NAME), gapuino)
 COMMON_CFLAGS          += -DCONFIG_GAPUINO
-<<<<<<< HEAD
 
 else ifeq ($(BOARD_NAME), ai_deck)
 COMMON_CFLAGS          += -DCONFIG_AI_DECK
 endif				# BOARD_NAME
-=======
-else ifeq ($(BOARD_NAME), ai_deck)
-COMMON_CFLAGS          += -DCONFIG_AI_DECK
-endif
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 
 ifdef RUNNER_CONFIG
 override runner_args += --config-user=$(RUNNER_CONFIG)
@@ -38,35 +32,11 @@ NO_PMSIS_BSP             = true
 endif				# TARGET_CHIP
 
 ifndef NO_PMSIS_BSP
-<<<<<<< HEAD
 ifeq ($(GAP_SDK_HOME), )
 PMSIS_BSP_DIR            = $(FREERTOS_PATH)/vendors/gwt/TARGET_GWT/pmsis/bsp
 else
 PMSIS_BSP_DIR            = $(GAP_SDK_HOME)/rtos/pmsis/pmsis_bsp
 endif				# GAP_SDK_HOME
-=======
-PMSIS_BSP_DIR           += $(FREERTOS_PATH)/vendors/gwt/TARGET_GWT/pmsis/bsp
-ifeq ($(BOARD_NAME), gapoc_a)
-PMSIS_SRC               += $(PMSIS_BSP_DIR)/bsp/gapoc_a.c
-NOT_IN                  += -not -path "$(PMSIS_BSP_DIR)/camera/himax/*"
-NOT_IN                  += -not -path "$(PMSIS_BSP_DIR)/camera/thermeye/*"
-else ifeq ($(BOARD_NAME), gapoc_b)
-PMSIS_SRC               += $(PMSIS_BSP_DIR)/bsp/gapoc_b.c
-NOT_IN                  += -not -path "$(PMSIS_BSP_DIR)/camera/himax/*"
-NOT_IN                  += -not -path "$(PMSIS_BSP_DIR)/camera/mt9v034/*"
-else ifeq ($(BOARD_NAME), gapuino)
-PMSIS_SRC               += $(PMSIS_BSP_DIR)/bsp/gapuino.c
-NOT_IN                  += -not -path "$(PMSIS_BSP_DIR)/camera/mt9v034/*"
-NOT_IN                  += -not -path "$(PMSIS_BSP_DIR)/camera/thermeye/*"
-NOT_IN                  += -not -path "$(PMSIS_BSP_DIR)/ble/*"
-endif
-
-# Exclude
-NOT_IN                  += -not -path "$(PMSIS_BSP_DIR)/bsp/*"
-NOT_IN                  += -not -path "$(PMSIS_BSP_DIR)/transport/*"
-NOT_IN                  += -not -path "$(PMSIS_BSP_DIR)/examples/*"
-NOT_IN                  += -not -path "$(PMSIS_BSP_DIR)/tests/*"
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 
 
 include $(PMSIS_BSP_DIR)/rules/freertos_bsp_rules.mk

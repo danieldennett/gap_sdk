@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 TILER_VER=3.0.4
-=======
-TILER_VER=3.0.3
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 export TILER_LIB=libtile.${TILER_VER}.a
 ifdef GAP_SDK_HOME
 export TILER_URL=$(GAP_SDK_HOME)/.tiler_url

@@ -10,7 +10,6 @@
 
 struct spim_driver_data *__g_spim_drv_data[UDMA_NB_SPIM] = {0};
 
-<<<<<<< HEAD
 static uint32_t __pi_spi_clk_div_get(uint32_t spi_freq)
 {
     uint32_t periph_freq = pi_freq_get(PI_FREQ_DOMAIN_PERIPH);
@@ -30,8 +29,6 @@ static uint32_t __pi_spi_clk_div_get(uint32_t spi_freq)
     return 0;
 }
 
-=======
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 void pi_spi_conf_init(struct pi_spi_conf *conf)
 {
     conf->wordsize = PI_SPI_WORDSIZE_8;
@@ -185,10 +182,7 @@ int __pi_spi_open(struct spim_cs_data **cs_data, struct pi_spi_conf *conf)
     *cs_data = __pi_spim_get_cs_data(drv_data, conf->cs);
     if(!*cs_data)
     {
-<<<<<<< HEAD
         uint32_t clk_div = __pi_spi_clk_div_get(conf->max_baudrate);
-=======
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
         // alloc a cs data, need to be in udma reachable ram
         struct spim_cs_data *_cs_data = pi_data_malloc(sizeof(struct spim_cs_data));
         memset(_cs_data, 0, sizeof(struct spim_cs_data));
@@ -198,12 +192,7 @@ int __pi_spi_open(struct spim_cs_data **cs_data, struct pi_spi_conf *conf)
         _cs_data->big_endian    = conf->big_endian;
         _cs_data->wordsize      = conf->wordsize;
         _cs_data->cs            = conf->cs;
-<<<<<<< HEAD
         _cs_data->cfg           = SPI_CMD_CFG(clk_div, _cs_data->polarity, _cs_data->phase);
-=======
-        _cs_data->cfg           = SPI_CMD_CFG(system_core_clock_get() / _cs_data->max_baudrate,
-            _cs_data->polarity, _cs_data->phase);
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
         *cs_data                = _cs_data;
         __pi_spim_cs_data_add(drv_data,_cs_data);
     }

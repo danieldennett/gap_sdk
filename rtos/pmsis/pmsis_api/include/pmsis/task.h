@@ -144,7 +144,6 @@ pi_task_t *pi_task_block_no_mutex(pi_task_t *callback_task);
 
 void pi_task_release(pi_task_t *task);
 
-<<<<<<< HEAD
 /**
  * \brief Wait on a pi_task from cluster side
  *
@@ -157,49 +156,6 @@ void pi_task_release(pi_task_t *task);
  *       the notification callback has been executed/released.
  */
 void pi_cl_pi_task_wait(pi_task_t *task);
-=======
-/** \brief Wait on a pi_task from cluster side
- *
- * At the difference of pi_task_wait_on, can't use os facilities directly and 
- * uses a software event instead (os defined)
- *
- * \param task  A pointer to the structure describing the notification callback.
- *   This structure is allocated by the caller and must be kept alive until the
- *   notification callback has been executed/released.
- */
-void pi_cl_pi_task_wait(pi_task_t *task);
-
-/** \brief Notify a cluster that task callback has been executed/released
- *
- * Use info contained in task to notify a cluster that pi_task "task" is done.
- * Wake up the cluster cores waiting on said task if need be.
- * Use a software event (os defined)
- *
- * \param task  A pointer to the structure describing the notification callback,
- * contains info necessary for cluster notification.
- *
- */
-void pi_cl_pi_task_notify_done(pi_task_t *task);
-
-#ifdef PMSIS_DRIVERS
-
-//#include "pmsis_hal/pmsis_hal.h"
-#include "pmsis_backend/pmsis_backend_native_task_api.h"
-pi_task_t *__pi_task_block(pi_task_t *callback_task);
-
-static inline struct pi_task *pi_task_block(struct pi_task *callback_task)
-{
-    __pi_task_block(callback_task);
-    return callback_task;
-}
-
-void __pi_task_destroy(pi_task_t *task);
-
-static inline void pi_task_destroy(pi_task_t *task)
-{
-    __pi_task_destroy(task);
-}
->>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 
 /**
  * \brief Notify a cluster that task callback has been executed/released

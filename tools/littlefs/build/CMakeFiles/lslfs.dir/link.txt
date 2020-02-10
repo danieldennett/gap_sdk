@@ -1,0 +1,1 @@
+/usr/bin/cc    CMakeFiles/lslfs.dir/lfs/lfs.c.o CMakeFiles/lslfs.dir/lfs/lfs_util.c.o CMakeFiles/lslfs.dir/lslfs.c.o  -o lslfs 
