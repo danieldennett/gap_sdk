@@ -160,6 +160,7 @@ int pi_gpio_open(struct pi_device *device)
 /* TODO : Add flags to set irq type, irq enable, drive strength, pull enable. */
 int pi_gpio_pin_configure(struct pi_device *device, pi_gpio_e gpio, pi_gpio_flags_e flags)
 {
+<<<<<<< HEAD
     if (gpio & PI_GPIO_IS_GPIO_MASK)
     {
         pi_pad_e pad = (gpio >> PI_GPIO_NUM_SHIFT);
@@ -168,6 +169,14 @@ int pi_gpio_pin_configure(struct pi_device *device, pi_gpio_e gpio, pi_gpio_flag
     }
 
     uint32_t pin = (gpio & PI_GPIO_NUM_MASK);
+=======
+    pi_pad_e pad = (gpio >> PI_GPIO_NUM_SHIFT);
+    uint32_t pin = (gpio & PI_GPIO_NUM_MASK);
+
+    /* Setup first pad for GPIO. */
+    pi_pad_set_function(pad, PI_PAD_FUNC1);
+
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
     uint8_t pe = (flags & PI_GPIO_PULL_ENABLE) >> PI_GPIO_PULL_OFFSET;
     uint8_t ds = (flags & PI_GPIO_DRIVE_STRENGTH_HIGH) >> PI_GPIO_DRIVE_OFFSET;
     uint8_t dir = (flags & PI_GPIO_OUTPUT) >> PI_GPIO_MODE_OFFSET;

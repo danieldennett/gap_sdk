@@ -603,7 +603,11 @@ void pi_l2_free(void *_chunk, int size)
 }
 
 #if defined(ARCHI_HAS_FC_TCDM)
+<<<<<<< HEAD
 void *pi_fc_l1_malloc(int size)
+=======
+void *pi_fc_tcdm_malloc(uint32_t size)
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 {
   return rt_alloc(RT_ALLOC_FC_DATA, size);
 }

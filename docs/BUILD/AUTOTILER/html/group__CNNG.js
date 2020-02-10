@@ -1,0 +1,25 @@
+var group__CNNG =
+[
+    [ "AddCallToNode", "group__CNNG.html#ga3a7db57b88ccad2f714bd70205e95c84", null ],
+    [ "AddNode", "group__CNNG.html#gad326e3637be77a661aa52f7963f859f0", null ],
+    [ "AT_SetGraphCtrl", "group__CNNG.html#gadfac97e0f9a22f697e3db9cd0c370887", null ],
+    [ "CloseGraph", "group__CNNG.html#gac126eed74cb7b3c331dbfffd0790c1d6", null ],
+    [ "CNN_ArgDataType", "group__CNNG.html#gade75102f1df4a4ce25cbcdc1a49da398", null ],
+    [ "CNN_CompositeKernel", "group__CNNG.html#gaa1f3fabe8545274fff34c081b6af1fff", null ],
+    [ "CNN_FindMatchingKernel", "group__CNNG.html#ga31d333e84dd88d7ccf3e711b897866c9", null ],
+    [ "CNN_InitGenCtrl", "group__CNNG.html#ga51dac7bbb2798ca9e65b2cfe6f2ce0cf", null ],
+    [ "CNN_KernelOperImage", "group__CNNG.html#gae4895318e9498be44af9c746efbb15ad", null ],
+    [ "CNN_Match", "group__CNNG.html#ga01ef06e505f4416732632818fd837710", null ],
+    [ "CNN_OperList", "group__CNNG.html#ga5f2c0300fe56870ddc55a30368ae9712", null ],
+    [ "CNN_SetGenCtrl", "group__CNNG.html#ga8bbb380544b9eb06e2b1910401c3238d", null ],
+    [ "CNN_SetGenCtrlList", "group__CNNG.html#gac0eef36126a5230d88cb225fa0e48959", null ],
+    [ "CNN_Type", "group__CNNG.html#ga664cc20c7fad4c9e1326ba2aeffe9eae", null ],
+    [ "CNNGraph", "group__CNNG.html#gaac675f6ac9ce100d9185c488cbdc5d75", null ],
+    [ "CNNGraphName", "group__CNNG.html#gacee151006972b08e134e6eb7a4b3b611", null ],
+    [ "CreateGraph", "group__CNNG.html#gaffaabdd715260474bfe3f05e09e8fba6", null ],
+    [ "GArg", "group__CNNG.html#ga07e12df7e251d1adc19607f0e4779942", null ],
+    [ "GenerateCodeForCNNGraph", "group__CNNG.html#ga6dbb7f67fc6f183682becf672b99db51", null ],
+    [ "GNodeArg", "group__CNNG.html#ga9633c5ab9336c4bdeb188e9987e347d5", null ],
+    [ "GNodeArgImmOper", "group__CNNG.html#ga680bea139b56612a30bd9c38fd63b5c0", null ],
+    [ "GNodeCArg", "group__CNNG.html#ga4c185c3f0ae2a25bcc66243f7fef6012", null ]
+];

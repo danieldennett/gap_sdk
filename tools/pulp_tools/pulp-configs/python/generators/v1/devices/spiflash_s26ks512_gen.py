@@ -29,7 +29,10 @@ def gen_config(name, system_config, system, device_config, usecases=[]):
 
   system.system_tree.board.add_component(name + '_clock', Component(properties=OrderedDict(
       vp_class= "vp/clock_domain",
+<<<<<<< HEAD
       vp_component= "vp.clock_domain_impl",
+=======
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
       frequency= 50000000
   )))
 

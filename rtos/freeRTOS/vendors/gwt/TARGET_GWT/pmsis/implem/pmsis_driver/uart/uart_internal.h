@@ -3,6 +3,10 @@
 
 #include "stdlib.h"
 #include "pmsis.h"
+<<<<<<< HEAD
+=======
+#include DEFAULT_MALLOC_INC
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 #include "pmsis/task.h"
 #include "pmsis/drivers/uart.h"
 

@@ -20,12 +20,17 @@ def load_image(img_path):
     # (1, height, width, channels), add a dimension because the model
     # expects this shape: (batch_size, height, width, channels)
     img_tensor = np.expand_dims(img_tensor, axis=0)
-    img_tensor /= 255.
+    # a colour image input should be scaled down to a range of [0.0, 1.0]
+    # since a RGB pixel has a range of [0, 255]
+    # when using a pretrained model, it should checked for this scaling of input
+    img_tensor /= 255.        
 
     return img_tensor
 
 def create_parser():
     # create the top-level parser
+    # own comment: 
+    # these are the optional commands to run the people in the terminal interface
     parser = argparse.ArgumentParser(prog='run')
 
     parser.add_argument('h5_file',
@@ -35,8 +40,9 @@ def create_parser():
 
     parser.add_argument('-i', '--image_file',
                         type=str,
-                        default="examples/1/1037.pgm",
+                        default="/home/zhouxin/gap_sdk/examples/nntool/mnist/samples/5223_5.pgm",
                         help='Image file')
+                        #  default='./samples/5223_5.pgm'
 
     parser.add_argument('-D', '--directory',
                         type=str,
@@ -142,7 +148,7 @@ def dump_weights(model, filename):
 
 def main():
     parser = create_parser()
-    argcomplete.autocomplete(parser)
+    argcomplete.autocomplete(parser)  #provides easy, extensible command line tab completion of arguments
     args = parser.parse_args()
 
     model = load_model(args.h5_file[0])

@@ -3,9 +3,16 @@
 
 #include "pmsis.h"
 #include "pmsis/task.h"
+<<<<<<< HEAD
 #include "pmsis/rtos/os_frontend_api/os.h"
 #include "pmsis/rtos/event_kernel/event_kernel.h"
 #include "pmsis/rtos/malloc/cl_l1_malloc.h"
+=======
+#include "pmsis/rtos/os_frontend_api/pmsis_task.h"
+#include "pmsis/rtos/event_kernel/event_kernel.h"
+#include DEFAULT_MALLOC_INC
+#include "pmsis/rtos/malloc/pmsis_l1_malloc.h"
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 #include "pmsis/cluster/cluster_sync/fc_to_cl_delegate.h"
 #include "pmsis/cluster/cluster_sync/cl_to_fc_delegate.h"
 #include "pmsis/cluster/cluster_sync/cl_synchronisation.h"

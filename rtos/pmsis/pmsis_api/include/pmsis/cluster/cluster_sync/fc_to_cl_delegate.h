@@ -140,7 +140,11 @@ static inline struct pi_cluster_task *pi_cluster_task(
  * \param device    A pointer to the structure describing the device.
  * \param task Cluster task structure containing task and its parameters.
  */
+<<<<<<< HEAD
 static inline int pi_cluster_send_task(struct pi_device *device,
+=======
+int pi_cluster_send_task_to_cl(struct pi_device *device,
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
         struct pi_cluster_task *task);
 
 /** \brief Enqueue asynchronously a task for execution on the cluster.
@@ -172,7 +176,11 @@ static inline int pi_cluster_send_task(struct pi_device *device,
  * \param task Cluster task structure containing task and its parameters.
  * \param end_task        The task used to notify the end of execution.
  */
+<<<<<<< HEAD
 static inline int pi_cluster_send_task_async(struct pi_device *device,
+=======
+int pi_cluster_send_task_to_cl_async(struct pi_device *device,
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
         struct pi_cluster_task *task,
         pi_task_t *end_task);
 

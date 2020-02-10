@@ -184,7 +184,11 @@ gdbserver: run
 
 endif
 
+<<<<<<< HEAD
 flash:
+=======
+flash::
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 	$(INSTALL_DIR)/runner/run_gapuino.sh -norun $(PLPBRIDGE_FLAGS) -f
 
 launch:

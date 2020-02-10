@@ -1,0 +1,15 @@
+var group__I3C__I2C__Timer__Peripheral__Access__Layer =
+[
+    [ "I3C I2C Timer Register Masks", "group__I3C__I2C__Timer__Register__Masks.html", "group__I3C__I2C__Timer__Register__Masks" ],
+    [ "I3C DAT Peripheral Access Layer", "group__I3C__DAT__Peripheral__Access__Layer.html", "group__I3C__DAT__Peripheral__Access__Layer" ],
+    [ "I3C_I2C_Timer_Type", "structI3C__I2C__Timer__Type.html", [
+      [ "RESERVED", "group__FC__STDOUT__Peripheral__Access__Layer.html#ga5a7e234f1f4b83fb8dbfa4b919c236a0", null ],
+      [ "THD_STA_TIMER", "group__FC__STDOUT__Peripheral__Access__Layer.html#gabf0f75962e0905ecea1b5b8215ba1aae", null ],
+      [ "THIGH_TIMER", "group__FC__STDOUT__Peripheral__Access__Layer.html#ga8bab5142c3fccd4d81c70d9ef98f87b3", null ],
+      [ "THOLD_TIMER", "group__FC__STDOUT__Peripheral__Access__Layer.html#gaab94021d18f2349aa40c9f8e4ee8f15c", null ],
+      [ "TLOW_TIMER", "group__FC__STDOUT__Peripheral__Access__Layer.html#ga127e48cb509551dabefb1c6c25c587f8", null ],
+      [ "TSU_STA_TIMER", "group__FC__STDOUT__Peripheral__Access__Layer.html#ga2dfe2742224289b6213350e741e89c22", null ],
+      [ "TSU_STOP_TIMER", "group__FC__STDOUT__Peripheral__Access__Layer.html#ga4437506030e9c27be410b8af3bd632fe", null ]
+    ] ],
+    [ "I3C_SLAVES", "group__I3C__I2C__Timer__Peripheral__Access__Layer.html#gae7307c7fbd31a10ddf17d165fb525e86", null ]
+];

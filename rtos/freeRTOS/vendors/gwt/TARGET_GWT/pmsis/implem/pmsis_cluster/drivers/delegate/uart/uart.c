@@ -3,7 +3,11 @@
 #include "uart_internal.h"
 #include "udma_uart.h"
 #include "pmsis/task.h"
+<<<<<<< HEAD
 #include "pmsis/rtos/malloc/l2_malloc.h"
+=======
+#include "pmsis/rtos/malloc/pmsis_l2_malloc.h"
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 #include "pmsis/cluster/cluster_sync/cl_to_fc_delegate.h"
 
 void __pi_cl_delegate_uart_write(struct uart_driver_data *data, void *buffer,

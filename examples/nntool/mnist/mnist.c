@@ -10,6 +10,8 @@
 #ifndef __EMUL__
 /* PMSIS includes. */
 #include "pmsis.h"
+#include "pmsis/drivers/uart.h"
+#include "bsp/camera/himax.h"
 #endif  /* __EMUL__ */
 
 /* Autotiler includes. */
@@ -22,6 +24,10 @@
 #ifndef STACK_SIZE
 #define STACK_SIZE      1024
 #endif
+
+#define CAMERA
+// #define MNIST_16BIT
+// #define PRINT_IMAGE
 
 AT_HYPERFLASH_FS_EXT_ADDR_TYPE mnist_L3_Flash = 0;
 
@@ -46,6 +52,22 @@ L2_MEM short int *ResOut;
 L2_MEM rt_perf_t *cluster_perf;
 #endif
 
+//UART init param
+L2_MEM struct pi_uart_conf uart_conf;
+L2_MEM struct pi_device uart;
+L2_MEM uint8_t rec_digit = 0;
+
+//camera init parameters
+#define CAM_WIDTH    324
+#define CAM_HEIGHT   244
+
+L2_MEM struct pi_device himax;
+// L2_MEM unsigned char *imgBuff0;
+L2_MEM struct pi_himax_conf cam_conf;
+L2_MEM uint8_t errors = 0;
+
+static void RunMnist()
+
 L2_MEM image_in_t *ImageIn;
 
 char *ImageName = NULL;
@@ -62,8 +84,9 @@ static void cluster()
   printf("Runner completed\n");
 
 #ifndef NO_IMAGE
-  //Checki Results
-  int rec_digit = 0;
+  //Checki Results            
+  //here the highest probability of the 10 digits is selected
+  //from here the result can also be send to the CF via UART
   short int highest = ResOut[0];
   for(int i = 1; i < 10; i++) {
     if(ResOut[i] > highest) {
@@ -73,7 +96,10 @@ static void cluster()
   }
   printf("\n");
 
-  printf("Recognized: %d\n", rec_digit);
+  printf("Recognized digit: %d with softmax output %d\n", rec_digit, highest);
+  for(int j = -10; j < 10; j++){
+    printf("digit %d and its softmax output %d\n", j, ResOut[j]);
+  }
 #else
   printf("image loading disabled so no sensible result\n");
 #endif
@@ -84,13 +110,65 @@ int test_mnist(void)
     printf("Entering main controller\n");
 #ifndef DONT_DUMP
     if (dt_open_dump_file(TENSOR_DUMP_FILE))
+#endif 
+
+    unsigned int Wi = 0, Hi = 0;
+    /* Input image size. */
+  // #if !defined CAMERA
+    unsigned int W = 324, H = 244;
+  // #endif
+
+  // #if defined CAMERA  
+  //   unsigned int W = 324, H = 244;
+  // #endif
+
+    #if !defined(__EMUL__)
+    #if !defined(NO_IMAGE) && !defined(LINK_IMAGE_HEADER)
+    BRIDGE_Init();
+    printf("Connecting to bridge !\n");
+    BRIDGE_Connect(1, NULL);
+    printf("Connected to bridge !\n");
+    #endif  /* NO_IMAGE && LINK_IMAGE_HEADER */
+    #endif  /* __EMUL__ */
+
+// HIMAX CAMERA STUFF
+    #if defined(CAMERA)
+    printf("[CAMERA] Start\n");
+    // unsigned char *ImageInChar = (unsigned char *) pi_l2_malloc(sizeof(MNIST_IMAGE_IN_T) * W * H);
+    unsigned char *ImageInChar = (unsigned char *)pi_l2_malloc((CAM_WIDTH*CAM_HEIGHT)*sizeof(MNIST_IMAGE_IN_T));
+    // unsigned char *imgBuff0 = (unsigned char *) pi_l2_malloc((CAM_WIDTH*CAM_HEIGHT)*sizeof(unsigned char));
+    if (ImageInChar == NULL)
+    {
+      printf("[CAMERA] Failed to allocate memory for image\n");
+    }
+
+    pi_himax_conf_init(&cam_conf);
+    cam_conf.i2c_itf = 0;
+    pi_open_from_conf(&himax, &cam_conf);
+
+    if (pi_camera_open(&himax))
+    {
+      printf("[CAMERA] Failed to open camera driver\n");
+      errors++;
+      goto end;
+    }
+    pi_camera_control(&himax, PI_CAMERA_CMD_START, 0);
+    pi_time_wait_us(4000000);
+    pi_camera_capture(&himax, ImageInChar, CAM_WIDTH*CAM_HEIGHT);
+    pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);
+    // pi_camera_close(&himax);
+  
+  #endif 
+
+#if !defined(CAMERA)
+// allocating memory for the manual image upload 
+    unsigned char *ImageInChar = (unsigned char *) pi_l2_malloc(sizeof(MNIST_IMAGE_IN_T) * W * H);
+    if (ImageInChar == NULL)
     {
         printf("Failed to open tensor dump file %s.\n", TENSOR_DUMP_FILE);
         exit(-2);
     }
-#endif
-
-#if !defined(NO_IMAGE)
+#if !defined(NO_IMAGE)              
     printf("Reading image\n");
     //Reading Image from Bridge
 #ifdef QUANT_8BIT
@@ -100,6 +178,7 @@ int test_mnist(void)
   #define SHORT 1
   #define SHIFT 0
 #endif
+
     if (!(ImageIn = (image_in_t *) AT_L2_ALLOC(0, AT_INPUT_SIZE_BYTES))) {
         printf("Failed to allocate %ld bytes for %s\n", AT_INPUT_SIZE_BYTES, ImageName);
         pmsis_exit(-1);
@@ -109,9 +188,11 @@ int test_mnist(void)
     {
         printf("Failed to load image %s\n", ImageName);
         pmsis_exit(-2);
-    }
+    }    
+
     printf("Finished reading image\n");
 #endif  /* NO_IMAGE */
+#endif  /* NO CAMERA */
 
 #if defined(PRINT_IMAGE)
     for (int i=0; i<H; i++)
@@ -129,6 +210,20 @@ int test_mnist(void)
     {
         printf("Failed to allocate Memory for Result (%d bytes)\n", 10*sizeof(short int));
         pmsis_exit(-3);
+    }
+
+//  UART configure init
+    pi_uart_conf_init(&uart_conf);
+    uart_conf.enable_tx = 1;
+    uart_conf.enable_rx = 0;
+    #if !defined(__PULP_OS__)
+    conf.src_clock_Hz = pi_fll_get_frequency(FLL_SOC);
+    #endif  /* __PULP_OS__ */
+    pi_open_from_conf(&uart, &uart_conf);
+    if (pi_uart_open(&uart))
+    {
+        printf("Uart open failed !\n");
+        pmsis_exit(-1);
     }
 
     #if !defined(__EMUL__)
@@ -164,7 +259,9 @@ int test_mnist(void)
     #else
     cluster();
     #endif
+    pi_uart_write(&uart, &rec_digit, 1);
     mnistCNN_Destruct();
+    
 
 #ifdef PERF
     {
@@ -180,8 +277,18 @@ int test_mnist(void)
     }
 #endif
 
-#ifndef __EMUL__
-    // Close the cluster
+
+
+  #if defined CAMERA
+  end:
+    pi_l2_free(ImageInChar, (CAM_WIDTH*CAM_HEIGHT)*sizeof(unsigned char));
+    pi_camera_close(&himax);
+  #endif
+
+
+    pi_uart_close(&uart);
+#ifndef __EMUL__    
+  // Close the cluster
     pi_cluster_close(&cluster_dev);
 #endif  /* __EMUL__ */
 #ifndef DONT_DUMP

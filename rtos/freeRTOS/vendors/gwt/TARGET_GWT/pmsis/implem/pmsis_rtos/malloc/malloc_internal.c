@@ -37,7 +37,11 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+<<<<<<< HEAD
 #include "pmsis/rtos/malloc/malloc_internal.h"
+=======
+#include "pmsis/rtos/malloc/pmsis_malloc_internal.h"
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 
 #define ALIGN_UP(addr,size)   (((addr) + (size) - 1) & ~((size) - 1))
 #define ALIGN_DOWN(addr,size) ((addr) & ~((size) - 1))

@@ -283,4 +283,15 @@ void pi_cl_send_task_to_fc(pi_task_t *task)
   __rt_cluster_push_fc_event(task);
 }
 
+<<<<<<< HEAD
+=======
+#ifdef ARCHI_HAS_CLUSTER
+
+void pi_cl_send_task_to_fc(pi_task_t *task)
+{
+  __rt_task_init_from_cluster(task);
+  __rt_cluster_push_fc_event(task);
+}
+
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 #endif

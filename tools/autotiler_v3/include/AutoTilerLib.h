@@ -1084,6 +1084,7 @@ StackedTensors_T *AT_StackedTensorsList(
 	...
 	);
 
+<<<<<<< HEAD
 /**
 @brief Given input tensor Name returns corresponding Out Stacked Tensor if it exists
 
@@ -1094,6 +1095,8 @@ CKernel_Arg_T *StackedTensorsLookup(
 	NameT *Name			/**< Input tensor name to search */
 	);
 
+=======
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 /* A user kernel group */
 /**
 @brief Declare a user kernel group

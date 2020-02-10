@@ -3266,7 +3266,11 @@ int CNN_LinearReLU(
 	int Iter;
 	Tile_Orientation_T TileOrientation = TILE_HOR;
 	int ParFeat = 1;
+<<<<<<< HEAD
 	int ReluN = 6, OutLB, OutUB, ReluNNoNorm = 0;
+=======
+	int ReluN = 6, OutLB, OutUB;
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 	if (Ctrl) {
 		if (Ctrl->TileOrientation != -1) TileOrientation = (Ctrl->TileOrientation==0)?TILE_HOR:TILE_VER;
 		if (Ctrl->ParallelFeatures != -1) ParFeat = Ctrl->ParallelFeatures;
@@ -3322,7 +3326,11 @@ int CNN_LinearReLU(
 					C_Arg("Norm"),						/* Output fixed point format */
 					C_Arg("NormBias"),					/* Bias fixed point format */
 					Imm(OutLB),						/* Conv out lower bound, clip or relu */
+<<<<<<< HEAD
 					(ReLUOper==KOP_RELUN&&!ReluNNoNorm)?
+=======
+					(ReLUOper==KOP_RELUN)?
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 					C_ImmArgOper(OutUB, "<<", "Norm"):			/* For ReLUN, upper vound N expressed in QNorm */
 					Imm(OutUB)						/* Conv out upper bound, clip or relu */
 				)

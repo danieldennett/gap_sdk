@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['fdimratio',['FDimRatio',['../structObject__T.html#ac6e921194440d8eaa9b7441648f4c1ee',1,'Object_T']]],
+  ['feat',['Feat',['../structAT__KerTileClear__T.html#a8962a2f1fba4bc1afdc87f8432010422',1,'AT_KerTileClear_T']]],
+  ['filename',['FileName',['../structConstInit__T.html#a6c489fc22ff3c12e2f5d91538eb487c2',1,'ConstInit_T']]],
+  ['filter',['Filter',['../structKerConv__fp__T.html#ad90eee45c85d38dc074de75520d5b74a',1,'KerConv_fp_T::Filter()'],['../structKerConv__fps__T.html#afbd597602d05764f0e076dc245787d5d',1,'KerConv_fps_T::Filter()'],['../structKerConv__DP__fp__T.html#ac72a41b9260955401de6aecef40a9ecd',1,'KerConv_DP_fp_T::Filter()'],['../structKerConv__DP__fps__T.html#abd96fe100b28edef08729d1dc3f50277',1,'KerConv_DP_fps_T::Filter()'],['../structKerLinearLayerReLU__fp__T.html#a7e47c550cba5662b09997c0c123a4d2a',1,'KerLinearLayerReLU_fp_T::Filter()'],['../structKerLinearLayerReLU__fps__T.html#a22f493d20d794b30de7f06748cc05ccb',1,'KerLinearLayerReLU_fps_T::Filter()'],['../structKerLinearLayerReLU__fp__fps__fp__T.html#a13b3e589c4123e6382cf52eb80b94495',1,'KerLinearLayerReLU_fp_fps_fp_T::Filter()'],['../structKerLinearLayerReLU__fps__fps__fp__T.html#a35602157bf11baca45bc001e71d57cad',1,'KerLinearLayerReLU_fps_fps_fp_T::Filter()'],['../structKerLinearLayerReLU__fp__fp__fpd__T.html#a968f633f72a91551e0612b84bba90494',1,'KerLinearLayerReLU_fp_fp_fpd_T::Filter()'],['../structKerDPLinearLayer__fp__T.html#af5d8ed754a1a105b5e7438bfcf09e57c',1,'KerDPLinearLayer_fp_T::Filter()'],['../structKerDPLinearLayer__fp__fps__T.html#a255d9f249b3563e895f4ea849895d7ea',1,'KerDPLinearLayer_fp_fps_T::Filter()'],['../structKerDPLinearLayer__fps__T.html#a68eafc116674f24cc99973b85f3e429c',1,'KerDPLinearLayer_fps_T::Filter()']]],
+  ['first',['First',['../structKernel__T.html#aa0e2957a6a6e523db2da6edbb9670633',1,'Kernel_T']]],
+  ['firstlineindex',['FirstLineIndex',['../structKerResizeBilinear__ArgT.html#a20059350bca28538bfbf82d41af5ae5d',1,'KerResizeBilinear_ArgT']]],
+  ['firstnode',['FirstNode',['../structChannelNodeList__T.html#abef543d9105fe305d64169b00df2df8e',1,'ChannelNodeList_T']]],
+  ['fixdim',['FixDim',['../structKernel__Arg__T.html#adcfbfd13d0c22dcf5dfe93ceb08c8866',1,'Kernel_Arg_T::FixDim()'],['../structKernel__Arg__Exec__T.html#aeb4b06cb9392a096bd123f1248c6144f',1,'Kernel_Arg_Exec_T::FixDim()']]],
+  ['flashdir',['FlashDir',['../group__AutoTilerTypes.html#gace503c8e3179ee08300c1269ee714a32',1,'AutoTilerLibTypes.h']]],
+  ['forcedpconv',['ForceDPconv',['../structCNN__GenControl__T.html#a1e5960a4dd324ab76fa89427eab0d54e',1,'CNN_GenControl_T']]],
+  ['format',['Format',['../structConstInit__T.html#a2cb3af437b201db4018dbb897e3dad05',1,'ConstInit_T']]],
+  ['fract',['Fract',['../structConstInit__T.html#a3277f4314a14e466dfd3bfb91fe66897',1,'ConstInit_T']]],
+  ['from',['From',['../structGraphEdgeWeb__T.html#a4a938fd50d8c5cd9d649b807bf311d54',1,'GraphEdgeWeb_T']]],
+  ['funargs',['FunArgs',['../structGraphNodeCalls__T.html#a62cb3bb79317bfbd5b65de3d16164dd0',1,'GraphNodeCalls_T']]],
+  ['funargscount',['FunArgsCount',['../structGraphNodeCalls__T.html#afada2b098b03e8a234ffb96860ff3c13',1,'GraphNodeCalls_T']]],
+  ['funname',['FunName',['../structGraphNodeCalls__T.html#a8f18468fa1b25a9fe1adcc1cb0937f13',1,'GraphNodeCalls_T']]],
+  ['fx',['Fx',['../structCNN__LayerOp__T.html#a1011fadd36961c30f094d8695e0362e5',1,'CNN_LayerOp_T']]],
+  ['fy',['Fy',['../structCNN__LayerOp__T.html#a87f0f8033cd8a1b2587941494dbff7fa',1,'CNN_LayerOp_T']]]
+];

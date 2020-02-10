@@ -16,6 +16,7 @@
 
 #include <stdio.h>
 #include <string.h>
+<<<<<<< HEAD
 #include <pmsis.h>
 #include <bsp/fs.h>
 #include <bsp/flash/hyperflash.h>
@@ -25,6 +26,16 @@
 static PI_L2 uint8_t header_buffer[WAV_HEADER_SIZE];
 
 void dump_wav(char *filename, int width, int sampling_rate, int nb_channels, void *data, int size)
+=======
+#include "wav_out.h"
+#include <pmsis.h>
+#include <bsp/fs.h>
+#include <bsp/flash/hyperflash.h>
+
+static PI_L2 uint8_t header_buffer[WAV_HEADER_SIZE];
+
+void dump_wav(char *filename, int width, int sampling_rate, void *data, int size)
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 {
     unsigned int idx = 0;
     unsigned int sz = WAV_HEADER_SIZE + size;
@@ -57,8 +68,13 @@ void dump_wav(char *filename, int width, int sampling_rate, int nb_channels, voi
     header_buffer[idx++] = 't';
     header_buffer[idx++] = ' ';
 
+<<<<<<< HEAD
     // 4 bytes length of format data below, until data part
     header_buffer[idx++] = 0x10;
+=======
+    // 4 bytes length of format data above
+    header_buffer[idx++] = width;
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
     header_buffer[idx++] = 0x00;
     header_buffer[idx++] = 0x00;
     header_buffer[idx++] = 0x00;
@@ -69,8 +85,12 @@ void dump_wav(char *filename, int width, int sampling_rate, int nb_channels, voi
 
     // 2 bytes nb of channels: 1 or 2
     //header_buffer[idx++] = 0x02;
+<<<<<<< HEAD
     //header_buffer[idx++] = 0x01;
     header_buffer[idx++] = nb_channels;
+=======
+    header_buffer[idx++] = 0x01;
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
     header_buffer[idx++] = 0x00;
 
     // 4 bytes sample rate in Hz:
@@ -84,7 +104,11 @@ void dump_wav(char *filename, int width, int sampling_rate, int nb_channels, voi
     // (16000*16*1)/8=32000 or 0x6F00
     // (22050*16*1)/8=0xac44
     // (22050*16*2)/8=0x15888
+<<<<<<< HEAD
     int rate = (sampling_rate * width * nb_channels) / 8;
+=======
+    int rate = (sampling_rate * width * 1) / 8;
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
     header_buffer[idx++] = (rate >> 0) & 0xff;
     header_buffer[idx++] = (rate >> 8) & 0xff;
     header_buffer[idx++] = (rate >> 16) & 0xff;
@@ -93,11 +117,19 @@ void dump_wav(char *filename, int width, int sampling_rate, int nb_channels, voi
     // 2 bytes (BitsPerSample * Channels) / 8:
     // 16*1/8=2 - 16b mono
     // 16*2/8=4 - 16b stereo
+<<<<<<< HEAD
     rate = (width * nb_channels) / 8;
     header_buffer[idx++] = (rate >> 0) & 0xff;
     header_buffer[idx++] = (rate >> 8) & 0xff;
 
     // 2 bytes bit per sample:
+=======
+    rate = (width * 1) / 8;
+    header_buffer[idx++] = (rate >> 0) & 0xff;
+    header_buffer[idx++] = (rate >> 8) & 0xff;
+
+    // 2 bytes bit per sample: 16
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
     header_buffer[idx++] = width;
     header_buffer[idx++] = 0x00;
 
@@ -113,10 +145,19 @@ void dump_wav(char *filename, int width, int sampling_rate, int nb_channels, voi
     header_buffer[idx++] = (unsigned char)((size & 0x00ff0000) >> 16);
     header_buffer[idx++] = (unsigned char)((size & 0xff000000) >> 24);
 
+<<<<<<< HEAD
     struct pi_hostfs_conf conf;
     pi_hostfs_conf_init(&conf);
     struct pi_device fs;
 
+=======
+    struct pi_fs_conf conf;
+    pi_fs_conf_init(&conf);
+    struct pi_device fs;
+
+    conf.type = PI_FS_HOST;
+
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
     pi_open_from_conf(&fs, &conf);
 
     if (pi_fs_mount(&fs))

@@ -14,7 +14,10 @@
 #include "pmsis/drivers/pad.h"
 #include "pmsis/drivers/perf.h"
 #include "pmsis/drivers/pwm.h"
+<<<<<<< HEAD
 #include "pmsis/drivers/rtc.h"
+=======
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 #include "pmsis/drivers/spi.h"
 #include "pmsis/drivers/uart.h"
 
@@ -26,7 +29,10 @@
 #include "pmsis_driver/perf/perf.h"
 #include "pmsis_driver/pmu/pmsis_pmu.h"
 #include "pmsis_driver/pwm/pwm_internal.h"
+<<<<<<< HEAD
 #include "pmsis_driver/rtc/rtc_internal.h"
+=======
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 #include "pmsis_driver/timer/timer.h"
 #include "pmsis_driver/uart/uart_internal.h"
 

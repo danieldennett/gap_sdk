@@ -1,0 +1,87 @@
+Invoked as: /home/zhouxin/gap_sdk/tools/gap8-openocd/jimtcl/configure --disable-install-jim --disable-option-checking --prefix=/usr/local PKG_CONFIG_PATH=/opt/ros/melodic/lib/pkgconfig --cache-file=/dev/null --srcdir=.
+Failed: cc -g -O2 -c conftest__.c -o conftest__.o
+conftest__.c:1:10: fatal error: crt_externs.h: No such file or directory
+ #include <crt_externs.h>
+          ^~~~~~~~~~~~~~~
+compilation terminated.
+child process exited abnormally
+============
+The failed code was:
+#include <crt_externs.h>
+int main(void) {
+
+return 0;
+}
+============
+Failed: cc -g -O2 conftest__.c -o conftest__
+/tmp/cciuVI3l.o: In function `main':
+/home/zhouxin/gap_sdk/tools/gap8-openocd/jimtcl/conftest__.c:3: undefined reference to `sys_signame'
+collect2: error: ld returned 1 exit status
+child process exited abnormally
+============
+The failed code was:
+extern void sys_signame(void);
+int main(void) {
+sys_signame();
+return 0;
+}
+============
+Failed: cc -g -O2 -c conftest__.c -o conftest__.o
+conftest__.c: In function 'main':
+conftest__.c:3:12: error: size of array '_x' is negative
+ static int _x[sizeof(off_t) == 4 ? 1 : -1] = { 1 };
+            ^~
+child process exited abnormally
+============
+The failed code was:
+#include <sys/types.h>
+int main(void) {
+static int _x[sizeof(off_t) == 4 ? 1 : -1] = { 1 };
+return 0;
+}
+============
+Failed: cc -g -O2 conftest__.c -o conftest__
+/tmp/ccRpTftf.o: In function `main':
+/home/zhouxin/gap_sdk/tools/gap8-openocd/jimtcl/conftest__.c:3: undefined reference to `_NSGetEnviron'
+collect2: error: ld returned 1 exit status
+child process exited abnormally
+============
+The failed code was:
+extern void _NSGetEnviron(void);
+int main(void) {
+_NSGetEnviron();
+return 0;
+}
+============
+Failed: cc -g -O2 -c conftest__.c -o conftest__.o
+conftest__.c: In function 'main':
+conftest__.c:4:1: error: too few arguments to function 'mkdir'
+ mkdir("/dummy");
+ ^~~~~
+In file included from conftest__.c:2:0:
+/usr/include/x86_64-linux-gnu/sys/stat.h:317:12: note: declared here
+ extern int mkdir (const char *__path, __mode_t __mode)
+            ^~~~~
+child process exited abnormally
+============
+The failed code was:
+#include <sys/types.h>
+#include <sys/stat.h>
+int main(void) {
+mkdir("/dummy");
+return 0;
+}
+============
+Failed: cc -g -O2 conftest__.c -o conftest__
+/tmp/ccxXrxql.o: In function `main':
+/home/zhouxin/gap_sdk/tools/gap8-openocd/jimtcl/conftest__.c:3: undefined reference to `dlopen'
+collect2: error: ld returned 1 exit status
+child process exited abnormally
+============
+The failed code was:
+extern void dlopen(void);
+int main(void) {
+dlopen();
+return 0;
+}
+============

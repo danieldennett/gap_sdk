@@ -78,6 +78,7 @@ class MemoryDeviceInfos(JsonSerializable):
     def _encapsulate(self):
         return [info.todict() for info in self.infos]
 
+<<<<<<< HEAD
     def set_l2_ram_ext_managed(self, ext_managed):
         for info in self.infos:
             if info.memory_area == 'AT_MEM_L2':
@@ -92,6 +93,17 @@ class MemoryDeviceInfos(JsonSerializable):
         for info in self.infos:
             if info.memory_area == 'AT_MEM_L3_HFLASH':
                 info.ext_managed = ext_managed and 1 or 0
+=======
+    def setL3RamExtManaged(self,ext_managed):
+        for info in self.infos:
+            if info.memory_area == 'AT_MEM_L3_HRAM':
+                info.ext_managed=ext_managed
+
+    def setL3FlashExtManaged(self,ext_managed):
+        for info in self.infos:
+            if info.memory_area == 'AT_MEM_L3_HFLASH':
+                info.ext_managed=ext_managed
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 
     def gen(self, G, code_block: CodeBlock):
         code_block.write('SetMemoryDeviceInfos({},', len(self.infos))

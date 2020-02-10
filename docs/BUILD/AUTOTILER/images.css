@@ -1,0 +1,32 @@
+div.image img[src="images/order1.png"] {
+  width:500px;
+}
+
+div.image img[src="images/order2.png"] {
+  width:500px;
+}
+
+div.image img[src="images/horizontal_traversal.png"] {
+  width:200px;
+}
+
+div.image img[src="images/vertical_traversal.png"] {
+  width:200px;
+}
+
+div.image img[src="images/predefined.png"] {
+  width:400px;
+}
+
+div.image img[src="images/tile_overlap.png"] {
+  width:300px;
+}
+
+div.image img[src="images/cnn_convolution.png"] {
+  width:400px;
+}
+
+div.image img[src="images/workflow.png"] {
+  width:500px;
+}
+

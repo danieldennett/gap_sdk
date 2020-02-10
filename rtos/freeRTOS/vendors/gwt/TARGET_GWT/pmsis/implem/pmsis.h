@@ -21,15 +21,24 @@
 #include "pmsis/device.h"
 #include "pmsis/task.h"
 #include "pmsis/pmsis_types.h"
+<<<<<<< HEAD
 #include "pmsis/rtos/rtos.h"
 #include "pmsis/rtos/assert.h"
+=======
+#include "pmsis/rtos/pmsis_os.h"
+#include "pmsis/rtos/pmsis_assert.h"
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 
 /* PMSIS includes. */
 #include "pmsis_driver/pmsis_driver_data.h"
 #include "pmsis_driver/pmsis_drivers.h"
+<<<<<<< HEAD
 #include "pmsis_rtos/os/pmsis_task.h"
 #include "pmsis_rtos/os/pmsis_freq.h"
 #include "pmsis_rtos/os/os.h"
+=======
+#include "pmsis_rtos/os/pmsis_freq.h"
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 #if defined(FEATURE_CLUSTER)
 #include "pmsis_cluster/pmsis_cluster.h"
 #endif  /* FEATURE_CLUSTER */

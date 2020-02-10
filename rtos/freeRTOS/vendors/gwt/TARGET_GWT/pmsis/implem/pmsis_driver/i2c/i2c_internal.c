@@ -32,6 +32,10 @@
 #include "stdarg.h"
 #include "pmsis_driver/i2c/i2c_internal.h"
 #include "pmsis/rtos/event_kernel/event_kernel.h"
+<<<<<<< HEAD
+=======
+#include DEFAULT_MALLOC_INC
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 
 /*******************************************************************************
  * Definitions

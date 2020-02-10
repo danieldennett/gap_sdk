@@ -26,6 +26,7 @@ GWT_PMSIS           = $(GWT_TARGET)/pmsis
 GWT_LIBS            = $(GWT_TARGET)/libs
 GWT_DEVICE          = $(GWT_TARGET)/TARGET_$(chip)/device
 GWT_DRIVER          = $(GWT_TARGET)/TARGET_$(chip)/driver
+<<<<<<< HEAD
 GWT_PMSIS_BACKEND   = $(GWT_PMSIS)/pmsis_backend
 GWT_PMSIS_IMPLEM    = $(GWT_PMSIS)/implem
 ifeq ($(GAP_SDK_HOME), )
@@ -33,6 +34,11 @@ GWT_PMSIS_API       = $(GWT_PMSIS)/api
 else
 GWT_PMSIS_API       = $(GAP_SDK_HOME)/rtos/pmsis/pmsis_api
 endif				# GAP_SDK_HOME
+=======
+GWT_PMSIS_API       = $(GWT_PMSIS)/api
+GWT_PMSIS_BACKEND   = $(GWT_PMSIS)/pmsis_backend
+GWT_PMSIS_IMPLEM    = $(GWT_PMSIS)/implem
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 
 # The linker options.
 LIBS            += -lgcc
@@ -233,6 +239,11 @@ OBJS_DEP        = $(patsubst %.o, %.d, $(OBJS))
 #------------------------------------------
 
 -include $(OBJS_DEP)
+<<<<<<< HEAD
+=======
+
+all:: dir $(OBJS) $(BIN)
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 
 all:: $(OBJS) $(BIN)
 
@@ -292,7 +303,11 @@ endif
 gui:: | $(BUILDDIR)
 	cd $(BUILDDIR) && $(GAP_SDK_HOME)/tools/runner/run_rtl.sh $(SIMULATOR) $(recordWlf) $(vsimDo) $(vsimPadMuxMode) $(vsimBootTypeMode) "GUI" $(load) $(PLPBRIDGE_FLAGS) -a $(chip)
 
+<<<<<<< HEAD
 flash:
+=======
+flash::
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 	$(INSTALL_DIR)/runner/run_gapuino.sh -norun $(PLPBRIDGE_FLAGS) -f
 
 # Foramt "vsim -do xxx.do xxx.wlf"

@@ -1160,8 +1160,203 @@ typedef struct {
 /* ----------------------------------------------------------------------------
    -- RTC_APB Peripheral Access Layer
    ---------------------------------------------------------------------------- */
+<<<<<<< HEAD
 #include "periph/rtc_periph.h"
 #define rtc(id) ((rtc_t *) RTC_ADDR)
+=======
+
+/*!
+ * @addtogroup RTC_APB_Peripheral_Access_Layer RTC_APB Peripheral Access Layer
+ * @{
+ */
+
+/** RTC_APB - Register Layout Typedef */
+typedef struct {
+  __IO  uint32_t STATUS;                     /**< RTC_APB_Status register, offset: 0x00 */
+  __IO  uint32_t REQUEST;                    /**< RTC_APB_Request register, offset: 0x04 */
+  __IO  uint32_t DATA;                       /**< RTC_APB_Data register, offset: 0x08 */
+  __IO  uint32_t _reserved;                  /**< reserved, offset: 0x0C */
+  __IO  uint32_t IRQ_CTRL;                   /**< RTC_APB_IRQ_Control register, offset: 0x10 */
+  __IO  uint32_t IRQ_MASK;                   /**< RTC_APB_IRQ_Mask register, offset: 0x14 */
+  __IO  uint32_t IRQ_FLAG;                   /**< RTC_APB_IRQ_Flag register, offset: 0x18 */
+} RTC_APB_Type;
+
+/* ----------------------------------------------------------------------------
+   -- RTC_APB Register Masks
+   ---------------------------------------------------------------------------- */
+
+/*!
+ * @addtogroup RTC_APB_Register_Masks RTC_APB Register Masks
+ * @{
+ */
+/*! @name STATUS - RTC_APB STATUS register */
+#define RTC_APB_STATUS_IRQ_EN_MASK                     (0x3FU)
+#define RTC_APB_STATUS_IRQ_EN_SHIFT                    (0U)
+#define RTC_APB_STATUS_IRQ_EN(x)                       (((uint32_t)(((uint32_t)(x))/* << RTC_APB_STATUS_IRQ_EN_SHIFT*/)) & RTC_APB_STATUS_IRQ_EN_MASK)
+
+/*! @name REQUEST - RTC_APB REQUEST Access register */
+#define RTC_APB_REQUEST_ACCESS_ADDR_MASK               (0x3FU)
+#define RTC_APB_REQUEST_ACCESS_ADDR_SHIFT              (0U)
+#define RTC_APB_REQUEST_ACCESS_ADDR(x)                 (((uint32_t)(((uint32_t)(x))/* << RTC_APB_REQUEST_ACCESS_ADDR_SHIFT*/)) & RTC_APB_REQUEST_ACCESS_ADDR_MASK)
+#define RTC_APB_REQUEST_ACCESS_RW_MASK                 (0x10000U)
+#define RTC_APB_REQUEST_ACCESS_RW_SHIFT                (16U)
+#define RTC_APB_REQUEST_ACCESS_RW(x)                   (((uint32_t)(((uint32_t)(x)) << RTC_APB_REQUEST_ACCESS_RW_SHIFT)) & RTC_APB_REQUEST_ACCESS_RW_MASK)
+
+/*! @name IRQ_FLAG - RTC_APB IRQ_FLAG Access register */
+#define RTC_APB_IRQ_FLAG_READ_MASK                     (0x1U)
+#define RTC_APB_IRQ_FLAG_READ_SHIFT                    (0U)
+#define RTC_APB_IRQ_FLAG_READ(x)                       (((uint32_t)(((uint32_t)(x))/* << RTC_APB_IRQ_FLAG_READ_SHIFT*/)) & RTC_APB_IRQ_FLAG_READ_MASK)
+#define RTC_APB_IRQ_FLAG_WRITE_MASK                    (0x2U)
+#define RTC_APB_IRQ_FLAG_WRITE_SHIFT                   (1U)
+#define RTC_APB_IRQ_FLAG_WRITE(x)                      (((uint32_t)(((uint32_t)(x)) << RTC_APB_IRQ_FLAG_WRITE_SHIFT)) & RTC_APB_IRQ_FLAG_WRITE_MASK)
+
+
+
+
+
+/*!
+ * @}
+ */ /* end of group RTC_APB_Register_Masks */
+
+/*!
+ * @addtogroup RTC_Register_Masks RTC Register Masks
+ * @{
+ */
+/* Bit field of RTC indirect Access Register */
+#define RTC_STATUS_ADDR                     0x00
+#define RTC_CTRL_ADDR                       0x01
+#define RTC_CLK_CTRL_ADDR                   0x02
+#define RTC_IRQ_CTRL_ADDR                   0x08
+#define RTC_IRQ_MASK_ADDR                   0x09
+#define RTC_IRQ_FLAG_ADDR                   0x0A
+#define RTC_CALENDAR_CTRL_ADDR              0x10
+#define RTC_CALENDAR_TIME_ADDR              0x12
+#define RTC_CALENDAR_DATE_ADDR              0x13
+#define RTC_ALARM_CTRL_ADDR                 0x18
+#define RTC_ALARM_TIME_ADDR                 0x1A
+#define RTC_ALARM_DATE_ADDR                 0x1B
+#define RTC_TIMER_CTRL_ADDR                 0x20
+#define RTC_TIMER_INIT_ADDR                 0x21
+#define RTC_TIMER_VALUE_ADDR                0x22
+#define RTC_CLKIN_DIV_ADDR                  0x28
+#define RTC_REF_CLK_CONF_ADDR               0x2A
+#define RTC_TEST_ADDR                       0x30
+
+/*! @name SR - RTC Status register */
+#define RTC_SR_INT_RTC_MASK                 (0x1U)
+#define RTC_SR_INT_RTC_SHIFT                (0U)
+#define RTC_SR_INT_RTC(x)                   (((uint32_t)(((uint32_t)(x))/* << RTC_SR_INT_RTC_SHIFT*/)) & RTC_SR_INT_RTC_MASK)
+
+/*! @name CR - RTC Control register */
+#define RTC_CR_STANDBY_MASK                  (0x1U)
+#define RTC_CR_STANDBY_SHIFT                 (0U)
+#define RTC_CR_STANDBY(x)                    (((uint32_t)(((uint32_t)(x))/* << RTC_CR_STANDBY_SHIFT*/)) & RTC_CR_STANDBY_MASK)
+#define RTC_CR_CALIBRATION_EN_MASK           (0x10U)
+#define RTC_CR_CALIBRATION_EN_SHIFT          (4U)
+#define RTC_CR_CALIBRATION_EN(x)             (((uint32_t)(((uint32_t)(x)) << RTC_CR_CALIBRATION_EN_SHIFT)) & RTC_CR_CALIBRATION_EN_MASK)
+#define RTC_CR_SOFT_RST_MASK                 (0x100U)
+#define RTC_CR_SOFT_RST_SHIFT                (8U)
+#define RTC_CR_SOFT_RST(x)                   (((uint32_t)(((uint32_t)(x)) << RTC_CR_SOFT_RST_SHIFT)) & RTC_CR_SOFT_RST_MASK)
+
+/*! @name CCR - RTC Clock Control register */
+#define RTC_CCR_CKOUT_STANDBY_MASK           (0x1U)
+#define RTC_CCR_CKOUT_STANDBY_SHIFT          (0U)
+#define RTC_CCR_CKOUT_STANDBY(x)             (((uint32_t)(((uint32_t)(x))/* << RTC_CCR_CKOUT_STANDBY_SHIFT*/)) & RTC_CCR_CKOUT_STANDBY_MASK)
+#define RTC_CCR_DIV_AUTOCAL_MASK             (0x1000U)
+#define RTC_CCR_DIV_AUTOCAL_SHIFT            (12U)
+#define RTC_CCR_DIV_AUTOCAL(x)               (((uint32_t)(((uint32_t)(x)) << RTC_CCR_DIV_AUTOCAL_SHIFT)) & RTC_CCR_DIV_AUTOCAL_MASK)
+#define RTC_CCR_DIV_COMP_MASK                (0x1F0000U)
+#define RTC_CCR_DIV_COMP_SHIFT               (16U)
+#define RTC_CCR_DIV_COMP(x)                  (((uint32_t)(((uint32_t)(x)) << RTC_CCR_DIV_COMP_SHIFT)) & RTC_CCR_DIV_COMP_MASK)
+
+/*! @name ICR - RTC IRQ Control register */
+/*
+  00  INT_RTC high;
+  01  INT_RTC low;
+  10; INT_RTC high pulse with duration of 1 CKIN cycle
+  11; INT_RTC low pulse with duration of 1 CKIN cycle
+*/
+#define RTC_ICR_FORM_MASK                    (0x3U)
+#define RTC_ICR_FORM_SHIFT                   (0U)
+#define RTC_ICR_FORM(x)                      (((uint32_t)(((uint32_t)(x))/* << RTC_ICR_FORM_SHIFT*/)) & RTC_ICR_FORM_MASK)
+
+/*! @name IMR - RTC IRQ MASK register */
+#define RTC_IMR_ALARM_MASK                   (0x1U)
+#define RTC_IMR_ALARM_SHIFT                  (0U)
+#define RTC_IMR_ALARM(x)                     (((uint32_t)(((uint32_t)(x))/* << RTC_IMR_ALARM_SHIFT*/)) & RTC_IMR_ALARM_MASK)
+#define RTC_IMR_TIMER_MASK                   (0x10U)
+#define RTC_IMR_TIMER_SHIFT                  (4U)
+#define RTC_IMR_TIMER(x)                     (((uint32_t)(((uint32_t)(x)) << RTC_IMR_TIMER_SHIFT)) & RTC_IMR_TIMER_MASK)
+#define RTC_IMR_CALIBRATION_MASK             (0x1000U)
+#define RTC_IMR_CALIBRATION_SHIFT            (12U)
+#define RTC_IMR_CALIBRATION(x)               (((uint32_t)(((uint32_t)(x)) << RTC_IMR_CALIBRATION_SHIFT)) & RTC_IMR_CALIBRATION_MASK)
+
+/*! @name IFR - RTC IRQ Flag register */
+#define RTC_IFR_ALARM_MASK                   (0x1U)
+#define RTC_IFR_ALARM_SHIFT                  (0U)
+#define RTC_IFR_ALARM(x)                     (((uint32_t)(((uint32_t)(x))/* << RTC_IFR_ALARM_SHIFT*/)) & RTC_IFR_ALARM_MASK)
+#define RTC_IFR_TIMER_MASK                   (0x10U)
+#define RTC_IFR_TIMER_SHIFT                  (4U)
+#define RTC_IFR_TIMER(x)                     (((uint32_t)(((uint32_t)(x)) << RTC_IFR_TIMER_SHIFT)) & RTC_IFR_TIMER_MASK)
+#define RTC_IFR_CALIBRATION_MASK             (0x1000U)
+#define RTC_IFR_CALIBRATION_SHIFT            (12U)
+#define RTC_IFR_CALIBRATION(x)               (((uint32_t)(((uint32_t)(x)) << RTC_IFR_CALIBRATION_SHIFT)) & RTC_IFR_CALIBRATION_MASK)
+
+/*! @name CALENDAR CTRL - RTC CALENDAR Control register */
+#define RTC_CALENDAR_CTRL_STANDBY_MASK       (0x1U)
+#define RTC_CALENDAR_CTRL_STANDBY_SHIFT      (0U)
+#define RTC_CALENDAR_CTRL_STANDBY(x)         (((uint32_t)(((uint32_t)(x))/* << RTC_CALENDAR_CTRL_STANDBY_SHIFT*/)) & RTC_CALENDAR_CTRL_STANDBY_MASK)
+
+/*! @name ALARM_CTRL - RTC Alarm control register */
+#define RTC_ALARM_CTRL_STANDBY_MASK           (0x1U)
+#define RTC_ALARM_CTRL_STANDBY_SHIFT          (0U)
+#define RTC_ALARM_CTRL_STANDBY(x)             (((uint32_t)(((uint32_t)(x))/* << RTC_ALARM_CTRL_STANDBY_SHIFT*/)) & RTC_ALARM_CTRL_STANDBY_MASK)
+#define RTC_ALARM_CTRL_MODE_MASK              (0x10U)
+#define RTC_ALARM_CTRL_MODE_SHIFT             (4U)
+#define RTC_ALARM_CTRL_MODE(x)                (((uint32_t)(((uint32_t)(x)) << RTC_ALARM_CTRL_MODE_SHIFT)) & RTC_ALARM_CTRL_MODE_MASK)
+#define RTC_ALARM_CTRL_CONFIG_MASK            (0xF0000U)
+#define RTC_ALARM_CTRL_CONFIG_SHIFT           (16U)
+#define RTC_ALARM_CTRL_CONFIG(x)              (((uint32_t)(((uint32_t)(x)) << RTC_ALARM_CTRL_CONFIG_SHIFT)) & RTC_ALARM_CTRL_CONFIG_MASK)
+
+/*! @name TIMER - RTC Count down register */
+#define RTC_TIMER_STANDBY_MASK                (0x1U)
+#define RTC_TIMER_STANDBY_SHIFT               (0U)
+#define RTC_TIMER_STANDBY(x)                  (((uint32_t)(((uint32_t)(x))/* << RTC_TIMER_STANDBY_SHIFT*/)) & RTC_TIMER_STANDBY_MASK)
+#define RTC_TIMER_MODE_MASK                   (0x10U)
+#define RTC_TIMER_MODE_SHIFT                  (4U)
+#define RTC_TIMER_MODE(x)                     (((uint32_t)(((uint32_t)(x)) << RTC_TIMER_MODE_SHIFT)) & RTC_TIMER_MODE_MASK)
+
+/*! @name CLKIN_DIV - RTC Clock in divider register */
+#define RTC_CLKIN_DIV_VAL_MASK                (0xFFFFU)
+#define RTC_CLKIN_DIV_VAL_SHIFT               (0U)
+#define RTC_CLKIN_DIV_VAL(x)                  (((uint32_t)(((uint32_t)(x))/* << RTC_CLKIN_DIV_VAL_SHIFT*/)) & RTC_CLKIN_DIV_VAL_MASK)
+
+/*! @name CKREF_CONF - RTC Reference Clock configuration */
+#define RTC_CKREF_CONF_VAL_MASK               (0x3FFFFFU)
+#define RTC_CKREF_CONF_VAL_SHIFT              (0U)
+#define RTC_CKREF_CONF_VAL(x)                 (((uint32_t)(((uint32_t)(x))/* << RTC_CKREF_CONF_VAL_SHIFT*/)) & RTC_CKREF_CONF_VAL_MASK)
+
+
+/*!
+ * @}
+ */ /* end of group RTC_Register_Masks */
+
+
+
+/* RTC_APB - Peripheral instance base addresses */
+/** Peripheral RTC_APB base address */
+#define RTC_APB_BASE                               (SOC_PERI_BASE + 0x08000u)
+/** Peripheral RTC_APB base pointer */
+#define RTC_APB                                    ((RTC_APB_Type *)RTC_APB_BASE)
+/** Array initializer of RTC_APB base addresses */
+#define RTC_APB_BASE_ADDRS                         { RTC_APB_BASE }
+/** Array initializer of RTC_APB base pointers */
+#define RTC_APB_BASE_PTRS                          { RTC_APB }
+
+/*!
+ * @}
+ */ /* end of group RTC_APB_Peripheral_Access_Layer */
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 
 
 /* ----------------------------------------------------------------------------

@@ -50,9 +50,12 @@
 #include "pwm/pwm.h"
 #include "pwm/pwm_ctrl.h"
 
+<<<<<<< HEAD
 /* RTC */
 #include "rtc/rtc.h"
 
+=======
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 /* Soc_ctrl. */
 #include "soc_ctrl/soc_ctrl_pad.h"
 

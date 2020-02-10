@@ -1,3 +1,4 @@
+#!/usr/bin/python3.6
 # Copyright (C) 2017 GreenWaves Technologies
 # All rights reserved.
 
@@ -13,6 +14,18 @@ endif
 include common.mk
 
 QUANT_BITS ?= 8
+define PRINT_IMAGE
+endef
+
+LINK_IMAGE=samples/5223_5.pgm
+
+export GAP_USE_OPENOCD=1
+io=host
+
+# Edit: for determining Python version
+PYV=$(shell python -c "import sys;t='{v[0]}.{v[1]}'.format(v=list(sys.version_info[:2]));sys.stdout.write(t)")
+
+$(info Python version used for this build $(PYV))
 
 $(info Building GAP8 mode with $(QUANT_BITS) bit quantization)
 

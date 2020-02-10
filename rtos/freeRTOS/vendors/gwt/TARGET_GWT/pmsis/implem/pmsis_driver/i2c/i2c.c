@@ -29,6 +29,10 @@
  */
 
 #include "pmsis_driver/i2c/i2c_internal.h"
+<<<<<<< HEAD
+=======
+#include DEFAULT_MALLOC_INC
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 #include "pmsis_driver/pmsis_fc_event.h"
 #include "pmsis_hal/pmsis_hal.h"
 

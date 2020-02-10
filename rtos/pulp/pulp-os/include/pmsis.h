@@ -39,10 +39,18 @@
 #include "pmsis/chips/gap8/perf.h"
 #endif
 #include "pmsis/rtos/os_frontend_api/pmsis_time.h"
+<<<<<<< HEAD
 #include "pmsis/rtos/os_frontend_api/freq.h"
 #include "pmsis/rtos/malloc/cl_l1_malloc.h"
 #include "pmsis/rtos/malloc/l2_malloc.h"
 #include "pmsis/rtos/malloc/fc_l1_malloc.h"
+=======
+#include "pmsis/rtos/os_frontend_api/pmsis_freq.h"
+#include "pmsis/rtos/malloc/pmsis_malloc.h"
+#include "pmsis/rtos/malloc/pmsis_l1_malloc.h"
+#include "pmsis/rtos/malloc/pmsis_l2_malloc.h"
+#include "pmsis/rtos/malloc/pmsis_fc_tcdm_malloc.h"
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 #include "pmsis/drivers/perf.h"
 #include "pmsis/drivers/hyperbus.h"
 #include "pmsis/drivers/cpi.h"

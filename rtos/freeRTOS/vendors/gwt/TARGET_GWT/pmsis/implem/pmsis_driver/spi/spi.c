@@ -31,6 +31,10 @@
 #include "pmsis.h"
 #include "pmsis_driver/pmsis_fc_event.h"
 #include "pmsis_driver/spi/spi_internal.h"
+<<<<<<< HEAD
+=======
+#include "pmsis/rtos/malloc/pmsis_l2_malloc.h"
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 
 /*******************************************************************************
  * Definitions

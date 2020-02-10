@@ -95,6 +95,7 @@ int bsp_spiram_open(struct pi_spiram_conf *conf)
 }
 
 
+<<<<<<< HEAD
 void bsp_spiflash_conf_init(struct pi_spiflash_conf *conf)
 {
   conf->size = CONFIG_SPIFLASH_SIZE;
@@ -112,6 +113,8 @@ int bsp_spiflash_open(struct pi_spiflash_conf *conf)
   return 0;
 }
 
+=======
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD
 
 void bsp_hyperflash_conf_init(struct pi_hyperflash_conf *conf)
 {
@@ -220,4 +223,8 @@ void pi_bsp_init_profile(int profile)
 void pi_bsp_init()
 {
   pi_bsp_init_profile(PI_BSP_PROFILE_DEFAULT);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 3.1.1_dev_001-edit_BitCraze_DD

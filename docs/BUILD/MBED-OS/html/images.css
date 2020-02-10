@@ -1,0 +1,44 @@
+div.image img[src="images/mbed_os_stack.png"] {
+  width:500px;
+}
+
+div.image img[src="images/mbed_layers.png"] {
+  width:400px;
+}
+
+div.image img[src="images/gap8_archi.png"] {
+  width:500px;
+}
+
+div.image img[src="images/GAPUINO_PINOUT.png"] {
+  width:1000px;
+}
+
+div.image img[src="images/single_write_non_qpi.png"] {
+  width:400px;
+}
+
+div.image img[src="images/single_write_read_non_qpi.png"] {
+  width:500px;
+}
+
+div.image img[src="images/single_write_multi_read_non_qpi.png"] {
+  width:500px;
+}
+
+div.image img[src="images/single_write_qpi.png"] {
+  width:300px;
+}
+
+div.image img[src="images/single_write_32_qpi.png"] {
+  width:400px;
+}
+
+div.image img[src="images/single_write_read_qpi.png"] {
+  width:400px;
+}
+
+div.image img[src="images/single_write_complex_read_qpi.png"] {
+  width:600px;
+}
+
