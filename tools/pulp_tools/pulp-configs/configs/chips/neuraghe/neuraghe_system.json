@@ -4,7 +4,6 @@
     "includes": [ "pulp_system_common.json" ],
 
     "vp_class" : "pulp/system",
-    "vp_component":  "utils.composite_impl",
 
     "vp_comps": [ "board" ],
 

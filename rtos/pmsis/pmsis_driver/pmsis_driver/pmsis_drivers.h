@@ -14,7 +14,6 @@
 #include "pmsis/drivers/pad.h"
 #include "pmsis/drivers/perf.h"
 #include "pmsis/drivers/pwm.h"
-#include "pmsis/drivers/rtc.h"
 #include "pmsis/drivers/spi.h"
 #include "pmsis/drivers/uart.h"
 
@@ -26,7 +25,6 @@
 #include "pmsis_driver/perf/perf.h"
 #include "pmsis_driver/pmu/pmsis_pmu.h"
 #include "pmsis_driver/pwm/pwm_internal.h"
-#include "pmsis_driver/rtc/rtc_internal.h"
 #include "pmsis_driver/timer/timer.h"
 #include "pmsis_driver/uart/uart_internal.h"
 

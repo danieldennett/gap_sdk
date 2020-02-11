@@ -58,20 +58,20 @@ void cl_notify_fc_event_handler(void)
  * FC will execute task according to the opaque structure
  * (callback, driver access...)
  * \param        opaque argument for the fc
- * Side effect: Uses cluster mutex
  */
 void pi_cl_send_task_to_fc(pi_task_t *task)
 {
-    hal_eu_mutex_lock(0);
+    //hal_eu_mutex_lock(0);
+    //printf("g_task=%x\n",g_task);
     while(g_task != 0xdeadbeefUL)
     {
         hal_compiler_barrier();
-        hal_eu_evt_mask_wait_and_clr(1<<FC_NOTIFY_CLUSTER_EVENT);
+        //hal_eu_evt_mask_wait_and_clr(FC_NOTIFY_CLUSTER_EVENT);
         hal_compiler_barrier();
     }
     g_task = (uint32_t)task;
     hal_eu_fc_evt_trig_set(CLUSTER_NOTIFY_FC_IRQN, 0);
-    hal_eu_mutex_unlock(0);
+    //hal_eu_mutex_unlock(0);
 }
 
 void mc_fc_delegate_init(void *arg)

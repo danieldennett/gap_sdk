@@ -35,7 +35,7 @@
 #include "pmsis_driver/pmu/pmsis_pmu.h"
 
 #if defined(__SEMIHOSTING__)
-#include "../driver/semihost.h"
+#include "semihost.h"
 #endif  /* __SEMIHOSTING__ */
 
 /* FC & L2 heaps. */
@@ -69,7 +69,7 @@ void system_init(void)
                       (void*) &__heapl2ram_start, (uint32_t) &__heapl2ram_size);
 
     #if defined(PRINTF_UART)
-    printf_uart_init(0);
+    printf_uart_init();
     #endif  /* PRINTF_UART */
 }
 

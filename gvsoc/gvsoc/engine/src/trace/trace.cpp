@@ -31,20 +31,12 @@ vp::component_trace::component_trace(vp::component &top)
 {
 }
 
-void vp::component_trace::reg_trace(trace *trace, int event)
-{
-  this->get_trace_manager()->reg_trace(trace, event, top.get_path(), trace->get_name());
-}
-
 void vp::component_trace::new_trace(std::string name, trace *trace, trace_level_e level)
 {
   traces[name] = trace;
   trace->level = level;
   trace->comp = static_cast<vp::component *>(&top);
-  trace->name = name;
-  trace->path = top.get_path() + "/" + name;
-
-  this->reg_trace(trace, 0);
+  trace->name = top.get_path() + "/" + name;
 }
 
 void vp::component_trace::new_trace_event(std::string name, trace *trace, int width)
@@ -53,13 +45,10 @@ void vp::component_trace::new_trace_event(std::string name, trace *trace, int wi
   trace->width = width;
   trace->bytes = (width + 7) / 8;
   trace->comp = static_cast<vp::component *>(&top);
-  trace->name = name;
-  trace->path = top.get_path() + "/" + name;
+  trace->name = top.get_path() + "/" + name;
   trace->pending_timestamp = -1;
   trace->buffer = new uint8_t[trace->bytes];
   trace->buffer2 = new uint8_t[trace->bytes];
-
-  this->reg_trace(trace, 1);
 }
 
 void vp::component_trace::new_trace_event_real(std::string name, trace *trace)
@@ -69,48 +58,41 @@ void vp::component_trace::new_trace_event_real(std::string name, trace *trace)
   trace->bytes = 8;
   trace->is_real = true;
   trace->comp = static_cast<vp::component *>(&top);
-  trace->name = name;
-  trace->path = top.get_path() + "/" + name;
+  trace->name = top.get_path() + "/" + name;
   trace->pending_timestamp = -1;
   trace->buffer = new uint8_t[trace->bytes];
   trace->buffer2 = new uint8_t[trace->bytes];
-
-  this->reg_trace(trace, 1);
 }
 
 void vp::component_trace::new_trace_event_string(std::string name, trace *trace)
 {
   trace_events[name] = trace;
   trace->comp = static_cast<vp::component *>(&top);
-  trace->name = name;
-  trace->path = top.get_path() + "/" + name;
+  if (name[0] != '/')
+    trace->name = top.get_path() + "/" + name;
+  else
+    trace->name = name;
 
   trace->is_string = true;
   trace->pending_timestamp = -1;
   trace->bytes = 0;
   trace->buffer = NULL;
   trace->buffer2 = NULL;
-
-  this->reg_trace(trace, 1);
 }
 
 void vp::component_trace::post_post_build()
 {
   trace_manager = (vp::trace_engine *)top.get_service("trace");
+  for (auto& x: traces) {
+    x.second->trace_manager = trace_manager;
+    trace_manager->reg_trace(x.second, 0, top.get_path(), x.first);
+  }
   for (auto& x: trace_events) {
     x.second->trace_manager = trace_manager;
     trace_manager->reg_trace(x.second, 1, top.get_path(), x.first);
   }
 }
 
-
-#ifdef VP_TRACE_ACTIVE
-bool vp::trace::get_active(int level)
-{
-  return is_active && this->comp->traces.get_trace_manager()->get_trace_level() >= level;
-}
-#endif
-    
 void vp::trace::dump_header()
 {
   int64_t time = -1;
@@ -122,43 +104,20 @@ void vp::trace::dump_header()
   }
 
   int max_trace_len = comp->traces.get_trace_manager()->get_max_path_len();
-  fprintf(this->trace_file, "%ld: %ld: [\033[34m%-*.*s\033[0m] ", time, cycles, max_trace_len, max_trace_len, path.c_str());
+  fprintf(this->trace_file, "%ld: %ld: [\033[34m%-*.*s\033[0m] ", time, cycles, max_trace_len, max_trace_len, name.c_str());
 }
 
 void vp::trace::dump_warning_header()
 {
   int max_trace_len = comp->traces.get_trace_manager()->get_max_path_len();
-  fprintf(this->trace_file, "%ld: %ld: [\033[31m%-*.*s\033[0m] ", comp->get_clock()->get_time(), comp->get_clock()->get_cycles(), max_trace_len, max_trace_len, path.c_str());
+  fprintf(this->trace_file, "%ld: %ld: [\033[31m%-*.*s\033[0m] ", comp->get_clock()->get_time(), comp->get_clock()->get_cycles(), max_trace_len, max_trace_len, name.c_str());
 }
 
 void vp::trace::dump_fatal_header()
 {
-  fprintf(this->trace_file, "[\033[31m%s\033[0m] ", path.c_str());
+  fprintf(this->trace_file, "[\033[31m%s\033[0m] ", name.c_str());
 }
 
-
-
-void vp::trace::set_active(bool active)
-{
-    this->is_active = active;
-
-    for (auto x: this->callbacks)
-    {
-        x();
-    }
-}
-
-
-
-void vp::trace::set_event_active(bool active)
-{
-    this->is_event_active = active;
-
-    for (auto x: this->callbacks)
-    {
-        x();
-    }
-}
 
 
 char *vp::trace_engine::get_event_buffer(int bytes)
@@ -169,12 +128,8 @@ char *vp::trace_engine::get_event_buffer(int bytes)
 
     if (current_buffer && bytes > TRACE_EVENT_BUFFER_SIZE - current_buffer_size)
     {
-      if ((unsigned int)(TRACE_EVENT_BUFFER_SIZE - current_buffer_size) > sizeof(vp::trace *))
-        *(vp::trace **)(current_buffer + current_buffer_size) = NULL;
-
+      *(vp::trace **)(current_buffer + current_buffer_size) = NULL;
       ready_event_buffers.push_back(current_buffer);
-      current_buffer = NULL;
-
       pthread_cond_broadcast(&cond);
     }
 
@@ -209,20 +164,12 @@ void vp::trace_engine::stop()
 
 void vp::trace_engine::flush()
 {
-  // Flush only the events until the current timestamp as we may resume
-  // the execution right after
-  this->check_pending_events(this->get_time());
-
   if (current_buffer_size)
   {
     pthread_mutex_lock(&mutex);
-
-    if (current_buffer)
-    {
-        *(vp::trace **)(current_buffer + current_buffer_size) = NULL;
-        ready_event_buffers.push_back(current_buffer);
-        current_buffer = NULL;
-    }
+    *(vp::trace **)(current_buffer + current_buffer_size) = NULL;
+    ready_event_buffers.push_back(current_buffer);
+    current_buffer = NULL;
     pthread_cond_broadcast(&cond);
     pthread_mutex_unlock(&mutex);
   }
@@ -231,9 +178,6 @@ void vp::trace_engine::flush()
 
 void vp::trace_engine::dump_event_to_buffer(vp::trace *trace, int64_t timestamp, uint8_t *event, int bytes, bool include_size)
 {
-  if (!this->global_enable)
-    return;
-
   uint8_t flags = 0;
   int size = bytes + sizeof(trace) + sizeof(timestamp) + 1;
   if (include_size)
@@ -326,7 +270,6 @@ void vp::trace_engine::dump_event_pulse(vp::trace *trace, int64_t timestamp, int
 void vp::trace_engine::check_pending_events(int64_t timestamp)
 {
   vp::trace *trace = this->first_pending_event;
-
   while (trace && (timestamp == -1 || trace->pending_timestamp <= timestamp))
   {
     this->dump_event_to_buffer(trace, trace->pending_timestamp, trace->buffer, trace->bytes);
@@ -338,7 +281,7 @@ void vp::trace_engine::check_pending_events(int64_t timestamp)
     trace->prev = NULL;
 }
 
-vp::trace *vp::trace_engine::get_trace_from_path(std::string path)
+vp::trace *vp::trace_engine::get_trace(std::string path)
 {
   return this->traces_map[path];
 }
@@ -431,7 +374,8 @@ void vp::trace_engine::vcd_routine()
 
     pthread_mutex_unlock(&this->mutex);
 
-    while (event_buffer - event_buffer_start < (int)(TRACE_EVENT_BUFFER_SIZE - sizeof(vp::trace *)))
+    int size = 0;
+    while (size < TRACE_EVENT_BUFFER_SIZE)
     {
       int64_t timestamp;
       uint8_t flags;
@@ -481,6 +425,8 @@ void vp::trace_engine::vcd_routine()
 
       memcpy((void *)&event, (void *)event_buffer, bytes);
       event_buffer += bytes;
+
+      size += sizeof(trace) + bytes;
 
       if (trace->event_trace)
       {

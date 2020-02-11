@@ -1,5 +1,4 @@
 {
   "version": 1,
-  "vp_class": "vendor/dolphin/rtc",
-  "vp_component":  "vendor/dolphin/rtc_impl"
+  "vp_class": "vendor/dolphin/rtc"
 }

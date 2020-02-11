@@ -8,10 +8,6 @@ VP_MAKEFILE_LIST = $(addsuffix /Makefile,$(VP_DIRS))
 CPP=g++
 CC=gcc
 
-ifndef VERBOSE
-V = @
-endif
-
 VP_COMP_PYBIND_FLAGS := $(shell python3-config --includes)
 
 VP_COMP_CFLAGS=-MMD -MP -O2 -g -fpic -D__GVSOC__=1 -I$(INSTALL_DIR)/include $(VP_COMP_PYBIND_FLAGS)
@@ -64,29 +60,24 @@ $(eval $(1)_OBJS = $(patsubst %.cc, $(VP_BUILD_DIR)/$(1)/%.o, $(patsubst %.c, $(
 -include $($(1)_OBJS:.o=.d)
 
 $(VP_BUILD_DIR)/$(1)/%.o: %.cpp $($(1)_DEPS)
-	@echo "CXX $$<"
 	@mkdir -p `dirname $$@`
-	$(V)$(CPP) -c $$< -o $$@ $($(1)_CFLAGS) $($(1)_CPPFLAGS) $(VP_COMP_CFLAGS) $(VP_COMP_CPPFLAGS)
+	$(CPP) -c $$< -o $$@ $($(1)_CFLAGS) $($(1)_CPPFLAGS) $(VP_COMP_CFLAGS) $(VP_COMP_CPPFLAGS)
 
 $(VP_BUILD_DIR)/$(1)/%.o: %.cc $($(1)_DEPS)
-	@echo "CXX $$<"
 	@mkdir -p `dirname $$@`
-	$(V)$(CPP) -c $$< -o $$@ $($(1)_CFLAGS) $($(1)_CPPFLAGS) $(VP_COMP_CFLAGS) $(VP_COMP_CPPFLAGS)
+	$(CPP) -c $$< -o $$@ $($(1)_CFLAGS) $($(1)_CPPFLAGS) $(VP_COMP_CFLAGS) $(VP_COMP_CPPFLAGS)
 
 $(VP_BUILD_DIR)/$(1)/%.o: %.c $($(1)_DEPS)
-	@echo "CC $$<"
 	@mkdir -p `dirname $$@`
-	$(V)$(CC) -c $$< -o $$@ $($(1)_CFLAGS) $(VP_COMP_CFLAGS)
+	$(CC) -c $$< -o $$@ $($(1)_CFLAGS) $(VP_COMP_CFLAGS)
 
 
-$(VP_BUILD_DIR)/$(1)$(VP_COMP_EXT): $($(1)_OBJS) $($(1)_DEPS) $(INSTALL_DIR)/lib/libpulpvp.so
-	@echo "LD $$<"
+$(VP_BUILD_DIR)/$(1)$(VP_COMP_EXT): $($(1)_OBJS) $($(1)_DEPS)
 	@mkdir -p `dirname $$@`
-	$(V)$(CPP) $($(1)_OBJS) -o $$@ $($(1)_CFLAGS) $(VP_COMP_CFLAGS) $($(1)_LDFLAGS) $(VP_COMP_LDFLAGS) $(VP_COMP_STD_LDFLAGS)
+	$(CPP) $($(1)_OBJS) -o $$@ $($(1)_CFLAGS) $(VP_COMP_CFLAGS) $($(1)_LDFLAGS) $(VP_COMP_LDFLAGS) $(VP_COMP_STD_LDFLAGS)
 
 $(VP_PY_INSTALL_PATH)/$(1)$(VP_COMP_EXT): $(VP_BUILD_DIR)/$(1)$(VP_COMP_EXT)
-	@echo "CP $$<"
-	$(V)install -D $$^ $$@
+	install -D $$^ $$@
 
 VP_INSTALL_TARGETS += $(VP_PY_INSTALL_PATH)/$(1)$(VP_COMP_EXT)
 
@@ -101,29 +92,24 @@ $(eval $(1)_DBG_OBJS = $(patsubst %.cc, $(VP_BUILD_DIR)/$(1)/debug/%.o, $(patsub
 -include $($(1)_DBG_OBJS:.o=.d)
 
 $(VP_BUILD_DIR)/$(1)/debug/%.o: %.cpp $($(1)_DEPS)
-	@echo "CXX DBG $$<"
 	@mkdir -p `dirname $$@`
-	$(V)$(CPP) -c $$< -o $$@ $($(1)_CFLAGS) $(VP_COMP_CFLAGS) $($(1)_CPPFLAGS) $(VP_COMP_CPPFLAGS) -DVP_TRACE_ACTIVE=1
+	$(CPP) -c $$< -o $$@ $($(1)_CFLAGS) $(VP_COMP_CFLAGS) $($(1)_CPPFLAGS) $(VP_COMP_CPPFLAGS) -DVP_TRACE_ACTIVE=1
 
 $(VP_BUILD_DIR)/$(1)/debug/%.o: %.cc $($(1)_DEPS)
-	@echo "CXX DBG $$<"
 	@mkdir -p `dirname $$@`
-	$(V)$(CPP) -c $$< -o $$@ $($(1)_CFLAGS) $(VP_COMP_CFLAGS) $($(1)_CPPFLAGS) $(VP_COMP_CPPFLAGS) -DVP_TRACE_ACTIVE=1
+	$(CPP) -c $$< -o $$@ $($(1)_CFLAGS) $(VP_COMP_CFLAGS) $($(1)_CPPFLAGS) $(VP_COMP_CPPFLAGS) -DVP_TRACE_ACTIVE=1
 
 $(VP_BUILD_DIR)/$(1)/debug/%.o: %.c $($(1)_DEPS)
-	@echo "CC DBG $$<"
 	@mkdir -p `dirname $$@`
-	$(V)$(CC) -c $$< -o $$@ $($(1)_CFLAGS) $(VP_COMP_CFLAGS) -DVP_TRACE_ACTIVE=1
+	$(CC) -c $$< -o $$@ $($(1)_CFLAGS) $(VP_COMP_CFLAGS) -DVP_TRACE_ACTIVE=1
 
 
-$(VP_BUILD_DIR)/debug/$(1)$(VP_COMP_EXT): $($(1)_DBG_OBJS) $($(1)_DEPS) $(INSTALL_DIR)/lib/libpulpvp-debug.so
-	@echo "LD DBG $$<"
+$(VP_BUILD_DIR)/debug/$(1)$(VP_COMP_EXT): $($(1)_DBG_OBJS) $($(1)_DEPS)
 	@mkdir -p `dirname $$@`
-	$(V)$(CPP) $($(1)_DBG_OBJS) -o $$@ $($(1)_CFLAGS) $(VP_COMP_CFLAGS) $($(1)_LDFLAGS) $(VP_COMP_LDFLAGS) $(VP_COMP_DBG_LDFLAGS)
+	$(CPP) $($(1)_DBG_OBJS) -o $$@ $($(1)_CFLAGS) $(VP_COMP_CFLAGS) $($(1)_LDFLAGS) $(VP_COMP_LDFLAGS) $(VP_COMP_DBG_LDFLAGS)
 
 $(VP_PY_INSTALL_PATH)/debug/$(1)$(VP_COMP_EXT): $(VP_BUILD_DIR)/debug/$(1)$(VP_COMP_EXT)
-	@echo "CP DBG $$<"
-	$(V)install -D $$^ $$@
+	install -D $$^ $$@
 
 VP_INSTALL_TARGETS += $(VP_PY_INSTALL_PATH)/debug/$(1)$(VP_COMP_EXT)
 
@@ -134,8 +120,7 @@ endef
 define declare_component
 
 $(VP_PY_INSTALL_PATH)/$(1).py: $(1).py
-	@echo "CP $<"
-	$(V)install -D $$^ $$@
+	install -D $$^ $$@
 
 VP_INSTALL_TARGETS += $(VP_PY_INSTALL_PATH)/$(1).py
 
@@ -145,8 +130,7 @@ endef
 define declareInstallFile
 
 $(INSTALL_DIR)/include/$(1): $(1)
-	@echo "CP $<"
-	$(V)install -D $(1) $$@
+	install -D $(1) $$@
 
 VP_INSTALL_HEADERS += $(INSTALL_DIR)/include/$(1)
 
@@ -163,7 +147,7 @@ $(foreach file, $(VP_HEADERS), $(eval $(call declareInstallFile,$(file))))
 
 
 
-build: $(VP_INSTALL_HEADERS) $(VP_INSTALL_TARGETS)
+vp_build: $(VP_INSTALL_HEADERS) $(VP_INSTALL_TARGETS)
 	find $(VP_PY_INSTALL_PATH) -type d -exec touch {}/__init__.py \;
 
 vp_clean:

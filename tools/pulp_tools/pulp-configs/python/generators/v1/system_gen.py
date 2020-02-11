@@ -60,8 +60,7 @@ def get_config(tp):
 
   system.system_tree = Empty_Component(OrderedDict([
       ('includes', [ "pulp_system_common.json" ]),
-      ('vp_class', "pulp/system"),
-      ('vp_component', 'utils.composite_impl')
+      ('vp_class', "pulp/system")
   ]))
 
 
@@ -151,7 +150,6 @@ def get_config(tp):
 
   system.system_tree.board = Component(OrderedDict([
       ('vp_class', "pulp/board"),
-      ('vp_component', 'utils.composite_impl'),
       ('name', board_name)
   ]))
 
@@ -161,7 +159,6 @@ def get_config(tp):
 
   system.system_tree.board.dpi_clock = Component(OrderedDict([
       ('vp_class', "vp/clock_domain"),
-      ('vp_component', 'vp.clock_domain_impl'),
       ('frequency', 50000000)
   ]))
 
@@ -180,7 +177,6 @@ def get_config(tp):
 
   system.system_tree.board.ref_clock_clock = Component(OrderedDict([
   ('vp_class', "vp/clock_domain"),
-  ('vp_component', 'vp.clock_domain_impl'),
   ('frequency', 65536)
   ]))
 
@@ -196,10 +192,9 @@ def get_config(tp):
     system.system_tree.board.ref_clock_clock.out = system.system_tree.board.chip.ref_clock_engine
 
 
-  if chip == 'wolfe' or chip == 'vega' or chip == 'gap9' or chip == 'gap9_v2':
+  if chip == 'wolfe' or chip == 'vega':
     system.system_tree.board.bootsel = Component(OrderedDict([
       ('vp_class', "board/switch"),
-      ('vp_component', 'board.switch_impl'),
       ('value', "0")
     ]))
 
@@ -214,7 +209,6 @@ def get_config(tp):
 
     system.system_tree.board.ddr_clock = Component(OrderedDict([
       ('vp_class', "vp/clock_domain"),
-      ('vp_component', 'vp.clock_domain_impl'),
       ('frequency', tp.get_child_str("ddr/frequency"))
     ]))
 

@@ -15,8 +15,14 @@ FILE_FILTER2 = coef/Cifar10_Filter2.dat
 
 FLASH_FILES = $(FILE_BIAS0) $(FILE_BIAS1) $(FILE_BIAS2) $(FILE_FILTER0) $(FILE_FILTER1) $(FILE_FILTER2)
 
-READFS_FILES := $(FLASH_FILES)
+PLPBRIDGE_FLAGS += -f $(FLASH_FILES)
 
-PLPBRIDGE_FLAGS += -f
+# For GVSOC
+override runner_args += --config-opt=flash/fs/files=$(CURDIR)/$(FILE_BIAS0) \
+                        --config-opt=flash/fs/files=$(CURDIR)/$(FILE_BIAS1) \
+                        --config-opt=flash/fs/files=$(CURDIR)/$(FILE_BIAS2) \
+                        --config-opt=flash/fs/files=$(CURDIR)/$(FILE_FILTER0) \
+                        --config-opt=flash/fs/files=$(CURDIR)/$(FILE_FILTER1) \
+                        --config-opt=flash/fs/files=$(CURDIR)/$(FILE_FILTER2)
 
 include $(GAP_SDK_HOME)/tools/rules/pmsis_rules.mk

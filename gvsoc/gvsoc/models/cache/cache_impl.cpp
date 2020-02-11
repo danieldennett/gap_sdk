@@ -42,7 +42,7 @@ class Cache : public vp::component {
 
 public:
 
-  Cache(js::config *config);
+  Cache(const char *config);
 
   unsigned int nb_ways_bits = 2;
   unsigned int line_size_bits = 5;
@@ -479,7 +479,7 @@ void Cache::flush_line_addr_sync(void *__this, uint32_t addr)
 
 
 
-Cache::Cache(js::config *config)
+Cache::Cache(const char *config)
 : vp::component(config)
 {
 
@@ -487,7 +487,7 @@ Cache::Cache(js::config *config)
 
 
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new Cache(config);
+  return (void *)new Cache(config);
 }

@@ -771,7 +771,7 @@ class udma : public vp::component
 
 public:
 
-  udma(js::config *config);
+  udma(const char *config);
 
   int build();
   void start();
@@ -823,6 +823,6 @@ private:
 };
 
 
-#include "spim/udma_spim_v3.hpp"
+#include "udma_spim_v3.hpp"
 
 #endif

@@ -31,6 +31,7 @@
 #include "vp/itf/hyper.hpp"
 #include "vp/itf/wire.hpp"
 #include "archi/utils.h"
+#include "archi/udma/hyper/udma_hyper_v1.h"
 
 #define REGS_AREA_SIZE 1024
 
@@ -47,7 +48,7 @@ typedef enum
 class Hyperram : public vp::component
 {
 public:
-  Hyperram(js::config *config);
+  Hyperram(const char *config);
 
   void handle_access(int reg_access, int address, int read, uint8_t data);
 
@@ -115,7 +116,7 @@ void Hyperram::handle_access(int reg_access, int address, int read, uint8_t data
 
 
 
-Hyperram::Hyperram(js::config *config)
+Hyperram::Hyperram(const char *config)
 : vp::component(config)
 {
 }
@@ -137,6 +138,7 @@ void Hyperram::sync_cycle(void *__this, int data)
       _this->state = HYPERBUS_STATE_DATA;
       _this->current_address = (_this->ca.low_addr | (_this->ca.high_addr << 3)) & ~1;
 
+      _this->current_address = ARCHI_REG_FIELD_GET(_this->current_address, 0, REG_MBR_WIDTH);
       _this->reg_access = _this->ca.address_space == 1;
 
       _this->trace.msg(vp::trace::LEVEL_TRACE, "Received command header (reg_access: %d, addr: 0x%x, read: %d)\n", _this->ca.address_space, _this->current_address, _this->ca.read);
@@ -184,7 +186,7 @@ int Hyperram::build()
 
 
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new Hyperram(config);
+  return (void *)new Hyperram(config);
 }

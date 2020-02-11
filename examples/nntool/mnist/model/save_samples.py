@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3.6
 # PYTHON_ARGCOMPLETE_OK
 #
 
@@ -55,4 +55,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

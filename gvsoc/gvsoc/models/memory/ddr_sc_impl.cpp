@@ -48,7 +48,7 @@ class ddr : public vp::component
   friend class gvsoc_tlm_br;
 
 public:
-  ddr(js::config *config);
+  ddr(const char *config);
 
   int build();
   void start();
@@ -92,7 +92,7 @@ private:
 
 #include "ems_gvsoc_tlm_br.h"
 
-ddr::ddr(js::config *config) : vp::component(config)
+ddr::ddr(const char *config) : vp::component(config)
 {
 }
 
@@ -198,8 +198,8 @@ void ddr::stop()
   delete sc_bridge;
 }
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new ddr(config);
+  return (void *)new ddr(config);
 }
 

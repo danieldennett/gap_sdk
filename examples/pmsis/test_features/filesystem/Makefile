@@ -15,14 +15,10 @@ FLASH_FILE_1 = Makefile
 
 FLASH_FILES = $(FLASH_FILE_0) #$(FLASH_FILE_1)
 
-# list of files to include in the ReadFS.
-READFS_FILES := $(FLASH_FILES)
+PLPBRIDGE_FLAGS += -f $(FLASH_FILES)
 
-# list of directories to include in the ReadFS.
-READFS_DIRS :=
-
-# To flash image before run, add -f flag to the bridge.
-PLPBRIDGE_FLAGS += -f
-
+# For GVSOC
+override runner_args += --config-opt=flash/fs/files=$(CURDIR)/$(FLASH_FILE_0)# \
+                        --config-opt=flash/fs/files=$(CURDIR)/$(FLASH_FILE_1)
 
 include $(GAP_SDK_HOME)/tools/rules/pmsis_rules.mk

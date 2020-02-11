@@ -28,7 +28,7 @@ class cluster : public vp::component
 
 public:
 
-  cluster(js::config *config);
+  cluster(const char *config);
 
   int build();
   void start();
@@ -39,7 +39,7 @@ private:
 
 };
 
-cluster::cluster(js::config *config)
+cluster::cluster(const char *config)
 : vp::component(config)
 {
 
@@ -61,7 +61,7 @@ void cluster::start()
 
 
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new cluster(config);
+  return (void *)new cluster(config);
 }

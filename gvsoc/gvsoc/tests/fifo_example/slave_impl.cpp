@@ -30,7 +30,7 @@ class slave : public vp::component
 
 public:
 
-  slave(js::config *config);
+  slave(const char *config);
 
   int build();
   void start();
@@ -198,12 +198,12 @@ void slave::start()
     bandwidth, mode, switch_mode, latency);
 }
 
-slave::slave(js::config *config)
+slave::slave(const char *config)
 : vp::component(config)
 {
 }
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new slave(config);
+  return (void *)new slave(config);
 }

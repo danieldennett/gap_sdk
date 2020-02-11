@@ -54,7 +54,6 @@ def get_config(tp):
     ('pulp_chip_version', 0),
     ('boot_from_rom', False),
     ('vp_class', "pulp/chip"),
-    ('vp_component', 'utils.composite_impl'),
 
     ('hal_files', [ "hal/chips/%s/pulp.h" % chip_family.replace('-', '_')]),
     ('archi_files', [ "archi/chips/%s/pulp.h" % chip_family, "archi/chips/%s/memory_map.h" % chip_family, "archi/chips/%s/properties.h" % chip_family, "archi/chips/%s/apb_soc.h" % chip_family ]),
@@ -76,7 +75,6 @@ def get_config(tp):
 
   chip.soc_clock = Component(properties=OrderedDict([
     ('vp_class', "vp/clock_domain"),
-    ('vp_component', "vp.clock_domain_impl"),
     ('frequency', 50000000)
   ]))
 
@@ -96,7 +94,6 @@ def get_config(tp):
         get_cluster_name(cid) + '_clock',
         Component(properties=OrderedDict([
           ('vp_class', "vp/clock_domain"),
-          ('vp_component', "vp.clock_domain_impl"),
           ('frequency', 50000000)
         ]))
       )
@@ -212,7 +209,7 @@ def get_config(tp):
               chip.set(name, chip.padframe.new_itf(name + '_pad'))
 
 
-  if chip_name == 'wolfe' or chip_name == 'vega' or chip_name == 'gap9' or chip_name == 'gap9_v2':
+  if chip_name == 'wolfe' or chip_name == 'vega':
     chip.bootsel = chip.soc.bootsel
 
     

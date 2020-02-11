@@ -427,7 +427,7 @@ void udma::trigger_event(int event)
 }
 
 
-udma::udma(js::config *config)
+udma::udma(const char *config)
 : vp::component(config)
 {
 }
@@ -884,8 +884,8 @@ void Udma_queue<T>::push_from_latency(T *cmd)
 
 
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new udma(config);
+  return (void *)new udma(config);
 }
 

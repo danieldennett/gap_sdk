@@ -35,7 +35,7 @@ class fll : public vp::component
 
 public:
 
-  fll(js::config *config);
+  fll(const char *config);
 
   int build();
   void start();
@@ -81,7 +81,7 @@ private:
   vp::io_req *last_pending;
 };
 
-fll::fll(js::config *config)
+fll::fll(const char *config)
 : vp::component(config)
 {
 
@@ -384,7 +384,7 @@ void fll::reset(bool active)
   }
 }
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new fll(config);
+  return (void *)new fll(config);
 }

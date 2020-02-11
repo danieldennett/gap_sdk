@@ -28,7 +28,7 @@ class interleaver : public vp::component
 
 public:
 
-  interleaver(js::config *config);
+  interleaver(const char *config);
 
   int build();
 
@@ -52,7 +52,7 @@ private:
   vp::io_req ts_req;
 };
 
-interleaver::interleaver(js::config *config)
+interleaver::interleaver(const char *config)
 : vp::component(config)
 {
 
@@ -120,11 +120,6 @@ int interleaver::build()
   nb_masters = get_config_int("nb_masters");
   stage_bits = get_config_int("stage_bits");
 
-  if (stage_bits == 0)
-  {
-    stage_bits = log2(nb_slaves);
-  }
-
   bank_mask = (1<<stage_bits) - 1;
 
   out = new vp::io_master *[nb_slaves];
@@ -150,9 +145,9 @@ int interleaver::build()
   return 0;
 }
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new interleaver(config);
+  return (void *)new interleaver(config);
 }
 
 

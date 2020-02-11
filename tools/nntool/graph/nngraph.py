@@ -1,17 +1,12 @@
-# Copyright 2019 GreenWaves Technologies, SAS
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#     http://www.apache.org/licenses/LICENSE-2.0
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Copyright (C) 2019 GreenWaves Technologies
+# All rights reserved.
+
+# This software may be modified and distributed under the terms
+# of the BSD license.  See the LICENSE file for details.
 
 import logging
 import os
-from typing import Generator, Sequence, Union
+from typing import Generator, Iterable, Sequence, Union
 
 from utils.graph import Graph, Node
 
@@ -68,17 +63,13 @@ class NNGraphState():
 
 class NNGraph(Graph):
     def __init__(self, model=None, name=None,
-                 filename=None, value_cache=None,
-                 constant_store=None):
-        # TODO - Value caching disabled
-        del value_cache
+                 filename=None, value_cache=None):
         super().__init__()
 
         self.model = model
 
         self.num_inputs = 0
         self.num_outputs = 0
-        self.node_options = {}
 
         self.graph_state = NNGraphState()
 
@@ -87,7 +78,6 @@ class NNGraph(Graph):
         # disable value cache for now
 #        self.value_cache = value_cache
         self.value_cache = None
-        self.constant_store = constant_store
         self.graph_identity = GraphIdentity(filename)
         self._info = {
             'quantization': None
@@ -128,14 +118,10 @@ class NNGraph(Graph):
         self.load_function(self, file)
 
     def get_in_params(self, name: str) -> set:
-        in_edges = self.in_edges(name)
-        in_edges.sort(key=lambda edge: edge.to_idx)
-        return [edge.params for edge in in_edges]
+        return [edge.params for edge in self.in_edges(name)]
 
     def get_out_params(self, name: str) -> set:
-        out_edges = self.out_edges(name)
-        out_edges.sort(key=lambda edge: edge.from_idx)
-        return [edge.params for edge in out_edges]
+        return [edge.params for edge in self.out_edges(name)]
 
     def inputs(self) -> Generator[Node, None, None]:
         return (node for node in self.nodes() if isinstance(node, InputParameters))
@@ -153,14 +139,10 @@ class NNGraph(Graph):
             return isinstance(self[node_name], OutputParameters)
         return isinstance(node_name, OutputParameters)
 
-    def reset_inout_counts(self):
-        self.num_inputs = 0
-        self.num_outputs = 0
-
-    def add_input(self, dim: Dim) -> str:
+    def add_input(self, c: int, w: int, h: int, order: Iterable) -> str:
         self.num_inputs += 1
         node_name = "input_"+str(self.num_inputs)
-        self.add_node(InputParameters(node_name, dims=dim))
+        self.add_node(InputParameters(node_name, Dim.named(c=c, h=h, w=w, order=order)))
         return node_name
 
     def add_output(self) -> str:

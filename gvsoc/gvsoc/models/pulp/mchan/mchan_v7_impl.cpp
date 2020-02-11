@@ -157,7 +157,7 @@ class mchan : public vp::component
 
 public:
 
-  mchan(js::config *config);
+  mchan(const char *config);
 
   int build();
   void start();
@@ -559,7 +559,7 @@ void mchan::loc_response(void *_this, vp::io_req *req)
 }
 
 
-mchan::mchan(js::config *config)
+mchan::mchan(const char *config)
 : vp::component(config)
 {
   nb_channels = get_config_int("nb_channels");
@@ -1215,7 +1215,7 @@ void Mchan_cmd::init()
   step = 0;
 }
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new mchan(config);
+  return (void *)new mchan(config);
 }

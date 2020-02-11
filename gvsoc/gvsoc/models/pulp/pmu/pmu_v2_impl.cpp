@@ -126,7 +126,7 @@ class pmu : public vp::component
 
 public:
 
-  pmu(js::config *config);
+  pmu(const char *config);
 
   int build();
   void start();
@@ -187,7 +187,7 @@ private:
   vp::reg_32   r_dlc_rdata;
 };
 
-pmu::pmu(js::config *config)
+pmu::pmu(const char *config)
 : vp::component(config)
 {
 
@@ -739,7 +739,7 @@ void pmu::start()
 
 }
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new pmu(config);
+  return (void *)new pmu(config);
 }

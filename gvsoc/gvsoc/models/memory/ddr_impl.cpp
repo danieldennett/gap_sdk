@@ -30,7 +30,7 @@ class ddr : public vp::component
 
 public:
 
-  ddr(js::config *config);
+  ddr(const char *config);
 
   int build();
   void start();
@@ -53,7 +53,7 @@ private:
   vp::io_req *last_pending_reqs = NULL;
 };
 
-ddr::ddr(js::config *config)
+ddr::ddr(const char *config)
 : vp::component(config)
 {
 
@@ -115,8 +115,8 @@ void ddr::start()
 
 }
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new ddr(config);
+  return (void *)new ddr(config);
 }
 

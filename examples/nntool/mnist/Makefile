@@ -8,13 +8,17 @@ ifndef GAP_SDK_HOME
   $(error Source sourceme in gap_sdk first)
 endif
 
-# io=host
+MODEL_PREFIX=Mnist
+ifndef MNIST_BITS
+  MNIST_BITS=8
+endif
 
-include common.mk
+LINK_IMAGE=samples/5223_5.pgm
+# Should be removed once openocd is the default bridge
+export GAP_USE_OPENOCD=1
+io=host
 
-QUANT_BITS ?= 8
-
-$(info Building GAP8 mode with $(QUANT_BITS) bit quantization)
+$(info Building GAP8 mode with $(MNIST_BITS) bit quantization)
 
 # For debugging don't load an image
 # Run the network with zeros
@@ -23,15 +27,15 @@ $(info Building GAP8 mode with $(QUANT_BITS) bit quantization)
 # The training of the model is slightly different depending on
 # the quantization. This is because in 8 bit mode we used signed
 # 8 bit so the input to the model needs to be shifted 1 bit
-ifeq ($(QUANT_BITS),8)
+ifeq ($(MNIST_BITS),8)
   $(info Configure 8 bit model)
-  APP_CFLAGS += -DQUANT_8BIT
+  APP_CFLAGS += -DMNIST_8BIT
   NNTOOL_SCRIPT=model/nntool_script8
   MODEL_SUFFIX = _8BIT
 else
-  ifeq ($(QUANT_BITS),16)
+  ifeq ($(MNIST_BITS),16)
     $(info Configure 16 bit model)
-    APP_CFLAGS += -DQUANT_16BIT
+    APP_CFLAGS += -DMNIST_16BIT
     NNTOOL_SCRIPT=model/nntool_script16
     MODEL_SUFFIX = _16BIT
   else
@@ -39,19 +43,22 @@ else
   endif
 endif
 
-include ../common/model_decl.mk
-include common_rules.mk
+include model_decl.mk
+
+ifdef LINK_IMAGE
+  LINK_IMAGE_HEADER=$(MODEL_BUILD)/image.h
+  LINK_IMAGE_NAME=$(subst .,_,$(subst /,_,$(LINK_IMAGE)))
+  APP_CFLAGS += -DLINK_IMAGE_HEADER="\"$(LINK_IMAGE_HEADER)\"" -DLINK_IMAGE_NAME="$(LINK_IMAGE_NAME)"
+else
+  LINK_IMAGE_HEADER=
+endif
 
 # Here we set the memory allocation for the generated kernels
 # REMEMBER THAT THE L1 MEMORY ALLOCATION MUST INCLUDE SPACE
 # FOR ALLOCATED STACKS!
-CLUSTER_STACK_SIZE=2048
-CLUSTER_SLAVE_STACK_SIZE=1024
-TOTAL_STACK_SIZE=$(shell expr $(CLUSTER_STACK_SIZE) \+ $(CLUSTER_SLAVE_STACK_SIZE) \* 7)
-MODEL_L1_MEMORY=$(shell expr 60000 \- $(TOTAL_STACK_SIZE))
-MODEL_L2_MEMORY=370000
+MODEL_L1_MEMORY=52000
+MODEL_L2_MEMORY=307200
 MODEL_L3_MEMORY=8388608
-
 # hram - HyperBus RAM
 # qspiram - Quad SPI RAM
 MODEL_L3_EXEC=hram
@@ -60,27 +67,44 @@ MODEL_L3_EXEC=hram
 MODEL_L3_CONST=hflash
 
 # use a custom template to switch on the performance checking
-MODEL_GENFLAGS_EXTRA=
+MODEL_GENFLAGS_EXTRA= -c "model/code_template.c"
 
 pulpChip = GAP
 APP = mnist2
 USE_PMSIS_BSP=1
 
-APP_SRCS += $(MODEL_PREFIX).c $(MODEL_COMMON_SRCS) $(MODEL_SRCS)
+APP_SRCS += Mnist.c ImgIO.c $(MODEL_SRCS)
 
-APP_CFLAGS += -g -O1 -mno-memcpy -fno-tree-loop-distribute-patterns -DDONT_DUMP
-APP_CFLAGS += -I. -I$(MODEL_COMMON_INC) -I$(TILER_EMU_INC) -I$(TILER_INC) -I$(TILER_CNN_KERNEL_PATH) -I$(MODEL_BUILD)
-APP_CFLAGS += -DPERF $(MODEL_SIZE_CFLAGS) -DSLAVE_STACK_SIZE=$(CLUSTER_SLAVE_STACK_SIZE) -DSTACK_SIZE=$(CLUSTER_STACK_SIZE)
+APP_CFLAGS += -O3 -s -mno-memcpy -fno-tree-loop-distribute-patterns
+APP_CFLAGS += -I. -I./helpers -I$(TILER_EMU_INC) -I$(TILER_INC) -I$(GEN_PATH) -I$(MODEL_BUILD)
+APP_CFLAGS += -DPERF
 
-READFS_FILES=$(abspath $(MODEL_TENSORS))
-PLPBRIDGE_FLAGS = -f
+ifeq ($(platform),gvsoc)
+  $(info Platform is GVSOC)
+  override runner_args += --config-opt=flash/fs/files=$(realpath $(MODEL_TENSORS))
+else
+  $(info Platform is GAPUINO)
+  PLPBRIDGE_FLAGS = -f $(MODEL_TENSORS)
+endif
 
 ifdef NO_IMAGE
   APP_CFLAGS += -DNO_IMAGE
+else
+  ifndef LINK_IMAGE
+    PLPBRIDGE_FLAGS += -fileIO 15
+  endif
 endif
 
+ifdef LINK_IMAGE
+# all depends on the model and the image header
+all:: model $(LINK_IMAGE_HEADER)
+
+$(LINK_IMAGE_HEADER): $(LINK_IMAGE)
+	xxd -i $< $@
+else
 # all depends on the model
 all:: model
+endif
 
 clean:: clean_model
 
@@ -90,6 +114,6 @@ clean_all: clean clean_train
 
 .PHONY: clean_all
 
-include ../common/model_rules.mk
+include model_rules.mk
 include $(RULES_DIR)/pmsis_rules.mk
 

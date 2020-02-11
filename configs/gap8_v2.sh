@@ -18,6 +18,5 @@ if [ -z "$BOARD_NAME" ]; then
     export BOARD_NAME="gapuino"
 fi
 export GVSOC_CONFIG=$BOARD_NAME
-export PLPBRIDGE_CABLE=ftdi@digilent
 
 source $GAP_SDK_HOME/configs/common.sh

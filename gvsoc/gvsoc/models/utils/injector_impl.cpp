@@ -31,7 +31,7 @@ class injector : public vp::component {
 
 public:
 
-  injector(js::config *config);
+  injector(const char *config);
 
   int build();
   void start();
@@ -53,7 +53,7 @@ private:
 
 };
 
-injector::injector(js::config *config)
+injector::injector(const char *config)
 : vp::component(config)
 {
 
@@ -204,7 +204,7 @@ void injector::start()
   }
 }
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new injector(config);
+  return (void *)new injector(config);
 }

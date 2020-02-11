@@ -5,10 +5,9 @@ from .others import (InputParameters, OutputParameters, MatrixAddParameters,
                      ConcatParameters, ActivationParameters, UpsampleParameters,
                      YoloParameters, SoftMaxParameters, FusionParameters,
                      ReshapeParameters, GroupParameters, UnconvertedOpParameters,
-                     UnknownOpParameters, UnexecutableOpParameters, PadParameters,
-                     TransposeParameters, Transposable)
+                     UnknownOpParameters, UnexecutableOpParameters, PadParameters)
 from .base import (Parameters, FilterLikeParameters, FilterParameters, SingleInputAndOutput,
-                   EdgeParameters, NNEdge, NodeOptions)
+                   EdgeParameters, NNEdge)
 
 VALID_PARAMETERS = {
     "input": InputParameters,
@@ -26,7 +25,6 @@ VALID_PARAMETERS = {
     "reshape": ReshapeParameters,
     "group": GroupParameters,
     "pad": PadParameters,
-    "transpose": TransposeParameters,
     "unknown": UnknownOpParameters,
     "unconverted": UnconvertedOpParameters
 }

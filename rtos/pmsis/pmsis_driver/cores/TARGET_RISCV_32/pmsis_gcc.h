@@ -136,7 +136,8 @@
 __attribute__((always_inline)) __STATIC_INLINE uint32_t __get_CPRIV(void)
 {
   uint32_t result;
-  asm volatile ("csrr %0, 0xC10" : "=r" (result) );
+
+  __ASM volatile ("csrr %0, 0xC10" : "=r" (result) );
   return(result);
 }
 
@@ -147,7 +148,10 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __get_CPRIV(void)
 __attribute__((always_inline)) __STATIC_INLINE void __restore_irq(int irq)
 {
     // We are in machine mode, already mask all interrupt, so just set MIE = irq
-    __builtin_pulp_spr_write(0x300, irq);
+    if(__get_CPRIV())
+        __builtin_pulp_spr_write(0x300, irq);
+    else
+        __builtin_pulp_spr_write(0x000, irq);
 }
 
 /**
@@ -159,7 +163,10 @@ __attribute__((always_inline)) __STATIC_INLINE void __enable_irq(void)
 {
     // We are in machine mode, already mask all interrupt, so just set MIE = 1
     int irq;
-    asm volatile ("csrrs %0, 0x300, %1" : "=r" (irq) : "I" (0x1<<3) );
+    if(__get_CPRIV())
+        __ASM volatile ("csrrs %0, 0x300, %1" : "=r" (irq) : "I" (0x1<<3) );
+    else
+        __ASM volatile ("csrrs %0, 0x000, %1" : "=r" (irq) : "I" (0x1) );
 }
 
 /**
@@ -170,7 +177,10 @@ __attribute__((always_inline)) __STATIC_INLINE void __enable_irq(void)
 __attribute__((always_inline)) __STATIC_INLINE int __disable_irq(void)
 {
     int state;
-    asm volatile ("csrrc %0, 0x300, %1" :  "=r" (state) : "I" (0x1<<3) );
+    if(__get_CPRIV())
+        asm volatile ("csrrc %0, 0x300, %1" :  "=r" (state) : "I" (0x1<<3) );
+    else
+        asm volatile ("csrrc %0, 0x000, %1" :  "=r" (state) : "I" (0x1) );
     return state;
 }
 

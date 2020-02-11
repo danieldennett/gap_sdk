@@ -17,7 +17,7 @@
 #ifndef __EVENTS_H__
 #define __EVENTS_H__
 
-#if defined(__GAP8__)
+#if __GAP8__
 
 #include "properties.h"
 
@@ -34,8 +34,8 @@
 
 /*! @brief FC events */
 #define FC_EVENT_SW(id)                 (id & (NB_SW_EVENTS - 1))
-#define FC_EVENT_DMA_EVT                (8)
-#define FC_EVENT_DMA                    (9)
+//#define FC_EVENT_DMA_EVT              (8)
+//#define FC_EVENT_DMA                  (9)
 #define FC_EVENT_TIMER0                 (10) /* Timer low.  */
 #define SYSTICK_IRQN                    (10)
 #define FC_EVENT_TIMER1                 (11) /* Timer high. */
@@ -48,9 +48,6 @@
 #define FC_EVENT_HP1                    (31)
 
 /*! @name SoC events  */
-/*! @brief Number of FC_Events. */
-#define SOC_EU_NB_FC_EVENTS             (57)
-
 /*! @brief UDMA events */
 /* SPIM */
 #define SOC_EVENT_UDMA_SPIM_RX(id)      ((UDMA_SPIM_ID(id) << UDMA_CHANNEL_NB_EVENTS_LOG2) + UDMA_EVENT_OFFSET_RX)

@@ -1,7 +1,6 @@
 /* PMSIS includes */
 #include "pmsis.h"
 #include "bsp/fs.h"
-#include "bsp/fs/readfs.h"
 #include "bsp/flash/hyperflash.h"
 
 /* Variables used. */
@@ -70,7 +69,7 @@ void open_cluster(struct pi_device *cluster)
 
 void open_filesystem(struct pi_device *flash, struct pi_device *fs)
 {
-    struct pi_readfs_conf conf;
+    struct pi_fs_conf conf;
     struct pi_hyperflash_conf flash_conf;
 
     /* Init & open flash. */
@@ -83,8 +82,8 @@ void open_filesystem(struct pi_device *flash, struct pi_device *fs)
     }
 
     /* Open filesystem on flash. */
-    pi_readfs_conf_init(&conf);
-    conf.fs.flash = flash;
+    pi_fs_conf_init(&conf);
+    conf.flash = flash;
     pi_open_from_conf(fs, &conf);
     if (pi_fs_mount(fs))
     {

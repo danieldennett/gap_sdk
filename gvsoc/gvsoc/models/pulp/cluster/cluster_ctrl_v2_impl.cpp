@@ -41,7 +41,7 @@ class cluster_ctrl : public vp::component
 
 public:
 
-  cluster_ctrl(js::config *config);
+  cluster_ctrl(const char *config);
 
   int build();
   void start();
@@ -69,7 +69,7 @@ private:
   uint32_t dbg_halt_status_sync;
 };
 
-cluster_ctrl::cluster_ctrl(js::config *config)
+cluster_ctrl::cluster_ctrl(const char *config)
 : vp::component(config)
 {
   nb_core = get_config_int("nb_core");
@@ -287,7 +287,7 @@ void cluster_ctrl::reset(bool active)
   }
 }
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new cluster_ctrl(config);
+  return (void *)new cluster_ctrl(config);
 }

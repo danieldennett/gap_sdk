@@ -108,7 +108,7 @@ class riscv_dtm : public vp::component
 
 public:
 
-  riscv_dtm(js::config *config);
+  riscv_dtm(const char *config);
 
   int build();
   void start();
@@ -178,7 +178,7 @@ private:
   uint32_t flags;
 };
 
-riscv_dtm::riscv_dtm(js::config *config)
+riscv_dtm::riscv_dtm(const char *config)
 : vp::component(config)
 {
 
@@ -832,9 +832,9 @@ void riscv_dtm::start()
 {
 }
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new riscv_dtm(config);
+  return (void *)new riscv_dtm(config);
 }
 
 

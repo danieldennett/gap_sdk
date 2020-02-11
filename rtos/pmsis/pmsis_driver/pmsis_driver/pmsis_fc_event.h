@@ -46,7 +46,7 @@
  * APIs
  ******************************************************************************/
 
-#define NB_SOC_EVENTS    ( SOC_EU_NB_FC_EVENTS )
+#define NB_SOC_EVENTS 57
 
 typedef void (*pi_fc_event_handler_t)(void* arg);
 

@@ -128,7 +128,7 @@ void apb_soc_ctrl::start()
 {
 }
 
-extern "C" vp::component *vp_constructor(const char *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new apb_soc_ctrl(config);
+  return (void *)new apb_soc_ctrl(config);
 }

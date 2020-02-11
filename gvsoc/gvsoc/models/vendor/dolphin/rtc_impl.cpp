@@ -34,7 +34,7 @@ class rtc : public vp::component
 
 public:
 
-  rtc(js::config *config);
+  rtc(const char *config);
 
   int build();
   void start();
@@ -123,7 +123,7 @@ private:
 
 
 
-rtc::rtc(js::config *config)
+rtc::rtc(const char *config)
 : vp::component(config)
 {
 
@@ -324,7 +324,6 @@ void rtc::soft_reset()
   this->alarm_date.raw = 0x00000000;
   this->cntdwn_ctrl.raw = 0x00000003;
   this->cntdwn_init = 0xffffffff;
-  this->ctrl_reg.raw = 0;
 }
 
 
@@ -741,7 +740,7 @@ void rtc::start()
 
 
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new rtc(config);
+  return (void *)new rtc(config);
 }

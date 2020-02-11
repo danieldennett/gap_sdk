@@ -1,59 +1,31 @@
 /*
-** ###################################################################
-**     Processors:          GAP8
-**
-**     Compilers:           GNU C Compiler
-**
-**     Reference manual:    riscv-spec-v2.1, January 2017
-**     Version:             rev. 2.9, 2017-07-19
-**
-**     Abstract:
-**         CMSIS Peripheral Access Layer for GAP8
-**
-**     Copyright (c) 2015 - 2018 GreenWave Technologies, Inc.
-**     All rights reserved.
-**
-**     Redistribution and use in source and binary forms, with or without modification,
-**     are permitted provided that the following conditions are met:
-**
-**     o Redistributions of source code must retain the above copyright notice, this list
-**       of conditions and the following disclaimer.
-**
-**     o Redistributions in binary form must reproduce the above copyright notice, this
-**       list of conditions and the following disclaimer in the documentation and/or
-**       other materials provided with the distribution.
-**
-**     o Neither the name of GreenWaves Technologies, Inc. nor the names of its
-**       contributors may be used to endorse or promote products derived from this
-**       software without specific prior written permission.
-**
-**     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-**     ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-**     WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-**     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-**     ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-**     (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-**     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-**     ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-**     (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-**     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-**
-**     http:                 http://greenwaves-technologies.com
-**     mail:                 jie.chen@greenwaves-technologies.com
-**
-**     Revisions:
-**     - rev. 1.0 (2017-07-19)
-**         Initial version.
-** ###################################################################
-*/
-
-/*!
- * @file GAP8.h
- * @version 1.0
- * @date 2017-07-19
- * @brief CMSIS Peripheral Access Layer for GAP8
+ * Copyright (c) 2018, GreenWaves Technologies, Inc.
+ * All rights reserved.
  *
- * CMSIS Peripheral Access Layer for GAP8
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * o Redistributions of source code must retain the above copyright notice, this list
+ *   of conditions and the following disclaimer.
+ *
+ * o Redistributions in binary form must reproduce the above copyright notice, this
+ *   list of conditions and the following disclaimer in the documentation and/or
+ *   other materials provided with the distribution.
+ *
+ * o Neither the name of GreenWaves Technologies, Inc. nor the names of its
+ *   contributors may be used to endorse or promote products derived from this
+ *   software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef _PMSIS_PERIPH_GAP8_H_
@@ -1160,8 +1132,198 @@ typedef struct {
 /* ----------------------------------------------------------------------------
    -- RTC_APB Peripheral Access Layer
    ---------------------------------------------------------------------------- */
-#include "periph/rtc_periph.h"
-#define rtc(id) ((rtc_t *) RTC_ADDR)
+
+/*!
+ * @addtogroup RTC_APB_Peripheral_Access_Layer RTC_APB Peripheral Access Layer
+ * @{
+ */
+
+/** RTC_APB - Register Layout Typedef */
+typedef struct {
+  __IO  uint32_t STATUS;                     /**< RTC_APB_Status register, offset: 0x00 */
+  __IO  uint32_t REQUEST;                    /**< RTC_APB_Request register, offset: 0x04 */
+  __IO  uint32_t DATA;                       /**< RTC_APB_Data register, offset: 0x08 */
+  __IO  uint32_t _reserved;                  /**< reserved, offset: 0x0C */
+  __IO  uint32_t IRQ_CTRL;                   /**< RTC_APB_IRQ_Control register, offset: 0x10 */
+  __IO  uint32_t IRQ_MASK;                   /**< RTC_APB_IRQ_Mask register, offset: 0x14 */
+  __IO  uint32_t IRQ_FLAG;                   /**< RTC_APB_IRQ_Flag register, offset: 0x18 */
+} RTC_APB_Type;
+
+/* ----------------------------------------------------------------------------
+   -- RTC_APB Register Masks
+   ---------------------------------------------------------------------------- */
+
+/*!
+ * @addtogroup RTC_APB_Register_Masks RTC_APB Register Masks
+ * @{
+ */
+/*! @name STATUS - RTC_APB STATUS register */
+#define RTC_APB_STATUS_IRQ_EN_MASK                     (0x3FU)
+#define RTC_APB_STATUS_IRQ_EN_SHIFT                    (0U)
+#define RTC_APB_STATUS_IRQ_EN(x)                       (((uint32_t)(((uint32_t)(x))/* << RTC_APB_STATUS_IRQ_EN_SHIFT*/)) & RTC_APB_STATUS_IRQ_EN_MASK)
+
+/*! @name REQUEST - RTC_APB REQUEST Access register */
+#define RTC_APB_REQUEST_ACCESS_ADDR_MASK               (0x3FU)
+#define RTC_APB_REQUEST_ACCESS_ADDR_SHIFT              (0U)
+#define RTC_APB_REQUEST_ACCESS_ADDR(x)                 (((uint32_t)(((uint32_t)(x))/* << RTC_APB_REQUEST_ACCESS_ADDR_SHIFT*/)) & RTC_APB_REQUEST_ACCESS_ADDR_MASK)
+#define RTC_APB_REQUEST_ACCESS_RW_MASK                 (0x10000U)
+#define RTC_APB_REQUEST_ACCESS_RW_SHIFT                (16U)
+#define RTC_APB_REQUEST_ACCESS_RW(x)                   (((uint32_t)(((uint32_t)(x)) << RTC_APB_REQUEST_ACCESS_RW_SHIFT)) & RTC_APB_REQUEST_ACCESS_RW_MASK)
+
+/*! @name IRQ_FLAG - RTC_APB IRQ_FLAG Access register */
+#define RTC_APB_IRQ_FLAG_READ_MASK                     (0x1U)
+#define RTC_APB_IRQ_FLAG_READ_SHIFT                    (0U)
+#define RTC_APB_IRQ_FLAG_READ(x)                       (((uint32_t)(((uint32_t)(x))/* << RTC_APB_IRQ_FLAG_READ_SHIFT*/)) & RTC_APB_IRQ_FLAG_READ_MASK)
+#define RTC_APB_IRQ_FLAG_WRITE_MASK                    (0x2U)
+#define RTC_APB_IRQ_FLAG_WRITE_SHIFT                   (1U)
+#define RTC_APB_IRQ_FLAG_WRITE(x)                      (((uint32_t)(((uint32_t)(x)) << RTC_APB_IRQ_FLAG_WRITE_SHIFT)) & RTC_APB_IRQ_FLAG_WRITE_MASK)
+
+
+
+
+
+/*!
+ * @}
+ */ /* end of group RTC_APB_Register_Masks */
+
+/*!
+ * @addtogroup RTC_Register_Masks RTC Register Masks
+ * @{
+ */
+/* Bit field of RTC indirect Access Register */
+#define RTC_STATUS_ADDR                     0x00
+#define RTC_CTRL_ADDR                       0x01
+#define RTC_CLK_CTRL_ADDR                   0x02
+#define RTC_IRQ_CTRL_ADDR                   0x08
+#define RTC_IRQ_MASK_ADDR                   0x09
+#define RTC_IRQ_FLAG_ADDR                   0x0A
+#define RTC_CALENDAR_CTRL_ADDR              0x10
+#define RTC_CALENDAR_TIME_ADDR              0x12
+#define RTC_CALENDAR_DATE_ADDR              0x13
+#define RTC_ALARM_CTRL_ADDR                 0x18
+#define RTC_ALARM_TIME_ADDR                 0x1A
+#define RTC_ALARM_DATE_ADDR                 0x1B
+#define RTC_TIMER_CTRL_ADDR                 0x20
+#define RTC_TIMER_INIT_ADDR                 0x21
+#define RTC_TIMER_VALUE_ADDR                0x22
+#define RTC_CLKIN_DIV_ADDR                  0x28
+#define RTC_REF_CLK_CONF_ADDR               0x2A
+#define RTC_TEST_ADDR                       0x30
+
+/*! @name SR - RTC Status register */
+#define RTC_SR_INT_RTC_MASK                 (0x1U)
+#define RTC_SR_INT_RTC_SHIFT                (0U)
+#define RTC_SR_INT_RTC(x)                   (((uint32_t)(((uint32_t)(x))/* << RTC_SR_INT_RTC_SHIFT*/)) & RTC_SR_INT_RTC_MASK)
+
+/*! @name CR - RTC Control register */
+#define RTC_CR_STANDBY_MASK                  (0x1U)
+#define RTC_CR_STANDBY_SHIFT                 (0U)
+#define RTC_CR_STANDBY(x)                    (((uint32_t)(((uint32_t)(x))/* << RTC_CR_STANDBY_SHIFT*/)) & RTC_CR_STANDBY_MASK)
+#define RTC_CR_CALIBRATION_EN_MASK           (0x10U)
+#define RTC_CR_CALIBRATION_EN_SHIFT          (4U)
+#define RTC_CR_CALIBRATION_EN(x)             (((uint32_t)(((uint32_t)(x)) << RTC_CR_CALIBRATION_EN_SHIFT)) & RTC_CR_CALIBRATION_EN_MASK)
+#define RTC_CR_SOFT_RST_MASK                 (0x100U)
+#define RTC_CR_SOFT_RST_SHIFT                (8U)
+#define RTC_CR_SOFT_RST(x)                   (((uint32_t)(((uint32_t)(x)) << RTC_CR_SOFT_RST_SHIFT)) & RTC_CR_SOFT_RST_MASK)
+
+/*! @name CCR - RTC Clock Control register */
+#define RTC_CCR_CKOUT_STANDBY_MASK           (0x1U)
+#define RTC_CCR_CKOUT_STANDBY_SHIFT          (0U)
+#define RTC_CCR_CKOUT_STANDBY(x)             (((uint32_t)(((uint32_t)(x))/* << RTC_CCR_CKOUT_STANDBY_SHIFT*/)) & RTC_CCR_CKOUT_STANDBY_MASK)
+#define RTC_CCR_DIV_AUTOCAL_MASK             (0x1000U)
+#define RTC_CCR_DIV_AUTOCAL_SHIFT            (12U)
+#define RTC_CCR_DIV_AUTOCAL(x)               (((uint32_t)(((uint32_t)(x)) << RTC_CCR_DIV_AUTOCAL_SHIFT)) & RTC_CCR_DIV_AUTOCAL_MASK)
+#define RTC_CCR_DIV_COMP_MASK                (0x1F0000U)
+#define RTC_CCR_DIV_COMP_SHIFT               (16U)
+#define RTC_CCR_DIV_COMP(x)                  (((uint32_t)(((uint32_t)(x)) << RTC_CCR_DIV_COMP_SHIFT)) & RTC_CCR_DIV_COMP_MASK)
+
+/*! @name ICR - RTC IRQ Control register */
+/*
+  00  INT_RTC high;
+  01  INT_RTC low;
+  10; INT_RTC high pulse with duration of 1 CKIN cycle
+  11; INT_RTC low pulse with duration of 1 CKIN cycle
+*/
+#define RTC_ICR_FORM_MASK                    (0x3U)
+#define RTC_ICR_FORM_SHIFT                   (0U)
+#define RTC_ICR_FORM(x)                      (((uint32_t)(((uint32_t)(x))/* << RTC_ICR_FORM_SHIFT*/)) & RTC_ICR_FORM_MASK)
+
+/*! @name IMR - RTC IRQ MASK register */
+#define RTC_IMR_ALARM_MASK                   (0x1U)
+#define RTC_IMR_ALARM_SHIFT                  (0U)
+#define RTC_IMR_ALARM(x)                     (((uint32_t)(((uint32_t)(x))/* << RTC_IMR_ALARM_SHIFT*/)) & RTC_IMR_ALARM_MASK)
+#define RTC_IMR_TIMER_MASK                   (0x10U)
+#define RTC_IMR_TIMER_SHIFT                  (4U)
+#define RTC_IMR_TIMER(x)                     (((uint32_t)(((uint32_t)(x)) << RTC_IMR_TIMER_SHIFT)) & RTC_IMR_TIMER_MASK)
+#define RTC_IMR_CALIBRATION_MASK             (0x1000U)
+#define RTC_IMR_CALIBRATION_SHIFT            (12U)
+#define RTC_IMR_CALIBRATION(x)               (((uint32_t)(((uint32_t)(x)) << RTC_IMR_CALIBRATION_SHIFT)) & RTC_IMR_CALIBRATION_MASK)
+
+/*! @name IFR - RTC IRQ Flag register */
+#define RTC_IFR_ALARM_MASK                   (0x1U)
+#define RTC_IFR_ALARM_SHIFT                  (0U)
+#define RTC_IFR_ALARM(x)                     (((uint32_t)(((uint32_t)(x))/* << RTC_IFR_ALARM_SHIFT*/)) & RTC_IFR_ALARM_MASK)
+#define RTC_IFR_TIMER_MASK                   (0x10U)
+#define RTC_IFR_TIMER_SHIFT                  (4U)
+#define RTC_IFR_TIMER(x)                     (((uint32_t)(((uint32_t)(x)) << RTC_IFR_TIMER_SHIFT)) & RTC_IFR_TIMER_MASK)
+#define RTC_IFR_CALIBRATION_MASK             (0x1000U)
+#define RTC_IFR_CALIBRATION_SHIFT            (12U)
+#define RTC_IFR_CALIBRATION(x)               (((uint32_t)(((uint32_t)(x)) << RTC_IFR_CALIBRATION_SHIFT)) & RTC_IFR_CALIBRATION_MASK)
+
+/*! @name CALENDAR CTRL - RTC CALENDAR Control register */
+#define RTC_CALENDAR_CTRL_STANDBY_MASK       (0x1U)
+#define RTC_CALENDAR_CTRL_STANDBY_SHIFT      (0U)
+#define RTC_CALENDAR_CTRL_STANDBY(x)         (((uint32_t)(((uint32_t)(x))/* << RTC_CALENDAR_CTRL_STANDBY_SHIFT*/)) & RTC_CALENDAR_CTRL_STANDBY_MASK)
+
+/*! @name ALARM_CTRL - RTC Alarm control register */
+#define RTC_ALARM_CTRL_STANDBY_MASK           (0x1U)
+#define RTC_ALARM_CTRL_STANDBY_SHIFT          (0U)
+#define RTC_ALARM_CTRL_STANDBY(x)             (((uint32_t)(((uint32_t)(x))/* << RTC_ALARM_CTRL_STANDBY_SHIFT*/)) & RTC_ALARM_CTRL_STANDBY_MASK)
+#define RTC_ALARM_CTRL_MODE_MASK              (0x10U)
+#define RTC_ALARM_CTRL_MODE_SHIFT             (4U)
+#define RTC_ALARM_CTRL_MODE(x)                (((uint32_t)(((uint32_t)(x)) << RTC_ALARM_CTRL_MODE_SHIFT)) & RTC_ALARM_CTRL_MODE_MASK)
+#define RTC_ALARM_CTRL_CONFIG_MASK            (0xF0000U)
+#define RTC_ALARM_CTRL_CONFIG_SHIFT           (16U)
+#define RTC_ALARM_CTRL_CONFIG(x)              (((uint32_t)(((uint32_t)(x)) << RTC_ALARM_CTRL_CONFIG_SHIFT)) & RTC_ALARM_CTRL_CONFIG_MASK)
+
+/*! @name TIMER - RTC Count down register */
+#define RTC_TIMER_STANDBY_MASK                (0x1U)
+#define RTC_TIMER_STANDBY_SHIFT               (0U)
+#define RTC_TIMER_STANDBY(x)                  (((uint32_t)(((uint32_t)(x))/* << RTC_TIMER_STANDBY_SHIFT*/)) & RTC_TIMER_STANDBY_MASK)
+#define RTC_TIMER_MODE_MASK                   (0x10U)
+#define RTC_TIMER_MODE_SHIFT                  (4U)
+#define RTC_TIMER_MODE(x)                     (((uint32_t)(((uint32_t)(x)) << RTC_TIMER_MODE_SHIFT)) & RTC_TIMER_MODE_MASK)
+
+/*! @name CLKIN_DIV - RTC Clock in divider register */
+#define RTC_CLKIN_DIV_VAL_MASK                (0xFFFFU)
+#define RTC_CLKIN_DIV_VAL_SHIFT               (0U)
+#define RTC_CLKIN_DIV_VAL(x)                  (((uint32_t)(((uint32_t)(x))/* << RTC_CLKIN_DIV_VAL_SHIFT*/)) & RTC_CLKIN_DIV_VAL_MASK)
+
+/*! @name CKREF_CONF - RTC Reference Clock configuration */
+#define RTC_CKREF_CONF_VAL_MASK               (0x3FFFFFU)
+#define RTC_CKREF_CONF_VAL_SHIFT              (0U)
+#define RTC_CKREF_CONF_VAL(x)                 (((uint32_t)(((uint32_t)(x))/* << RTC_CKREF_CONF_VAL_SHIFT*/)) & RTC_CKREF_CONF_VAL_MASK)
+
+
+/*!
+ * @}
+ */ /* end of group RTC_Register_Masks */
+
+
+
+/* RTC_APB - Peripheral instance base addresses */
+/** Peripheral RTC_APB base address */
+#define RTC_APB_BASE                               (SOC_PERI_BASE + 0x08000u)
+/** Peripheral RTC_APB base pointer */
+#define RTC_APB                                    ((RTC_APB_Type *)RTC_APB_BASE)
+/** Array initializer of RTC_APB base addresses */
+#define RTC_APB_BASE_ADDRS                         { RTC_APB_BASE }
+/** Array initializer of RTC_APB base pointers */
+#define RTC_APB_BASE_PTRS                          { RTC_APB }
+
+/*!
+ * @}
+ */ /* end of group RTC_APB_Peripheral_Access_Layer */
 
 
 /* ----------------------------------------------------------------------------
@@ -1173,35 +1335,51 @@ typedef struct {
  * @{
  */
 
+/** EFUSE_CTRL - Register Layout Typedef */
+typedef struct {
+  __O  uint32_t CMD;                       /**< EFUSE_Control register, offset: 0x00 */
+  __O  uint32_t CFG;                       /**< EFUSE_Control register, offset: 0x04 */
+} EFUSE_CTRL_Type;
 
+/* ----------------------------------------------------------------------------
+   -- EFUSE_CTRL Register Masks
+   ---------------------------------------------------------------------------- */
+/*! @name CFG - EFUSE control configure register */
+#define EFUSE_CTRL_SHORT_MASK                           (0x3FFU)
+#define EFUSE_CTRL_SHORT_SHIFT                          (0U)
+#define EFUSE_CTRL_SHORT(x)                             (((uint32_t)(((uint32_t)(x)) /* << EFUSE_CTRL_SHORT_SHIFT */)) & EFUSE_CTRL_SHORT_MASK)
 
-#include "periph/efuse_periph.h"
+#define EFUSE_CTRL_MEDIUM_MASK                          (0xFFC00U)
+#define EFUSE_CTRL_MEDIUM_SHIFT                         (10U)
+#define EFUSE_CTRL_MEDIUM(x)                            (((uint32_t)(((uint32_t)(x)) << EFUSE_CTRL_MEDIUM_SHIFT)) & EFUSE_CTRL_MEDIUM_MASK)
+
+#define EFUSE_CTRL_LONG_MASK                            (0x3FF00000U)
+#define EFUSE_CTRL_LONG_SHIFT                           (20U)
+#define EFUSE_CTRL_LONG(x)                              (((uint32_t)(((uint32_t)(x)) << EFUSE_CTRL_LONG_SHIFT)) & EFUSE_CTRL_LONG_MASK)
+
+/*!
+ * @addtogroup EFUSE_CTRL_Register_Masks EFUSE_CTRL Register Masks
+ * @{
+ */
+#define    EFUSE_CTRL_CMD_READ       0x1
+#define    EFUSE_CTRL_CMD_WRITE      0x2
+#define    EFUSE_CTRL_CMD_SLEEP      0x4
+/*!
+ * @}
+ */ /* end of group EFUSE_CTRL_Register_Masks */
+
 
 /* EFUSE_CTRL - Peripheral instance base addresses */
 /** Peripheral EFUSE_CTRL base address */
 #define EFUSE_CTRL_BASE                               (SOC_PERI_BASE + 0x09000u)
 /** Peripheral EFUSE_CTRL base pointer */
-#define efuse_ctrl                                    ((efuse_ctrl_t *)EFUSE_CTRL_BASE)
+#define EFUSE_CTRL                                    ((EFUSE_CTRL_Type *)EFUSE_CTRL_BASE)
 /** Array initializer of EFUSE_CTRL base addresses */
 #define EFUSE_CTRL_BASE_ADDRS                         { EFUSE_CTRL_BASE }
 /** Array initializer of EFUSE_CTRL base pointers */
 #define EFUSE_CTRL_BASE_PTRS                          { EFUSE_CTRL }
 
 /*!
- * @}
- */ /* end of group EFUSE_CTRL_Peripheral_Access_Layer */
-
-
-/* EFUSE_REGS - Peripheral instance base addresses */
-/** Peripheral EFUSE_REGS base address */
-#define EFUSE_REGS_BASE                                (SOC_PERI_BASE + 0x09200u)
-/** Peripheral EFUSE_REGS base pointer */
-#define efuse_regs                                     ((efuse_regs_t *)EFUSE_REGS_BASE)
-#define efuse_regs_array                               ((int32_t*)EFUSE_REGS_BASE)
-/** Array initializer of EFUSE_REGS base addresses */
-#define EFUSE_REGS_BASE_ADDRS                          { EFUSE_REGS_BASE }
-/** Array initializer of EFUSE_REGS base pointers */
-#define EFUSE_REGS_BASE_PTRS                           { EFUSE_REGS }/*!
  * @}
  */ /* end of group EFUSE_CTRL_Peripheral_Access_Layer */
 

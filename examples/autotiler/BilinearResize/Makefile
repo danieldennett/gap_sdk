@@ -22,6 +22,8 @@ MODEL_GEN = ResizeKernels
 MODEL_GEN_C = $(addsuffix .c, $(MODEL_GEN))
 MODEL_GEN_CLEAN = $(MODEL_GEN_C) $(addsuffix .h, $(MODEL_GEN))
 
+PLPBRIDGE_FLAGS = -fileIO 2
+
 RM=rm -f
 
 all:: model

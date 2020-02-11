@@ -204,7 +204,7 @@ class Event_unit : public vp::component
 
 public:
 
-  Event_unit(js::config *config);
+  Event_unit(const char *config);
 
   int build();
   void start();
@@ -292,7 +292,7 @@ private:
 
 
 
-Event_unit::Event_unit(js::config *config)
+Event_unit::Event_unit(const char *config)
 : vp::component(config)
 {
   nb_core = get_config_int("nb_core");
@@ -665,9 +665,9 @@ void Event_unit::start()
 {
 }
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new Event_unit(config);
+  return (void *)new Event_unit(config);
 }
 
 

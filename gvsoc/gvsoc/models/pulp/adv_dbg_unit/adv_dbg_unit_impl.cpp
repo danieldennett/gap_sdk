@@ -95,7 +95,7 @@ class adv_dbg_unit : public vp::component
 
 public:
 
-  adv_dbg_unit(js::config *config);
+  adv_dbg_unit(const char *config);
 
   int build();
   void start();
@@ -139,7 +139,7 @@ private:
   vp::io_master io_itf;
 };
 
-adv_dbg_unit::adv_dbg_unit(js::config *config)
+adv_dbg_unit::adv_dbg_unit(const char *config)
 : vp::component(config)
 {
 
@@ -634,9 +634,9 @@ void adv_dbg_unit::start()
 {
 }
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new adv_dbg_unit(config);
+  return (void *)new adv_dbg_unit(config);
 }
 
 

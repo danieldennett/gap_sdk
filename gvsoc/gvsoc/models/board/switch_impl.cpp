@@ -28,7 +28,7 @@ class Switch : public vp::component
 
 public:
 
-  Switch(js::config *config);
+  Switch(const char *config);
 
   static void sync(void *__this, uint32_t value);
 
@@ -52,7 +52,7 @@ void Switch::sync(void *__this, uint32_t value)
 }
 
 
-Switch::Switch(js::config *config)
+Switch::Switch(const char *config)
 : vp::component(config)
 {
 }
@@ -74,7 +74,7 @@ void Switch::start()
   this->out_itf.sync(this->value);
 }
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new Switch(config);
+  return (void *)new Switch(config);
 }

@@ -30,7 +30,7 @@ class mram : public vp::component, public Mram_itf
 
 public:
 
-  mram(js::config *config);
+  mram(const char *config);
 
   int build();
   void start();
@@ -48,7 +48,7 @@ private:
   uint8_t *mem_data;
 };
 
-mram::mram(js::config *config)
+mram::mram(const char *config)
 : vp::component(config)
 {
 
@@ -133,7 +133,7 @@ void mram::start()
   }
 }
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new mram(config);
+  return (void *)new mram(config);
 }

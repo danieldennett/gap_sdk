@@ -4,46 +4,55 @@
 # This software may be modified and distributed under the terms
 # of the BSD license.  See the LICENSE file for details.
 
-include common.mk
-
-QUANT_BITS?=8
-MODEL_SUFFIX=_$(QUANT_BITS)BIT_EMUL
+MODEL_PREFIX=Mnist
+ifndef MNIST_BITS
+  MNIST_BITS=8
+endif
 
 # LINK_IMAGE=samples/5223_5.pgm
 
-$(info Building emulation mode with $(QUANT_BITS) bit quantization)
+$(info Building emulation mode with $(MNIST_BITS) bit quantization)
 
 # The training of the model is slightly different depending on
 # the quantization. This is because in 8 bit mode we used signed
 # 8 bit so the input to the model needs to be shifted 1 bit
-ifeq ($(QUANT_BITS),8)
-  CFLAGS += -DQUANT_8BIT
+ifeq ($(MNIST_BITS),8)
+  CFLAGS += -DMNIST_8BIT
   NNTOOL_SCRIPT=model/nntool_script_emul8
+  MODEL_SUFFIX = _EMUL8BIT
 else
-  ifeq ($(QUANT_BITS),16)
-    CFLAGS += -DQUANT_16BIT
+  ifeq ($(MNIST_BITS),16)
+    CFLAGS += -DMNIST_16BIT
     NNTOOL_SCRIPT=model/nntool_script_emul16
+    MODEL_SUFFIX = _EMUL16BIT
   else
     $(error Dont know how to build with this bit width)
   endif
 endif
 
-include ../common/model_decl.mk
-include common_rules.mk
+include model_decl.mk
+
+ifdef LINK_IMAGE
+  LINK_IMAGE_HEADER=$(MODEL_BUILD)/image.h
+  LINK_IMAGE_NAME=$(subst .,_,$(subst /,_,$(LINK_IMAGE)))
+  GAP_FLAGS += -DLINK_IMAGE_HEADER="\"$(LINK_IMAGE_HEADER)\"" -DLINK_IMAGE_NAME="$(LINK_IMAGE_NAME)"
+else
+  LINK_IMAGE_HEADER=
+endif
 
 MODEL_GEN_EXTRA_FLAGS= -f $(MODEL_BUILD)
 CC = gcc
-CFLAGS += -g -O0 -D__EMUL__ $(MODEL_SIZE_CFLAGS) -DPERF
-INCLUDES = -I. -I./helpers -I$(TILER_EMU_INC) -I$(TILER_INC) -I$(TILER_CNN_GENERATOR_PATH) -I$(TILER_CNN_KERNEL_PATH) -I$(MODEL_BUILD) -I$(MODEL_COMMON_INC)
+CFLAGS += -g -O0 -D__EMUL__
+INCLUDES = -I. -Ii./helpers -I$(TILER_EMU_INC) -I$(TILER_INC) -I$(GEN_PATH) -I$(MODEL_BUILD)
 LFLAGS =
 LIBS =
-SRCS = $(MODEL_PREFIX).c $(MODEL_COMMON_SRCS) $(MODEL_SRCS)
+SRCS = Mnist.c ImgIO.c helpers/helpers.c $(MODEL_SRCS)
 
 BUILD_DIR = BUILD_EMUL
 
 OBJS = $(patsubst %.c, $(BUILD_DIR)/%.o, $(SRCS))
 
-MAIN = $(MODEL_PREFIX)_emul
+MAIN = mnist_emul
 
 # Here we set the memory allocation for the generated kernels
 # REMEMBER THAT THE L1 MEMORY ALLOCATION MUST INCLUDE SPACE
@@ -67,10 +76,15 @@ $(OBJS) : $(BUILD_DIR)/%.o : %.c
 $(MAIN): $(OBJS)
 	$(CC) $(CFLAGS) -MMD -MP $(CFLAGS) $(INCLUDES) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
 
+ifdef LINK_IMAGE
+$(LINK_IMAGE_HEADER): $(LINK_IMAGE)
+	xxd -i $< $@
+endif
+
 clean: clean_model
 	$(RM) -r $(BUILD_DIR)
 	$(RM) $(MAIN)
 
 .PHONY: depend clean
 
-include ../common/model_rules.mk
+include model_rules.mk

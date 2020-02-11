@@ -28,7 +28,7 @@ class loader : public vp::component
 
 public:
 
-  loader(js::config *config);
+  loader(const char *config);
 
   int build();
   void start();
@@ -50,7 +50,7 @@ private:
   vp::io_master out;
 };
 
-loader::loader(js::config *config)
+loader::loader(const char *config)
 : vp::component(config)
 {
 }
@@ -153,7 +153,7 @@ extern "C" void loader_memset(void *__this, uint64_t addr, uint64_t size, uint8_
   _this->memset(addr, size, value);
 }
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new loader(config);
+  return (void *)new loader(config);
 }

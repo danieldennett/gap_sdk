@@ -23,6 +23,7 @@ void vTestTimer( void *parameters )
 {
     char *taskname = pcTaskGetName( NULL );
     uint32_t loop = 0;
+    printf("param: %d\n", (uint32_t) parameters);
     for(;;)
     {
         printf("%s : %d.\n", taskname, loop);
@@ -48,7 +49,7 @@ void vTimerCreator( void *parameters )
     {
         exit(0);
     }
-    xTimers[1] = xTimerCreate( "Timer1", pdMS_TO_TICKS( 50 ), pdTRUE,
+    xTimers[1] = xTimerCreate( "Timer1", pdMS_TO_TICKS( 20 ), pdTRUE,
                                0, vTimerCallback1 );
     if( xTimers[1] == NULL )
     {
@@ -58,7 +59,7 @@ void vTimerCreator( void *parameters )
     xTimerStart( xTimers[1], portMAX_DELAY );
 
     printf("%s created and started timers.\n", taskname);
-    while ( wait_val != 150 )
+    while ( wait_val != 300 )
     {
         xTaskNotifyWait( 0xFFFFFFFF, 0x00, &ulValue, portMAX_DELAY );
         wait_val += ulValue;
@@ -78,7 +79,7 @@ void test_sw_timer( void )
 
     BaseType_t xTask;
     xTask = xTaskCreate( vTestTimer, "TaskTimer0", configMINIMAL_STACK_SIZE * 2,
-                         ( void * ) 50, tskIDLE_PRIORITY + 1, &xHandler[0] );
+                         ( void * ) 100, tskIDLE_PRIORITY + 1, &xHandler[0] );
     if( xTask != pdPASS )
     {
         printf("TaskTimer0 is NULL !\n");
@@ -86,7 +87,7 @@ void test_sw_timer( void )
     }
 
     xTask = xTaskCreate( vTestTimer, "TaskTimer1", configMINIMAL_STACK_SIZE * 2,
-                         ( void * ) 100, tskIDLE_PRIORITY + 1, &xHandler[1] );
+                         ( void * ) 200, tskIDLE_PRIORITY + 1, &xHandler[1] );
     if( xTask != pdPASS )
     {
         printf("TaskTimer1 is NULL !\n");

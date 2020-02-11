@@ -40,10 +40,9 @@ MAKE = make
 
 PULP_BRIDGE_PATH = $(GAP_SDK_HOME)/tools/pulp_tools/pulp-debug-bridge
 
-ifeq ($(TARGET_CHIP_FAMILY), GAP8)
-sdk: all autotiler nntool openocd
-all: pulp-os tools gvsoc flasher docs littlefs
-
+ifeq ($(TARGET_CHIP), GAP8)
+sdk:: all autotiler nntool openocd
+all:: pulp-os tools gvsoc flasher docs
 clean:
 	$(RM) $(TARGET_INSTALL_DIR)
 	$(RM) $(INSTALL_DIR)
@@ -54,14 +53,18 @@ clean:
 	$(MAKE) -C $(GAP_SDK_HOME)/docs clean
 
 else
-sdk: all autotiler
-all: pulp-os gvsoc littlefs
-
+sdk:: all autotiler
+all:: pulp-os gvsoc
 clean:
 	$(RM) $(TARGET_INSTALL_DIR)
 	$(RM) $(BUILD_DIR)
 endif
 
+$(TARGET_INSTALL_DIR):
+	$(MKDIR) -p $@
+
+$(INSTALL_DIR): $(TARGET_INSTALL_DIR)
+	$(MKDIR) -p $@/include
 
 # Rules for installing docs
 #------------------------------------------
@@ -70,12 +73,12 @@ docs:
 
 # Rules for installing tools
 #------------------------------------------
-INSTALL_BIN_DIR = $(INSTALL_DIR)/bin
+INSTALL_BIN = $(INSTALL_DIR)/bin
 
-$(INSTALL_BIN_DIR) $(TARGET_INSTALL_DIR) $(INSTALL_DIR):
-	$(MKDIR) -p $@
+install_bin:
+	$(MKDIR) $(INSTALL_BIN)
 
-install_others: | $(INSTALL_BIN_DIR)
+install_others: install_bin
 	$(CP) $(GAP_SDK_HOME)/tools/runner $(INSTALL_DIR)
 	$(CP) $(GAP_SDK_HOME)/tools/bin/* $(INSTALL_DIR)/bin
 	$(CP) $(GAP_SDK_HOME)/tools/ld $(INSTALL_DIR)
@@ -89,14 +92,11 @@ tools: install_others install_pulp_tools
 nntool:
 	$(MAKE) -C $(GAP_SDK_HOME)/tools/nntool all
 
-pulp-os: install_pulp_tools | $(TARGET_INSTALL_DIR)
+pulp-os: $(TARGET_INSTALL_DIR) install_pulp_tools
 	$(MAKE) -C $(GAP_SDK_HOME)/rtos/pmsis/pmsis_api -f tools/export.mk build
 	$(MAKE) -C $(GAP_SDK_HOME)/rtos/pulp build
 	$(MAKE) -C $(GAP_SDK_HOME)/rtos/pmsis/pmsis_bsp all
 	$(MAKE) -C $(GAP_SDK_HOME)/libs/gap_lib all 
-
-gap_tools:
-	$(MAKE) -C $(GAP_SDK_HOME)/tools/gap_tools all 
 
 flasher: pulp-os
 	$(MAKE) -C $(GAP_SDK_HOME)/tools/pulp_tools/gap_flasher install
@@ -115,25 +115,5 @@ openocd:
 	mkdir -p $(INSTALL_DIR)/share/openocd/scripts/tcl
 	cd tools/gap8-openocd-tools && cp -r tcl/* $(INSTALL_DIR)/share/openocd/scripts/tcl
 	cd tools/gap8-openocd-tools && mkdir -p $(INSTALL_DIR)/share/openocd/gap_bins && cp -r gap_bins/* $(INSTALL_DIR)/share/openocd/gap_bins
-
-#
-# Littlefs
-#
-LFS_DIR = $(GAP_SDK_HOME)/tools/littlefs
-LFS_BUILD_DIR = $(LFS_DIR)/build
-LFS_MAKEFILE = $(LFS_BUILD_DIR)/Makefile
-
-#include $(LFS_MAKEFILE)
-
-littlefs: $(LFS_MAKEFILE)
-	make -C $(LFS_BUILD_DIR) all install
-
-$(LFS_MAKEFILE): $(LFS_DIR)/CMakeLists.txt | $(LFS_BUILD_DIR)
-	cd $(LFS_BUILD_DIR) && cmake -DCMAKE_INSTALL_PREFIX:PATH=$(INSTALL_DIR) $(LFS_DIR)
-
-$(LFS_BUILD_DIR):
-	$(MKDIR) -p $@
-
-
 
 .PHONY: all install clean docs install_others install_pulp_tools tools pulp-os gvsoc flasher

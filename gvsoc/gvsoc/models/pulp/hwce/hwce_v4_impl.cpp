@@ -182,7 +182,7 @@ class hwce : public vp::component
 
 public:
 
-  hwce(js::config *config);
+  hwce(const char *config);
 
   int build();
   void start();
@@ -315,7 +315,7 @@ private:
   uint32_t l1_base = 0x10000000;
 };
 
-hwce::hwce(js::config *config)
+hwce::hwce(const char *config)
 : vp::component(config)
 {
 
@@ -1413,7 +1413,7 @@ bool Hwce_base::reachedEof() {
 }
 
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new hwce(config);
+  return (void *)new hwce(config);
 }

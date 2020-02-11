@@ -9,12 +9,8 @@
         "interface": "spim0",
         "cs": 0
       },
-      "flash": {
-        "include" : "devices/hyperflash.json",
-        "cs": 1
-      },
-      "ram": {
-        "include" : "devices/hyperram.json",
+      "hyper": {
+        "includes": ["devices/hyper.json"],
         "cs": 0
       },
       "camera": {

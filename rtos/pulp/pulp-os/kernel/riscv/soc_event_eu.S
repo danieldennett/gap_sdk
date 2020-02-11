@@ -94,10 +94,9 @@ __rt_soc_evt_no_udma_channel:
 
   addi x8, x10, -ARCHI_SOC_EVENT_UDMA_FIRST_EXTRA_EVT
   slli x11, x8, 2
-  lw   x12, %tiny(__rt_udma_extra_callback)(x11)
-  lw   x11, %tiny(__rt_udma_extra_callback_arg)(x11)
+  lw   x11, %tiny(__rt_udma_extra_callback)(x11)
 
-  jr   x12
+  jr   x11
 
 
 

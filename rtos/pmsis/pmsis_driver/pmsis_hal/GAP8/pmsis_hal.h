@@ -40,18 +40,12 @@
 /* Event unit. */
 #include "event_unit/event_unit.h"
 
-/* Efuse */
-#include "efuse/pmsis_efuse.h"
-
 /* GPIO. */
 #include "gpio/gpio.h"
 
 /* PWM */
 #include "pwm/pwm.h"
 #include "pwm/pwm_ctrl.h"
-
-/* RTC */
-#include "rtc/rtc.h"
 
 /* Soc_ctrl. */
 #include "soc_ctrl/soc_ctrl_pad.h"

@@ -1,4 +1,3 @@
 {
-  "vp_class": "utils/clock",
-  "vp_component":  "utils.clock_impl"
+  "vp_class": "utils/clock"
 }

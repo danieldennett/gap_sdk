@@ -35,7 +35,7 @@ class iss_wrapper : public vp::component
 
 public:
 
-  iss_wrapper(js::config *config);
+  iss_wrapper(const char *config);
 
   int build();
   void start();
@@ -78,8 +78,6 @@ public:
   void dump_debug_traces();
 
   inline void trigger_check_all() { current_event = check_all_event; }
-
-  void insn_trace_callback();
 
   vp::io_master data;
   vp::io_master fetch;

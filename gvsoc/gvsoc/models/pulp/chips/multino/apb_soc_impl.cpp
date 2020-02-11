@@ -31,7 +31,7 @@ class apb_soc_ctrl : public vp::component
 
 public:
 
-  apb_soc_ctrl(js::config *config);
+  apb_soc_ctrl(const char *config);
 
   int build();
   void start();
@@ -51,7 +51,7 @@ private:
 
 };
 
-apb_soc_ctrl::apb_soc_ctrl(js::config *config)
+apb_soc_ctrl::apb_soc_ctrl(const char *config)
 : vp::component(config)
 {
 
@@ -128,7 +128,7 @@ void apb_soc_ctrl::start()
 {
 }
 
-extern "C" vp::component *vp_constructor(js::config *config)
+extern "C" void *vp_constructor(const char *config)
 {
-  return new apb_soc_ctrl(config);
+  return (void *)new apb_soc_ctrl(config);
 }

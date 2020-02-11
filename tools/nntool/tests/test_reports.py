@@ -1,17 +1,12 @@
-# Copyright 2019 GreenWaves Technologies, SAS
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#     http://www.apache.org/licenses/LICENSE-2.0
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Copyright (C) 2019 GreenWaves Technologies
+# All rights reserved.
+
+# This software may be modified and distributed under the terms
+# of the BSD license.  See the LICENSE file for details.
 
 
 from importer.importer import create_graph
-from quantization.simple_auto_quantify import SimpleQuantizer
+from quantization.simple_quantizer import SimpleQuantizer
 from reports.activation_reporter import ActivationReporter
 from reports.error_reporter import ErrorReporter
 from reports.filter_reporter import (FilterDetailedStatsReporter,
@@ -39,7 +34,7 @@ def test_activation_report(mnist_graph, mnist_images):
     renderer = TextTableRenderer(maxwidth=200)
     print(report.render(renderer))
 
-def test_filter_report(mnist_graph):
+def test_filter_report(mnist_graph, mnist_images):
     G = create_graph(mnist_graph, opts={"load_tensors":True})
     G.add_dimensions()
     stats_collector = FilterStatsCollector()
@@ -48,7 +43,7 @@ def test_filter_report(mnist_graph):
     renderer = TextTableRenderer(maxwidth=200)
     print(report.render(renderer))
 
-def test_filter_detailed_report(mnist_graph):
+def test_filter_detailed_report(mnist_graph, mnist_images):
     G = create_graph(mnist_graph, opts={"load_tensors":True})
     G.add_dimensions()
     stats_collector = FilterDetailedStatsCollector()
@@ -69,7 +64,7 @@ def test_error_report(value_cache, mnist_unfused_8bit_state, mnist_images):
     renderer = TextTableRenderer(maxwidth=200)
     print(report.render(renderer))
 
-def test_temps_report(mnist_graph):
+def test_temps_report(mnist_graph, mnist_images):
     G = create_graph(mnist_graph, opts={"load_tensors":True})
     G.add_dimensions()
     stats_collector = TempsStatsCollector()
@@ -106,7 +101,7 @@ def test_simple_quantization(mnist_graph, mnist_images):
     fstats = stats_collector.collect_stats(G)
     quantizer = SimpleQuantizer(astats, fstats, force_width=8)
     qrecs = quantizer.quantize(G)
-    assert len(qrecs) == 11 # One more for saved quantizer
+    assert len(qrecs) == 10
     report = QuantizationReporter().report(G, qrecs)
     renderer = TextTableRenderer(maxwidth=200)
     print(report.render(renderer))
