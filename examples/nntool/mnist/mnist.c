@@ -25,7 +25,14 @@
 #define STACK_SIZE      1024
 #endif
 
-#define CAMERA
+
+#ifndef TENSOR_DUMP_FILE
+  #define TENSOR_DUMP_FILE "tensor_dump_file.dat"
+#endif
+
+
+
+// #define CAMERA
 // #define MNIST_16BIT
 // #define PRINT_IMAGE
 
@@ -52,6 +59,8 @@ L2_MEM short int *ResOut;
 L2_MEM rt_perf_t *cluster_perf;
 #endif
 
+L2_MEM image_in_t *ImageIn;
+
 //UART init param
 L2_MEM struct pi_uart_conf uart_conf;
 L2_MEM struct pi_device uart;
@@ -66,9 +75,7 @@ L2_MEM struct pi_device himax;
 L2_MEM struct pi_himax_conf cam_conf;
 L2_MEM uint8_t errors = 0;
 
-static void RunMnist()
-
-L2_MEM image_in_t *ImageIn;
+// static void RunMnist()
 
 char *ImageName = NULL;
 
@@ -122,20 +129,20 @@ int test_mnist(void)
   //   unsigned int W = 324, H = 244;
   // #endif
 
-    #if !defined(__EMUL__)
-    #if !defined(NO_IMAGE) && !defined(LINK_IMAGE_HEADER)
-    BRIDGE_Init();
-    printf("Connecting to bridge !\n");
-    BRIDGE_Connect(1, NULL);
-    printf("Connected to bridge !\n");
-    #endif  /* NO_IMAGE && LINK_IMAGE_HEADER */
-    #endif  /* __EMUL__ */
+    // #if !defined(__EMUL__)
+    // #if !defined(NO_IMAGE) && !defined(LINK_IMAGE_HEADER)
+    // BRIDGE_Init();
+    // printf("Connecting to bridge !\n");
+    // BRIDGE_Connect(1, NULL);
+    // printf("Connected to bridge !\n");
+    // #endif  /* NO_IMAGE && LINK_IMAGE_HEADER */
+    // #endif  /* __EMUL__ */
 
 // HIMAX CAMERA STUFF
     #if defined(CAMERA)
     printf("[CAMERA] Start\n");
     // unsigned char *ImageInChar = (unsigned char *) pi_l2_malloc(sizeof(MNIST_IMAGE_IN_T) * W * H);
-    unsigned char *ImageInChar = (unsigned char *)pi_l2_malloc((CAM_WIDTH*CAM_HEIGHT)*sizeof(MNIST_IMAGE_IN_T));
+    unsigned char *ImageInChar = (unsigned char *)pi_l2_malloc((CAM_WIDTH*CAM_HEIGHT)*sizeof(image_in_t));
     // unsigned char *imgBuff0 = (unsigned char *) pi_l2_malloc((CAM_WIDTH*CAM_HEIGHT)*sizeof(unsigned char));
     if (ImageInChar == NULL)
     {
@@ -162,22 +169,22 @@ int test_mnist(void)
 
 #if !defined(CAMERA)
 // allocating memory for the manual image upload 
-    unsigned char *ImageInChar = (unsigned char *) pi_l2_malloc(sizeof(MNIST_IMAGE_IN_T) * W * H);
+    unsigned char *ImageInChar = (unsigned char *) pi_l2_malloc(sizeof(image_in_t) * W * H);
     if (ImageInChar == NULL)
     {
         printf("Failed to open tensor dump file %s.\n", TENSOR_DUMP_FILE);
         exit(-2);
     }
-#if !defined(NO_IMAGE)              
+  #if !defined(NO_IMAGE)              
     printf("Reading image\n");
     //Reading Image from Bridge
-#ifdef QUANT_8BIT
-  #define SHIFT 1
-  #define SHORT 0
-#else
-  #define SHORT 1
-  #define SHIFT 0
-#endif
+  #ifdef QUANT_8BIT
+    #define SHIFT 1
+    #define SHORT 0
+  #else
+    #define SHORT 1
+    #define SHIFT 0
+  #endif
 
     if (!(ImageIn = (image_in_t *) AT_L2_ALLOC(0, AT_INPUT_SIZE_BYTES))) {
         printf("Failed to allocate %ld bytes for %s\n", AT_INPUT_SIZE_BYTES, ImageName);
