@@ -25,16 +25,12 @@
 #define STACK_SIZE      1024
 #endif
 
-
 #ifndef TENSOR_DUMP_FILE
   #define TENSOR_DUMP_FILE "tensor_dump_file.dat"
 #endif
 
-
-
 // #define CAMERA
-// #define MNIST_16BIT
-// #define PRINT_IMAGE
+#define PRINT_IMAGE
 
 AT_HYPERFLASH_FS_EXT_ADDR_TYPE mnist_L3_Flash = 0;
 
@@ -67,8 +63,8 @@ L2_MEM struct pi_device uart;
 L2_MEM uint8_t rec_digit = 0;
 
 //camera init parameters
-#define CAM_WIDTH    324
-#define CAM_HEIGHT   244
+#define CAM_WIDTH    10//324
+#define CAM_HEIGHT   10//244
 
 L2_MEM struct pi_device himax;
 // L2_MEM unsigned char *imgBuff0;
@@ -102,11 +98,11 @@ static void cluster()
     }
   }
   printf("\n");
-
+  // rec_digit = -2000;
   printf("Recognized digit: %d with softmax output %d\n", rec_digit, highest);
-  for(int j = -10; j < 10; j++){
-    printf("digit %d and its softmax output %d\n", j, ResOut[j]);
-  }
+  // for(int j = -10; j < 10; j++){
+  //   printf("digit %d and its softmax output %d\n", j, ResOut[j]);
+  // }
 #else
   printf("image loading disabled so no sensible result\n");
 #endif
@@ -119,31 +115,11 @@ int test_mnist(void)
     if (dt_open_dump_file(TENSOR_DUMP_FILE))
 #endif 
 
-    unsigned int Wi = 0, Hi = 0;
-    /* Input image size. */
-  // #if !defined CAMERA
-    unsigned int W = 324, H = 244;
-  // #endif
-
-  // #if defined CAMERA  
-  //   unsigned int W = 324, H = 244;
-  // #endif
-
-    // #if !defined(__EMUL__)
-    // #if !defined(NO_IMAGE) && !defined(LINK_IMAGE_HEADER)
-    // BRIDGE_Init();
-    // printf("Connecting to bridge !\n");
-    // BRIDGE_Connect(1, NULL);
-    // printf("Connected to bridge !\n");
-    // #endif  /* NO_IMAGE && LINK_IMAGE_HEADER */
-    // #endif  /* __EMUL__ */
 
 // HIMAX CAMERA STUFF
     #if defined(CAMERA)
     printf("[CAMERA] Start\n");
-    // unsigned char *ImageInChar = (unsigned char *) pi_l2_malloc(sizeof(MNIST_IMAGE_IN_T) * W * H);
     unsigned char *ImageInChar = (unsigned char *)pi_l2_malloc((CAM_WIDTH*CAM_HEIGHT)*sizeof(image_in_t));
-    // unsigned char *imgBuff0 = (unsigned char *) pi_l2_malloc((CAM_WIDTH*CAM_HEIGHT)*sizeof(unsigned char));
     if (ImageInChar == NULL)
     {
       printf("[CAMERA] Failed to allocate memory for image\n");
@@ -160,16 +136,17 @@ int test_mnist(void)
       goto end;
     }
     pi_camera_control(&himax, PI_CAMERA_CMD_START, 0);
-    pi_time_wait_us(4000000);
+    pi_time_wait_us(1000000);
     pi_camera_capture(&himax, ImageInChar, CAM_WIDTH*CAM_HEIGHT);
     pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);
+    printf("CAMERA [stopped]\n");
     // pi_camera_close(&himax);
   
   #endif 
 
 #if !defined(CAMERA)
 // allocating memory for the manual image upload 
-    unsigned char *ImageInChar = (unsigned char *) pi_l2_malloc(sizeof(image_in_t) * W * H);
+    unsigned char *ImageInChar = (unsigned char *) pi_l2_malloc(sizeof(image_in_t)*AT_INPUT_WIDTH*AT_INPUT_HEIGHT*AT_INPUT_COLORS);
     if (ImageInChar == NULL)
     {
         printf("Failed to open tensor dump file %s.\n", TENSOR_DUMP_FILE);
@@ -201,7 +178,8 @@ int test_mnist(void)
 #endif  /* NO_IMAGE */
 #endif  /* NO CAMERA */
 
-#if defined(PRINT_IMAGE)
+  #if defined(PRINT_IMAGE)
+    int W = 50, H = 50;
     for (int i=0; i<H; i++)
     {
         for (int j=0; j<W; j++)
@@ -210,7 +188,7 @@ int test_mnist(void)
         }
         printf("\n");
     }
-#endif  /* PRINT_IMAGE */
+  #endif  /* PRINT_IMAGE */
 
     ResOut = (short int *) AT_L2_ALLOC(0, 10 * sizeof(short int));
     if (ResOut == NULL)
@@ -290,6 +268,7 @@ int test_mnist(void)
   end:
     pi_l2_free(ImageInChar, (CAM_WIDTH*CAM_HEIGHT)*sizeof(unsigned char));
     pi_camera_close(&himax);
+    printf("CAMERA [closed]\n");
   #endif
 
 
@@ -330,7 +309,7 @@ int main()
     #define __STRING(__s) __STRING1(__s)
     ImageName = __STRING(LINK_IMAGE_NAME);
     #else
-    ImageName = "../../../samples/5223_5.pgm";
+    ImageName = "../../../samples/3362_6.pgm";
     #endif  /* LINK_IMAGE_NAME */
     printf("\n\n\t *** NNTOOL Mnist Example ***\n\n");
     return pmsis_kickoff((void *) test_mnist);
