@@ -61,7 +61,7 @@ L2_MEM struct pi_uart_conf uart_conf;
 L2_MEM struct pi_device uart;
 L2_MEM uint8_t rec_digit = 0;
 
-#define CAMERA
+// #define CAMERA
 
 //camera init parameters
 #define CAM_WIDTH    50//324
@@ -124,9 +124,9 @@ int test_mnist(void)
   #define SHORT 1
   #define SHIFT 0
 #endif
-// HIMAX CAMERA STUFF
+
+// HIMAX CAMERA init, configure, execute 
     #if defined(CAMERA)
-    
     ImageIn = (image_in_t *) AT_L2_ALLOC(0, AT_CAMERA_INPUT_SIZE_BYTES);
     if (ImageIn == NULL) 
     {
@@ -144,14 +144,16 @@ int test_mnist(void)
       errors++;
       goto end;
     }
+    pi_time_wait_us(1000000);
     pi_camera_control(&himax, PI_CAMERA_CMD_START, 0);
     printf("[CAMERA] Start\n");
-    pi_time_wait_us(100000);
+    
     pi_camera_capture(&himax, ImageIn, CAM_WIDTH*CAM_HEIGHT);
     pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);
     printf("[CAMERA] stopped\n");
   #endif 
 
+// Using images from PC
 #if !defined(CAMERA)
     ImageIn = (image_in_t *) AT_L2_ALLOC(0, AT_INPUT_SIZE_BYTES);
     if (ImageIn == NULL)
@@ -178,6 +180,7 @@ int test_mnist(void)
 #endif  /* NO_IMAGE */
 #endif  /* NO CAMERA */
 
+// Print image
   #if defined(PRINT_IMAGE)
     int W = 50, H = 50;
     for (int i=0; i<H; i++)
@@ -190,6 +193,7 @@ int test_mnist(void)
     }
   #endif  /* PRINT_IMAGE */
 
+// Allocate memory for output of Mnist network
     ResOut = (short int *) AT_L2_ALLOC(0, 10 * sizeof(short int));
     if (ResOut == NULL)
     {
@@ -197,19 +201,19 @@ int test_mnist(void)
         pmsis_exit(-3);
     }
 
-//  UART configure init
+//  UART init and configure
     pi_uart_conf_init(&uart_conf);
     uart_conf.enable_tx = 1;
     uart_conf.enable_rx = 0;
     pi_open_from_conf(&uart, &uart_conf);
+    printf("UART connection opened\n");
     if (pi_uart_open(&uart))
     {
         printf("Uart open failed !\n");
         pmsis_exit(-1);
     }
-
+// Cluster init and configure
     #if !defined(__EMUL__)
-    /* Configure And open cluster. */
     struct pi_device cluster_dev;
     struct pi_cluster_conf cl_conf;
     cl_conf.id = 0;
@@ -229,6 +233,7 @@ int test_mnist(void)
         pmsis_exit(-5);
     }
 
+// Cluster task
     printf("Call cluster\n");
     #if !defined(__EMUL__)
     struct pi_cluster_task task = {0};
@@ -244,7 +249,7 @@ int test_mnist(void)
     pi_uart_write(&uart, &rec_digit, 1);
     mnistCNN_Destruct();
     
-
+// Performance check
 #ifdef PERF
     {
       unsigned int TotalCycles = 0, TotalOper = 0;
@@ -259,7 +264,7 @@ int test_mnist(void)
     }
 #endif
 
-
+// Closing camera, uart, cluster
   #if defined CAMERA
   end:
     AT_L2_FREE(0, ImageIn, AT_CAMERA_INPUT_SIZE_BYTES);
