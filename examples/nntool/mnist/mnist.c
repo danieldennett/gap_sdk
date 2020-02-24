@@ -69,8 +69,8 @@ L2_MEM uint8_t rec_digit = 0;
 #define AT_CAMERA_INPUT_SIZE_BYTES (CAM_WIDTH*CAM_HEIGHT*sizeof(image_in_t))
 
 L2_MEM struct pi_device himax;
-// L2_MEM unsigned char *imgBuff0;
 L2_MEM struct pi_himax_conf cam_conf;
+// L2_MEM struct pi_camera_format_e cam_con;
 L2_MEM uint8_t errors = 0;
 
 // static void RunMnist()
@@ -126,7 +126,7 @@ int test_mnist(void)
 #endif
 // HIMAX CAMERA STUFF
     #if defined(CAMERA)
-    printf("[CAMERA] Start\n");
+    
     ImageIn = (image_in_t *) AT_L2_ALLOC(0, AT_CAMERA_INPUT_SIZE_BYTES);  //also adjust for FREE_alloc
     // unsigned char *ImageInChar = (unsigned char *)pi_l2_malloc((CAM_WIDTH*CAM_HEIGHT)*sizeof(image_in_t));
     if (ImageIn == NULL)  //changed from ImageInChar to ImageIn for every ..Char
@@ -137,6 +137,7 @@ int test_mnist(void)
     pi_himax_conf_init(&cam_conf);
     cam_conf.i2c_itf = 0;
     pi_open_from_conf(&himax, &cam_conf);
+    // cam_con.PI_CAMERA_QQVGA = 0;
 
     if (pi_camera_open(&himax))
     {
@@ -145,12 +146,12 @@ int test_mnist(void)
       goto end;
     }
     pi_camera_control(&himax, PI_CAMERA_CMD_START, 0);
-    pi_time_wait_us(1000000);
+    printf("[CAMERA] Start\n");
+    pi_time_wait_us(100000);
     pi_camera_capture(&himax, ImageIn, CAM_WIDTH*CAM_HEIGHT); // to-do: check for right dimensions
     pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);
     printf("CAMERA [stopped]\n");
     // pi_camera_close(&himax);
-  
   #endif 
 
 
