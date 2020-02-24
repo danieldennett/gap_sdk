@@ -64,8 +64,8 @@ L2_MEM uint8_t rec_digit = 0;
 #define CAMERA
 
 //camera init parameters
-#define CAM_WIDTH    10//324
-#define CAM_HEIGHT   10//244
+#define CAM_WIDTH    50//324
+#define CAM_HEIGHT   50//244
 #define AT_CAMERA_INPUT_SIZE_BYTES (CAM_WIDTH*CAM_HEIGHT*sizeof(image_in_t))
 
 L2_MEM struct pi_device himax;
