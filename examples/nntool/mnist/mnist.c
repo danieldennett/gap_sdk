@@ -29,7 +29,6 @@
   #define TENSOR_DUMP_FILE "tensor_dump_file.dat"
 #endif
 
-// #define CAMERA
 #define PRINT_IMAGE
 
 AT_HYPERFLASH_FS_EXT_ADDR_TYPE mnist_L3_Flash = 0;
@@ -62,9 +61,12 @@ L2_MEM struct pi_uart_conf uart_conf;
 L2_MEM struct pi_device uart;
 L2_MEM uint8_t rec_digit = 0;
 
+#define CAMERA
+
 //camera init parameters
 #define CAM_WIDTH    10//324
 #define CAM_HEIGHT   10//244
+#define AT_CAMERA_INPUT_SIZE_BYTES (CAM_WIDTH*CAM_HEIGHT*sizeof(image_in_t))
 
 L2_MEM struct pi_device himax;
 // L2_MEM unsigned char *imgBuff0;
@@ -115,12 +117,19 @@ int test_mnist(void)
     if (dt_open_dump_file(TENSOR_DUMP_FILE))
 #endif 
 
-
+#ifdef QUANT_8BIT
+  #define SHIFT 1
+  #define SHORT 0
+#else
+  #define SHORT 1
+  #define SHIFT 0
+#endif
 // HIMAX CAMERA STUFF
     #if defined(CAMERA)
     printf("[CAMERA] Start\n");
-    unsigned char *ImageInChar = (unsigned char *)pi_l2_malloc((CAM_WIDTH*CAM_HEIGHT)*sizeof(image_in_t));
-    if (ImageInChar == NULL)
+    ImageIn = (image_in_t *) AT_L2_ALLOC(0, AT_CAMERA_INPUT_SIZE_BYTES);  //also adjust for FREE_alloc
+    // unsigned char *ImageInChar = (unsigned char *)pi_l2_malloc((CAM_WIDTH*CAM_HEIGHT)*sizeof(image_in_t));
+    if (ImageIn == NULL)  //changed from ImageInChar to ImageIn for every ..Char
     {
       printf("[CAMERA] Failed to allocate memory for image\n");
     }
@@ -137,17 +146,20 @@ int test_mnist(void)
     }
     pi_camera_control(&himax, PI_CAMERA_CMD_START, 0);
     pi_time_wait_us(1000000);
-    pi_camera_capture(&himax, ImageInChar, CAM_WIDTH*CAM_HEIGHT);
+    pi_camera_capture(&himax, ImageIn, CAM_WIDTH*CAM_HEIGHT); // to-do: check for right dimensions
     pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);
     printf("CAMERA [stopped]\n");
     // pi_camera_close(&himax);
   
   #endif 
 
+
+
 #if !defined(CAMERA)
 // allocating memory for the manual image upload 
-    unsigned char *ImageInChar = (unsigned char *) pi_l2_malloc(sizeof(image_in_t)*AT_INPUT_WIDTH*AT_INPUT_HEIGHT*AT_INPUT_COLORS);
-    if (ImageInChar == NULL)
+    // unsigned char *ImageInChar = (unsigned char *) pi_l2_malloc(sizeof(image_in_t)*AT_INPUT_WIDTH*AT_INPUT_HEIGHT*AT_INPUT_COLORS);
+    ImageIn = (image_in_t *) AT_L2_ALLOC(0, AT_INPUT_SIZE_BYTES);
+    if (ImageIn == NULL)
     {
         printf("Failed to open tensor dump file %s.\n", TENSOR_DUMP_FILE);
         exit(-2);
@@ -155,13 +167,6 @@ int test_mnist(void)
   #if !defined(NO_IMAGE)              
     printf("Reading image\n");
     //Reading Image from Bridge
-  #ifdef QUANT_8BIT
-    #define SHIFT 1
-    #define SHORT 0
-  #else
-    #define SHORT 1
-    #define SHIFT 0
-  #endif
 
     if (!(ImageIn = (image_in_t *) AT_L2_ALLOC(0, AT_INPUT_SIZE_BYTES))) {
         printf("Failed to allocate %ld bytes for %s\n", AT_INPUT_SIZE_BYTES, ImageName);
@@ -184,7 +189,7 @@ int test_mnist(void)
     {
         for (int j=0; j<W; j++)
         {
-            printf("%03d, ", ImageInChar[W*i + j]);
+            printf("%03d, ", ImageIn[W*i + j]);
         }
         printf("\n");
     }
@@ -266,7 +271,8 @@ int test_mnist(void)
 
   #if defined CAMERA
   end:
-    pi_l2_free(ImageInChar, (CAM_WIDTH*CAM_HEIGHT)*sizeof(unsigned char));
+    // pi_l2_free(ImageInChar, (CAM_WIDTH*CAM_HEIGHT)*sizeof(unsigned char));
+    AT_L2_FREE(0, ImageIn, AT_CAMERA_INPUT_SIZE_BYTES);
     pi_camera_close(&himax);
     printf("CAMERA [closed]\n");
   #endif
@@ -280,7 +286,9 @@ int test_mnist(void)
 #ifndef DONT_DUMP
     dt_close_dump_file();
 #endif
+  #ifndef CAMERA
     AT_L2_FREE(0, ImageIn, AT_INPUT_SIZE_BYTES);
+  #endif  
     AT_L2_FREE(0, ResOut, 10 * sizeof(short int));
     printf("Ended\n");
 
