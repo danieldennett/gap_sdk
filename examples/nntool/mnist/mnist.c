@@ -127,9 +127,8 @@ int test_mnist(void)
 // HIMAX CAMERA STUFF
     #if defined(CAMERA)
     
-    ImageIn = (image_in_t *) AT_L2_ALLOC(0, AT_CAMERA_INPUT_SIZE_BYTES);  //also adjust for FREE_alloc
-    // unsigned char *ImageInChar = (unsigned char *)pi_l2_malloc((CAM_WIDTH*CAM_HEIGHT)*sizeof(image_in_t));
-    if (ImageIn == NULL)  //changed from ImageInChar to ImageIn for every ..Char
+    ImageIn = (image_in_t *) AT_L2_ALLOC(0, AT_CAMERA_INPUT_SIZE_BYTES);
+    if (ImageIn == NULL) 
     {
       printf("[CAMERA] Failed to allocate memory for image\n");
     }
@@ -148,17 +147,12 @@ int test_mnist(void)
     pi_camera_control(&himax, PI_CAMERA_CMD_START, 0);
     printf("[CAMERA] Start\n");
     pi_time_wait_us(100000);
-    pi_camera_capture(&himax, ImageIn, CAM_WIDTH*CAM_HEIGHT); // to-do: check for right dimensions
+    pi_camera_capture(&himax, ImageIn, CAM_WIDTH*CAM_HEIGHT);
     pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);
-    printf("CAMERA [stopped]\n");
-    // pi_camera_close(&himax);
+    printf("[CAMERA] stopped\n");
   #endif 
 
-
-
 #if !defined(CAMERA)
-// allocating memory for the manual image upload 
-    // unsigned char *ImageInChar = (unsigned char *) pi_l2_malloc(sizeof(image_in_t)*AT_INPUT_WIDTH*AT_INPUT_HEIGHT*AT_INPUT_COLORS);
     ImageIn = (image_in_t *) AT_L2_ALLOC(0, AT_INPUT_SIZE_BYTES);
     if (ImageIn == NULL)
     {
@@ -207,9 +201,6 @@ int test_mnist(void)
     pi_uart_conf_init(&uart_conf);
     uart_conf.enable_tx = 1;
     uart_conf.enable_rx = 0;
-    #if !defined(__PULP_OS__)
-    conf.src_clock_Hz = pi_fll_get_frequency(FLL_SOC);
-    #endif  /* __PULP_OS__ */
     pi_open_from_conf(&uart, &uart_conf);
     if (pi_uart_open(&uart))
     {
@@ -269,21 +260,20 @@ int test_mnist(void)
 #endif
 
 
-
   #if defined CAMERA
   end:
-    // pi_l2_free(ImageInChar, (CAM_WIDTH*CAM_HEIGHT)*sizeof(unsigned char));
     AT_L2_FREE(0, ImageIn, AT_CAMERA_INPUT_SIZE_BYTES);
     pi_camera_close(&himax);
-    printf("CAMERA [closed]\n");
+    printf("[CAMERA] closed\n");
   #endif
-
-
     pi_uart_close(&uart);
+
+
 #ifndef __EMUL__    
   // Close the cluster
     pi_cluster_close(&cluster_dev);
 #endif  /* __EMUL__ */
+
 #ifndef DONT_DUMP
     dt_close_dump_file();
 #endif
