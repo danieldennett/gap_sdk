@@ -20,7 +20,12 @@
 			"himax.h": "c",
 			"uart.h": "c",
 			"string": "c",
-			"string_view": "c"
+			"string_view": "c",
+			"pulpdronetkernels.h": "c",
+			"deque": "c",
+			"unordered_map": "c",
+			"vector": "c",
+			"initializer_list": "c"
 		}
 	}
 }
