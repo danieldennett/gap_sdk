@@ -54,7 +54,7 @@ L2_MEM image_in_t *ImageIn;
 //UART init param
 L2_MEM struct pi_uart_conf uart_conf;
 L2_MEM struct pi_device uart;
-L2_MEM uint8_t rec_digit = 0;
+L2_MEM uint8_t rec_digit = -1;
 
 // #define CAMERA
 // #define PRINT_IMAGE
@@ -114,7 +114,6 @@ static void cluster()
       rec_digit = i;
     }
   }
-  printf("\n");
   // rec_digit = -2000;
   printf("Recognized digit: %d with softmax output %d\n", rec_digit, highest);
   // for(int j = -10; j < 10; j++){
@@ -154,14 +153,15 @@ int test_mnist(void)
 
   pi_himax_conf_init(&cam_conf);
   cam_conf.i2c_itf = 0;
-  cam_conf.format = QVGA;
+  cam_conf.format = QQVGA;        //160 by 120
   pi_open_from_conf(&himax, &cam_conf);
   // cam_con.PI_CAMERA_QQVGA = 0;
 
   if (pi_camera_open(&himax))
   {
     printf("[CAMERA] Failed to open camera driver\n");
-    goto end;
+    pmsis_exit(-7);
+    // goto end;
   }
   // pi_camera_reg_set(&himax, IMG_ORIENTATION,	0x00);	//	Img orientation		[Def: 0x10]
 	// pi_camera_reg_set(&himax, AE_TARGET_MEAN, 	0x4E);	//	AE target mean 		[Def: 0x3C]
@@ -180,10 +180,10 @@ int test_mnist(void)
   pi_camera_control(&himax, PI_CAMERA_CMD_START, 0);
   printf("[CAMERA] Start\n");
   pi_time_wait_us(1000000);
-  pi_camera_capture(&himax, ImageIn, CAM_WIDTH*CAM_HEIGHT);
+  // pi_camera_capture(&himax, ImageIn, CAM_WIDTH*CAM_HEIGHT);
   // pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);
-  printf("[CAMERA] stopped\n");
-  end_of_frame();
+  // printf("[CAMERA] stopped\n");
+  // end_of_frame();
 #endif 
 
 // Using images from PC
@@ -212,18 +212,6 @@ int test_mnist(void)
 #endif  /* NO_IMAGE */
 #endif  /* NO CAMERA */
 
-// Print image
-#if defined(PRINT_IMAGE)
-  int W = 50, H = 50;
-  for (int i=0; i<H; i++)
-  {
-      for (int j=0; j<W; j++)
-      {
-          printf("%03d, ", ImageIn[W*i + j]);
-      }
-      printf("\n");
-  }
-#endif  /* PRINT_IMAGE */
 
 // Allocate memory for output of Mnist network
   ResOut = (short int *) AT_L2_ALLOC(0, 10 * sizeof(short int));
@@ -238,10 +226,10 @@ int test_mnist(void)
   uart_conf.enable_tx = 1;
   uart_conf.enable_rx = 0;
   pi_open_from_conf(&uart, &uart_conf);
-  printf("UART connection opened\n");
+  printf("[UART] Opened\n");
   if (pi_uart_open(&uart))
   {
-      printf("Uart open failed !\n");
+      printf("[UART] open failed !\n");
       pmsis_exit(-1);
   }
 // Cluster init and configure
@@ -250,14 +238,16 @@ int test_mnist(void)
   struct pi_cluster_conf cl_conf;
   cl_conf.id = 0;
   pi_open_from_conf(&cluster_dev, (void *) &cl_conf);
+  printf("[CLUSTER] Open\n");
   if (pi_cluster_open(&cluster_dev))
   {
-      printf("Cluster open failed !\n");
+      printf("[CLUSTER] open failed !\n");
       pmsis_exit(-4);
   }
+  
 #endif  /* __EMUL__ */
 
-  printf("Constructor\n");
+  printf("Constructor\n\n");
   // IMPORTANT - MUST BE CALLED AFTER THE CLUSTER IS SWITCHED ON!!!!
   if (mnistCNN_Construct())
   {
@@ -265,28 +255,49 @@ int test_mnist(void)
       pmsis_exit(-5);
   }
 
-for (int i=0; i<10; i++)
-{
-    printf("capture image\n");
-    pi_camera_capture(&himax, ImageIn, CAM_WIDTH*CAM_HEIGHT);
-  // Cluster task
-    printf("Call cluster\n");
-  #if !defined(__EMUL__)
-    struct pi_cluster_task task = {0};
-    task.entry = cluster;
-    task.arg = NULL;
-    task.stack_size = (unsigned int) STACK_SIZE;
-    task.slave_stack_size = (unsigned int) SLAVE_STACK_SIZE;
-  
-    pi_cluster_send_task_to_cl(&cluster_dev, &task);
-  #else
-    cluster();
-  #endif
-    pi_uart_write(&uart, &rec_digit, 1);
-      
-}   // looping
+#if !defined(__EMUL__)
+  printf("Setup cluster task\n");
+  struct pi_cluster_task task = {0};
+  task.entry = cluster;
+  task.arg = NULL;
+  task.stack_size = (unsigned int) STACK_SIZE;
+  task.slave_stack_size = (unsigned int) SLAVE_STACK_SIZE;
+#endif    
 
-mnistCNN_Destruct();
+  for (int i=0; i<4; i++)
+  {
+      pi_camera_capture(&himax, ImageIn, CAM_WIDTH*CAM_HEIGHT);
+      printf("Captured image\n");
+      // Print image
+    #if defined(PRINT_IMAGE)
+      int W = 105, H = 85;
+      for (int i=55; i<H; i++)
+      {
+          for (int j=35; j<W; j++)
+          {
+              printf("%03d, ", ImageIn[W*i + j]);
+          }
+          printf("\n");
+      }
+    #endif  /* PRINT_IMAGE */
+
+    // Cluster task
+      printf("Call cluster\n");
+    #if !defined(__EMUL__)
+      pi_cluster_send_task_to_cl(&cluster_dev, &task);
+    #else
+      cluster();
+    #endif
+      printf("Send uart byte to Crazyflie: %d\n\n",rec_digit);
+      pi_task_t wait_task = {0};
+      pi_task_block(&wait_task);
+      pi_uart_write_async(&uart, rec_digit, 1, &wait_task);
+      pi_task_wait_on(&wait_task);
+      // pi_uart_write(&uart, &rec_digit, 1);    
+  }   // looping
+
+  mnistCNN_Destruct();
+
 // Performance check
 #ifdef PERF
 {
@@ -302,21 +313,22 @@ mnistCNN_Destruct();
 }
 #endif
 
+#ifndef __EMUL__    
+// Close the cluster
+  pi_cluster_close(&cluster_dev);
+  printf("[CLUSTER] closed\n");
+#endif  /* __EMUL__ */
+
+  pi_uart_close(&uart);
+  printf("[UART] closed\n");
+
 // Closing camera, uart, cluster
 #if defined CAMERA
-end:
   AT_L2_FREE(0, ImageIn, AT_CAMERA_INPUT_SIZE_BYTES);
   pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);
   pi_camera_close(&himax);
   printf("[CAMERA] closed\n");
 #endif
-  pi_uart_close(&uart);
-
-
-#ifndef __EMUL__    
-// Close the cluster
-  pi_cluster_close(&cluster_dev);
-#endif  /* __EMUL__ */
 
 #ifndef DONT_DUMP
   dt_close_dump_file();
