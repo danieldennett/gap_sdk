@@ -289,11 +289,7 @@ int test_mnist(void)
       cluster();
     #endif
       printf("Send uart byte to Crazyflie: %d\n\n",rec_digit);
-      pi_task_t wait_task = {0};
-      pi_task_block(&wait_task);
-      pi_uart_write_async(&uart, rec_digit, 1, &wait_task);
-      pi_task_wait_on(&wait_task);
-      // pi_uart_write(&uart, &rec_digit, 1);    
+      pi_uart_write(&uart, &rec_digit, 1);          
   }   // looping
 
   mnistCNN_Destruct();
