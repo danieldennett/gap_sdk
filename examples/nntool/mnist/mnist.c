@@ -29,8 +29,6 @@
   #define TENSOR_DUMP_FILE "tensor_dump_file.dat"
 #endif
 
-#define PRINT_IMAGE
-
 AT_HYPERFLASH_FS_EXT_ADDR_TYPE mnist_L3_Flash = 0;
 
 // Softmax always outputs Q15 short int even from 8 bit input
@@ -59,15 +57,37 @@ L2_MEM struct pi_device uart;
 L2_MEM uint8_t rec_digit = 0;
 
 // #define CAMERA
+// #define PRINT_IMAGE
 
 //camera init parameters
 #define CAM_WIDTH    200//324
 #define CAM_HEIGHT   200//244
+
+//cropping option for camera
+#define CAM_CROP_W   200 
+#define CAM_CROP_H   200
 #define AT_CAMERA_INPUT_SIZE_BYTES (CAM_WIDTH*CAM_HEIGHT*sizeof(image_in_t))
 
 L2_MEM struct pi_device himax;
 L2_MEM struct pi_himax_conf cam_conf;
 // L2_MEM struct pi_camera_format_e cam_con;
+
+static int				imgTransferDone = 0;
+
+static void end_of_frame() 
+{
+	unsigned char * ptr = (unsigned char *) ImageIn;
+	for(int i=CAM_CROP_H-1; i>=0; i--) 
+  {
+		// rt_event_execute(NULL, 0);
+		for(int j=CAM_CROP_W-1; j>=0; j--) 
+    {
+			ImageIn[i*CAM_CROP_W+j] = (short int) ptr[i*CAM_CROP_W+j];
+		}
+	}
+	imgTransferDone = 1;
+  printf("imgTransferDone\n");
+}
 
 char *ImageName = NULL;
 
@@ -134,6 +154,7 @@ int test_mnist(void)
 
   pi_himax_conf_init(&cam_conf);
   cam_conf.i2c_itf = 0;
+  cam_conf.format = QVGA;
   pi_open_from_conf(&himax, &cam_conf);
   // cam_con.PI_CAMERA_QQVGA = 0;
 
@@ -142,12 +163,27 @@ int test_mnist(void)
     printf("[CAMERA] Failed to open camera driver\n");
     goto end;
   }
+  // pi_camera_reg_set(&himax, IMG_ORIENTATION,	0x00);	//	Img orientation		[Def: 0x10]
+	// pi_camera_reg_set(&himax, AE_TARGET_MEAN, 	0x4E);	//	AE target mean 		[Def: 0x3C]
+	// pi_camera_reg_set(&himax, AE_MIN_MEAN,		0x1C);	//	AE min target mean 	[Def: 0x0A]
+	// pi_camera_reg_set(&himax, MAX_AGAIN_FULL,	0x02);	//	Max AGAIN full res 	[Def: 0x00]
+	// pi_camera_reg_set(&himax, MIN_AGAIN, 		0x00);	//	Min AGAIN 			[Def: 0x00]
+	// pi_camera_reg_set(&himax, BLC_TGT, 			0x20);	//	Black level target 	[Def: 0x20]
+	// pi_camera_reg_set(&himax, ANALOG_GAIN,		0x00);	//	Analog Global Gain 	[Def: 0x00]
+	// pi_camera_reg_set(&himax, DIGITAL_GAIN_H, 	0x03);	//	Digital Gain High 	[Def: 0x01]
+	// pi_camera_reg_set(&himax, DIGITAL_GAIN_L, 	0xFC);	//	Digital Gain Low 	[Def: 0x00]
+	// pi_camera_reg_set(&himax, MAX_DGAIN,		0xF0);	//	Max DGAIN 			[Def: 0xC0]
+	// pi_camera_reg_set(&himax, MIN_DGAIN, 		0x60);	//	Min DGAIN 			[Def: 0x40]
+	// pi_camera_reg_set(&himax, SINGLE_THR_HOT, 	0xFF);	//	single hot px th 	[Def: 0xFF]
+	// pi_camera_reg_set(&himax, SINGLE_THR_COLD,	0xFF);	//	single cold px th 	[Def: 0xFF]
+  
   pi_camera_control(&himax, PI_CAMERA_CMD_START, 0);
   printf("[CAMERA] Start\n");
   pi_time_wait_us(1000000);
   pi_camera_capture(&himax, ImageIn, CAM_WIDTH*CAM_HEIGHT);
-  pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);
+  // pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);
   printf("[CAMERA] stopped\n");
+  end_of_frame();
 #endif 
 
 // Using images from PC
@@ -229,22 +265,28 @@ int test_mnist(void)
       pmsis_exit(-5);
   }
 
-// Cluster task
-  printf("Call cluster\n");
-#if !defined(__EMUL__)
-  struct pi_cluster_task task = {0};
-  task.entry = cluster;
-  task.arg = NULL;
-  task.stack_size = (unsigned int) STACK_SIZE;
-  task.slave_stack_size = (unsigned int) SLAVE_STACK_SIZE;
+for (int i=0; i<10; i++)
+{
+    printf("capture image\n");
+    pi_camera_capture(&himax, ImageIn, CAM_WIDTH*CAM_HEIGHT);
+  // Cluster task
+    printf("Call cluster\n");
+  #if !defined(__EMUL__)
+    struct pi_cluster_task task = {0};
+    task.entry = cluster;
+    task.arg = NULL;
+    task.stack_size = (unsigned int) STACK_SIZE;
+    task.slave_stack_size = (unsigned int) SLAVE_STACK_SIZE;
+  
+    pi_cluster_send_task_to_cl(&cluster_dev, &task);
+  #else
+    cluster();
+  #endif
+    pi_uart_write(&uart, &rec_digit, 1);
+      
+}   // looping
 
-  pi_cluster_send_task_to_cl(&cluster_dev, &task);
-#else
-  cluster();
-#endif
-  pi_uart_write(&uart, &rec_digit, 1);
-  mnistCNN_Destruct();
-    
+mnistCNN_Destruct();
 // Performance check
 #ifdef PERF
 {
@@ -264,6 +306,7 @@ int test_mnist(void)
 #if defined CAMERA
 end:
   AT_L2_FREE(0, ImageIn, AT_CAMERA_INPUT_SIZE_BYTES);
+  pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);
   pi_camera_close(&himax);
   printf("[CAMERA] closed\n");
 #endif
