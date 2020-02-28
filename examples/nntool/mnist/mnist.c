@@ -29,11 +29,6 @@
   #define TENSOR_DUMP_FILE "tensor_dump_file.dat"
 #endif
 
-AT_HYPERFLASH_FS_EXT_ADDR_TYPE mnist_L3_Flash = 0;
-
-// Softmax always outputs Q15 short int even from 8 bit input
-L2_MEM short int *ResOut;
-
 #ifdef QUANT_16BIT
   typedef short int image_in_t;
 #else
@@ -49,21 +44,27 @@ L2_MEM short int *ResOut;
 #define AT_INPUT_SIZE (AT_INPUT_WIDTH*AT_INPUT_HEIGHT*AT_INPUT_COLORS)
 #define AT_INPUT_SIZE_BYTES (AT_INPUT_SIZE*sizeof(image_in_t))
 
+
+// Init memory pointers
+// Softmax always outputs Q15 short int even from 8 bit input
+L2_MEM short int *ResOut;
 L2_MEM image_in_t *ImageIn;
+AT_HYPERFLASH_FS_EXT_ADDR_TYPE mnist_L3_Flash = 0;
+L2_MEM pi_cl_alloc_req_t alloc_req;
 
 //UART init param
 L2_MEM struct pi_uart_conf uart_conf;
 L2_MEM struct pi_device uart;
 L2_MEM uint8_t rec_digit = -1;
 
-// #define CAMERA
-// #define PRINT_IMAGE
+#define PRINT_IMAGE
 
 //camera init parameters
+#define CAMERA
 #define CAM_WIDTH    200//324
 #define CAM_HEIGHT   200//244
 
-//cropping option for camera
+//cropping option for camera 
 #define CAM_CROP_W   200 
 #define CAM_CROP_H   200
 #define AT_CAMERA_INPUT_SIZE_BYTES (CAM_WIDTH*CAM_HEIGHT*sizeof(image_in_t))
@@ -145,7 +146,10 @@ int test_mnist(void)
 
 // HIMAX CAMERA init, configure, execute 
 #if defined(CAMERA)
-  ImageIn = (image_in_t *) AT_L2_ALLOC(0, AT_CAMERA_INPUT_SIZE_BYTES);
+  // ImageIn = (image_in_t *) AT_L2_ALLOC(0, AT_CAMERA_INPUT_SIZE_BYTES);
+  // pi_l2_malloc_init();
+  ImageIn = (image_in_t *) pi_l2_malloc(AT_CAMERA_INPUT_SIZE_BYTES);
+  
   if (ImageIn == NULL) 
   {
     printf("[CAMERA] Failed to allocate memory for image\n");
@@ -155,7 +159,6 @@ int test_mnist(void)
   cam_conf.i2c_itf = 0;
   cam_conf.format = QQVGA;        //160 by 120
   pi_open_from_conf(&himax, &cam_conf);
-  // cam_con.PI_CAMERA_QQVGA = 0;
 
   if (pi_camera_open(&himax))
   {
@@ -180,15 +183,19 @@ int test_mnist(void)
   pi_camera_control(&himax, PI_CAMERA_CMD_START, 0);
   printf("[CAMERA] Start\n");
   pi_time_wait_us(1000000);
-  // pi_camera_capture(&himax, ImageIn, CAM_WIDTH*CAM_HEIGHT);
-  // pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);
+  pi_camera_capture(&himax, ImageIn, CAM_WIDTH*CAM_HEIGHT);
+  pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);  ///CAMERA
+  memset(ImageIn, 10, 10);
+  
+  printf("Captured image\n");
   // printf("[CAMERA] stopped\n");
   // end_of_frame();
 #endif 
 
 // Using images from PC
 #if !defined(CAMERA)
-  ImageIn = (image_in_t *) AT_L2_ALLOC(0, AT_INPUT_SIZE_BYTES);
+  // ImageIn = (image_in_t *) AT_L2_ALLOC(0, AT_INPUT_SIZE_BYTES);
+  ImageIn = (image_in_t *) pi_l2_malloc(AT_INPUT_SIZE_BYTES);
   if (ImageIn == NULL)
   {
       printf("Failed to open tensor dump file %s.\n", TENSOR_DUMP_FILE);
@@ -214,7 +221,8 @@ int test_mnist(void)
 
 
 // Allocate memory for output of Mnist network
-  ResOut = (short int *) AT_L2_ALLOC(0, 10 * sizeof(short int));
+  // ResOut = (short int *) AT_L2_ALLOC(0, 10 * sizeof(short int));
+  ResOut = (short int *) pi_l2_malloc(10 * sizeof(short int));
   if (ResOut == NULL)
   {
       printf("Failed to allocate Memory for Result (%d bytes)\n", 10*sizeof(short int));
@@ -262,18 +270,35 @@ int test_mnist(void)
   task.arg = NULL;
   task.stack_size = (unsigned int) STACK_SIZE;
   task.slave_stack_size = (unsigned int) SLAVE_STACK_SIZE;
-#endif    
+#if !defined(REAL_TIME) 
+  pi_cluster_send_task_to_cl(&cluster_dev, &task);
+#if defined(PRINT_IMAGE)
+  int W = 50, H = 50;
+  for (int i=0; i<H; i++)
+  {
+      for (int j=0; j<W; j++)
+      {
+          printf("%03d, ", ImageIn[W*i + j]);
+      }
+      printf("\n");
+  }
+#endif  /* PRINT_IMAGE */
+#endif  /* REAL_TIME */
+#endif  /*! __EMUL__ */  
 
+#if defined (REAL_TIME)
   for (int i=0; i<4; i++)
   {
       pi_camera_capture(&himax, ImageIn, CAM_WIDTH*CAM_HEIGHT);
+      memset(ImageIn, 1, 10);
+      // pi_cl_ram_alloc_wait(&alloc_req, ImageIn);
       printf("Captured image\n");
       // Print image
     #if defined(PRINT_IMAGE)
-      int W = 105, H = 85;
-      for (int i=55; i<H; i++)
+      int W = 50, H = 50;
+      for (int i=0; i<H; i++)
       {
-          for (int j=35; j<W; j++)
+          for (int j=0; j<W; j++)
           {
               printf("%03d, ", ImageIn[W*i + j]);
           }
@@ -291,7 +316,7 @@ int test_mnist(void)
       printf("Send uart byte to Crazyflie: %d\n\n",rec_digit);
       pi_uart_write(&uart, &rec_digit, 1);          
   }   // looping
-
+#endif
   mnistCNN_Destruct();
 
 // Performance check
@@ -320,7 +345,8 @@ int test_mnist(void)
 
 // Closing camera, uart, cluster
 #if defined CAMERA
-  AT_L2_FREE(0, ImageIn, AT_CAMERA_INPUT_SIZE_BYTES);
+  // AT_L2_FREE(0, ImageIn, AT_CAMERA_INPUT_SIZE_BYTES);
+  pi_l2_free(ImageIn, AT_CAMERA_INPUT_SIZE_BYTES);
   pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);
   pi_camera_close(&himax);
   printf("[CAMERA] closed\n");
@@ -331,9 +357,11 @@ int test_mnist(void)
 #endif
 
 #ifndef CAMERA
-  AT_L2_FREE(0, ImageIn, AT_INPUT_SIZE_BYTES);
+  // AT_L2_FREE(0, ImageIn, AT_INPUT_SIZE_BYTES);
+  pi_l2_free(ImageIn, AT_INPUT_SIZE_BYTES);
 #endif  
-  AT_L2_FREE(0, ResOut, 10 * sizeof(short int));
+  // AT_L2_FREE(0, ResOut, 10 * sizeof(short int));
+  pi_l2_free(ResOut, 10 * sizeof(short int));
   printf("Ended\n");
 
   pmsis_exit(0);
