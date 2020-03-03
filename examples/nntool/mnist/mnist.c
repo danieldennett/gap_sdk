@@ -12,6 +12,7 @@
 #include "pmsis.h"
 #include "pmsis/drivers/uart.h"
 #include "bsp/camera/himax.h"
+// #include "tools/frame_streamer.h"
 #endif  /* __EMUL__ */
 
 /* Autotiler includes. */
@@ -33,7 +34,8 @@
   typedef short int image_in_t;
 #else
   #ifdef QUANT_8BIT
-  typedef signed char image_in_t;
+  // typedef unsigned char image_in_t;
+  typedef unsigned short int image_in_t;
   #endif
 #endif
 
@@ -49,46 +51,30 @@
 // Softmax always outputs Q15 short int even from 8 bit input
 L2_MEM short int *ResOut;
 L2_MEM image_in_t *ImageIn;
+L2_MEM image_in_t *ImageInCam;
 AT_HYPERFLASH_FS_EXT_ADDR_TYPE mnist_L3_Flash = 0;
-L2_MEM pi_cl_alloc_req_t alloc_req;
 
 //UART init param
 L2_MEM struct pi_uart_conf uart_conf;
 L2_MEM struct pi_device uart;
 L2_MEM uint8_t rec_digit = -1;
 
-#define PRINT_IMAGE
+// #define PRINT_IMAGE
 
 //camera init parameters
-#define CAMERA
-#define CAM_WIDTH    200//324
-#define CAM_HEIGHT   200//244
+// #define CAMERA
+#define CAM_WIDTH    160//324
+#define CAM_HEIGHT   120//244
 
 //cropping option for camera 
-#define CAM_CROP_W   200 
-#define CAM_CROP_H   200
+// #define CAM_CROP_W   200 
+// #define CAM_CROP_H   200
 #define AT_CAMERA_INPUT_SIZE_BYTES (CAM_WIDTH*CAM_HEIGHT*sizeof(image_in_t))
 
 L2_MEM struct pi_device himax;
 L2_MEM struct pi_himax_conf cam_conf;
-// L2_MEM struct pi_camera_format_e cam_con;
-
-static int				imgTransferDone = 0;
-
-static void end_of_frame() 
-{
-	unsigned char * ptr = (unsigned char *) ImageIn;
-	for(int i=CAM_CROP_H-1; i>=0; i--) 
-  {
-		// rt_event_execute(NULL, 0);
-		for(int j=CAM_CROP_W-1; j>=0; j--) 
-    {
-			ImageIn[i*CAM_CROP_W+j] = (short int) ptr[i*CAM_CROP_W+j];
-		}
-	}
-	imgTransferDone = 1;
-  printf("imgTransferDone\n");
-}
+L2_MEM pi_cl_alloc_req_t alloc_req;
+// L2_MEM struct pi_task_t cam_task;
 
 char *ImageName = NULL;
 
@@ -145,19 +131,29 @@ int test_mnist(void)
 #endif
 
 // HIMAX CAMERA init, configure, execute 
-#if defined(CAMERA)
-  // ImageIn = (image_in_t *) AT_L2_ALLOC(0, AT_CAMERA_INPUT_SIZE_BYTES);
-  // pi_l2_malloc_init();
-  ImageIn = (image_in_t *) pi_l2_malloc(AT_CAMERA_INPUT_SIZE_BYTES);
-  
-  if (ImageIn == NULL) 
+// #if defined(CAMERA)
+  ImageInCam = (image_in_t *) pi_l2_malloc(AT_CAMERA_INPUT_SIZE_BYTES);
+#if defined(PRINT_IMAGE)
+  printf("Allocated memory\n");
+  int W = 30, H = 30;
+  for (int i=0; i<H; i++)
+  {
+      for (int j=0; j<W; j++)
+      {
+          printf("%03d, ", ImageInCam[W*i + j]);
+      }
+      printf("\n");
+  }
+#endif  /* PRINT_IMAGE */
+  // memset(ImageInCam, 120, 10);
+  if (ImageInCam == NULL) 
   {
     printf("[CAMERA] Failed to allocate memory for image\n");
   }
 
   pi_himax_conf_init(&cam_conf);
   cam_conf.i2c_itf = 0;
-  cam_conf.format = QQVGA;        //160 by 120
+  cam_conf.format = PI_CAMERA_QQVGA;        //160 by 120
   pi_open_from_conf(&himax, &cam_conf);
 
   if (pi_camera_open(&himax))
@@ -166,36 +162,68 @@ int test_mnist(void)
     pmsis_exit(-7);
     // goto end;
   }
-  // pi_camera_reg_set(&himax, IMG_ORIENTATION,	0x00);	//	Img orientation		[Def: 0x10]
-	// pi_camera_reg_set(&himax, AE_TARGET_MEAN, 	0x4E);	//	AE target mean 		[Def: 0x3C]
-	// pi_camera_reg_set(&himax, AE_MIN_MEAN,		0x1C);	//	AE min target mean 	[Def: 0x0A]
-	// pi_camera_reg_set(&himax, MAX_AGAIN_FULL,	0x02);	//	Max AGAIN full res 	[Def: 0x00]
-	// pi_camera_reg_set(&himax, MIN_AGAIN, 		0x00);	//	Min AGAIN 			[Def: 0x00]
-	// pi_camera_reg_set(&himax, BLC_TGT, 			0x20);	//	Black level target 	[Def: 0x20]
-	// pi_camera_reg_set(&himax, ANALOG_GAIN,		0x00);	//	Analog Global Gain 	[Def: 0x00]
-	// pi_camera_reg_set(&himax, DIGITAL_GAIN_H, 	0x03);	//	Digital Gain High 	[Def: 0x01]
-	// pi_camera_reg_set(&himax, DIGITAL_GAIN_L, 	0xFC);	//	Digital Gain Low 	[Def: 0x00]
-	// pi_camera_reg_set(&himax, MAX_DGAIN,		0xF0);	//	Max DGAIN 			[Def: 0xC0]
-	// pi_camera_reg_set(&himax, MIN_DGAIN, 		0x60);	//	Min DGAIN 			[Def: 0x40]
-	// pi_camera_reg_set(&himax, SINGLE_THR_HOT, 	0xFF);	//	single hot px th 	[Def: 0xFF]
-	// pi_camera_reg_set(&himax, SINGLE_THR_COLD,	0xFF);	//	single cold px th 	[Def: 0xFF]
-  
+  static pi_buffer_t buffer;
+  pi_buffer_init(&buffer, PI_BUFFER_TYPE_L2, ImageInCam);
+  pi_buffer_set_format(&buffer, CAM_WIDTH, CAM_HEIGHT, 1, PI_BUFFER_FORMAT_GRAY); 
+
   pi_camera_control(&himax, PI_CAMERA_CMD_START, 0);
   printf("[CAMERA] Start\n");
   pi_time_wait_us(1000000);
-  pi_camera_capture(&himax, ImageIn, CAM_WIDTH*CAM_HEIGHT);
-  pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);  ///CAMERA
-  memset(ImageIn, 10, 10);
+#if defined(PRINT_IMAGE)
+  printf("Before Camera capture\n");
+  // int W = 30, H = 30;
+  for (int i=0; i<H; i++)
+  {
+      for (int j=0; j<W; j++)
+      {
+          printf("%03d, ", ImageInCam[W*i + j]);
+      }
+      printf("\n");
+  }
+#endif  /* PRINT_IMAGE */
+  pi_camera_capture(&himax, ImageInCam, CAM_WIDTH*CAM_HEIGHT);
+  // pi_task_t *task_capture;
+  // task_capture = pi_task_block(NULL);
+  // pi_camera_capture_async(&himax, ImageInCam, CAM_WIDTH*CAM_HEIGHT, task_capture);
+  // pi_task_wait_on(task_capture);
+// #if defined(PRINT_IMAGE)
+  printf("AFTER Camera capture\n");
+  int W = 160, H = 120;
+  for (int i=0; i<H; i++)
+  {
+      for (int j=0; j<W; j++)
+      {
+          printf("%03d, ", ImageInCam[W*i + j]);
+      }
+      printf("\n");
+  }
+// #endif  /* PRINT_IMAGE */
+  // memset(ImageInCam, 126, 10);
+  pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);
   
   printf("Captured image\n");
   // printf("[CAMERA] stopped\n");
   // end_of_frame();
-#endif 
+// #endif 
+
+#if defined(PRINT_IMAGE)
+  printf("After Camera STOP\n");
+  // int W = 30, H = 30;
+  for (int i=0; i<H; i++)
+  {
+      for (int j=0; j<W; j++)
+      {
+          printf("%03d, ", ImageInCam[W*i + j]);
+      }
+      printf("\n");
+  }
+#endif  /* PRINT_IMAGE */
 
 // Using images from PC
 #if !defined(CAMERA)
   // ImageIn = (image_in_t *) AT_L2_ALLOC(0, AT_INPUT_SIZE_BYTES);
   ImageIn = (image_in_t *) pi_l2_malloc(AT_INPUT_SIZE_BYTES);
+  // memset(ImageIn, 5, 10);
   if (ImageIn == NULL)
   {
       printf("Failed to open tensor dump file %s.\n", TENSOR_DUMP_FILE);
@@ -262,18 +290,8 @@ int test_mnist(void)
       printf("Graph constructor exited with an error\n");
       pmsis_exit(-5);
   }
-
-#if !defined(__EMUL__)
-  printf("Setup cluster task\n");
-  struct pi_cluster_task task = {0};
-  task.entry = cluster;
-  task.arg = NULL;
-  task.stack_size = (unsigned int) STACK_SIZE;
-  task.slave_stack_size = (unsigned int) SLAVE_STACK_SIZE;
-#if !defined(REAL_TIME) 
-  pi_cluster_send_task_to_cl(&cluster_dev, &task);
 #if defined(PRINT_IMAGE)
-  int W = 50, H = 50;
+  // int W = 30, H = 30;
   for (int i=0; i<H; i++)
   {
       for (int j=0; j<W; j++)
@@ -283,40 +301,27 @@ int test_mnist(void)
       printf("\n");
   }
 #endif  /* PRINT_IMAGE */
-#endif  /* REAL_TIME */
+
+#if !defined(__EMUL__)
+//   pi_task_t *task_capture;
+//   task_capture = pi_task_block(NULL);
+// // insert cluster task//
+//   pi_task_wait_on(task_capture);
+
+  printf("Setup cluster task\n");
+  struct pi_cluster_task task = {0};
+  task.entry = cluster;
+  task.arg = NULL;
+  task.stack_size = (unsigned int) STACK_SIZE;
+  task.slave_stack_size = (unsigned int) SLAVE_STACK_SIZE;
+  pi_cluster_send_task_to_cl(&cluster_dev, &task);
+#else 
+  cluster()
 #endif  /*! __EMUL__ */  
 
-#if defined (REAL_TIME)
-  for (int i=0; i<4; i++)
-  {
-      pi_camera_capture(&himax, ImageIn, CAM_WIDTH*CAM_HEIGHT);
-      memset(ImageIn, 1, 10);
-      // pi_cl_ram_alloc_wait(&alloc_req, ImageIn);
-      printf("Captured image\n");
-      // Print image
-    #if defined(PRINT_IMAGE)
-      int W = 50, H = 50;
-      for (int i=0; i<H; i++)
-      {
-          for (int j=0; j<W; j++)
-          {
-              printf("%03d, ", ImageIn[W*i + j]);
-          }
-          printf("\n");
-      }
-    #endif  /* PRINT_IMAGE */
+  printf("Send uart byte to Crazyflie: %d\n\n",rec_digit);
+  pi_uart_write(&uart, &rec_digit, 1);          
 
-    // Cluster task
-      printf("Call cluster\n");
-    #if !defined(__EMUL__)
-      pi_cluster_send_task_to_cl(&cluster_dev, &task);
-    #else
-      cluster();
-    #endif
-      printf("Send uart byte to Crazyflie: %d\n\n",rec_digit);
-      pi_uart_write(&uart, &rec_digit, 1);          
-  }   // looping
-#endif
   mnistCNN_Destruct();
 
 // Performance check
@@ -344,23 +349,30 @@ int test_mnist(void)
   printf("[UART] closed\n");
 
 // Closing camera, uart, cluster
-#if defined CAMERA
-  // AT_L2_FREE(0, ImageIn, AT_CAMERA_INPUT_SIZE_BYTES);
-  pi_l2_free(ImageIn, AT_CAMERA_INPUT_SIZE_BYTES);
-  pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);
+  pi_l2_free(ImageInCam, AT_CAMERA_INPUT_SIZE_BYTES);
+#if defined(PRINT_IMAGE)
+  printf("Before Camera capture\n");
+  // int W = 30, H = 30;
+  for (int i=0; i<H; i++)
+  {
+      for (int j=0; j<W; j++)
+      {
+          printf("%03d, ", ImageInCam[W*i + j]);
+      }
+      printf("\n");
+  }
+  #endif
+  // pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);
   pi_camera_close(&himax);
   printf("[CAMERA] closed\n");
-#endif
 
+  pi_l2_free(ImageIn, AT_INPUT_SIZE_BYTES);
+  printf("Imagein freed");
 #ifndef DONT_DUMP
   dt_close_dump_file();
 #endif
 
-#ifndef CAMERA
-  // AT_L2_FREE(0, ImageIn, AT_INPUT_SIZE_BYTES);
-  pi_l2_free(ImageIn, AT_INPUT_SIZE_BYTES);
-#endif  
-  // AT_L2_FREE(0, ResOut, 10 * sizeof(short int));
+  // pi_l2_free(ImageIn, AT_INPUT_SIZE_BYTES);
   pi_l2_free(ResOut, 10 * sizeof(short int));
   printf("Ended\n");
 

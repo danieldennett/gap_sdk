@@ -1,1 +1,1 @@
-test accuracy: 0.9801
+test accuracy: 0.982
