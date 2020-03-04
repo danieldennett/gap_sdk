@@ -265,7 +265,9 @@ int test_mnist(void)
 
 #if !defined(__EMUL__)
   printf("Setup cluster task\n");
+  
   struct pi_cluster_task task = {0};
+  pi_l2_free(&task, sizeof(pi_cluster_task));
   task.entry = cluster;
   task.arg = NULL;
   task.stack_size = (unsigned int) STACK_SIZE;
@@ -289,7 +291,6 @@ int test_mnist(void)
 // #ifdef(REAL_TIME)
   for (int i=0; i<4; i++)
   {   
-
       pi_camera_capture(&himax, ImageIn, CAM_WIDTH*CAM_HEIGHT);
       memset(ImageIn, 1, 10);
       // pi_cl_ram_alloc_wait(&alloc_req, ImageIn);

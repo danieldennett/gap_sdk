@@ -35,6 +35,7 @@
 #else
   #ifdef QUANT_8BIT
   typedef unsigned char image_in_t;
+  // typedef unsigned short int image_in_t;
   #endif
 #endif
 
@@ -59,16 +60,15 @@ L2_MEM struct pi_device uart;
 L2_MEM uint8_t rec_digit = -1;
 
 // #define PRINT_IMAGE
-// #define REAL_TIME
 
 //camera init parameters
 // #define CAMERA
-#define CAM_WIDTH    324
-#define CAM_HEIGHT   244
+#define CAM_WIDTH    320//324
+#define CAM_HEIGHT   240//244
 
 //cropping option for camera 
-// #define CAM_CROP_W   150 
-// #define CAM_CROP_H   150
+// #define CAM_CROP_W   200 
+// #define CAM_CROP_H   200
 #define AT_CAMERA_INPUT_SIZE_BYTES (CAM_WIDTH*CAM_HEIGHT*sizeof(image_in_t))
 
 L2_MEM struct pi_device himax;
@@ -87,10 +87,13 @@ static void cluster()
   gap_cl_resethwtimer();
 #endif
   mnistCNN(ImageIn, ResOut);
+  // pi_uart_write(&uart, &rec_digit, 1);
   printf("Runner completed\n");
 
 #ifndef NO_IMAGE
-  //Check i Results            
+  //Checki Results            
+  //here the highest probability of the 10 digits is selected
+  //from here the result can also be send to the CF via UART
   short int highest = ResOut[0];
   for(int i = 1; i < 10; i++) {
     if(ResOut[i] > highest) {
@@ -98,6 +101,7 @@ static void cluster()
       rec_digit = i;
     }
   }
+  // rec_digit = -2000;
   printf("Recognized digit: %d with softmax output %d\n", rec_digit, highest);
   // for(int j = -10; j < 10; j++){
   //   printf("digit %d and its softmax output %d\n", j, ResOut[j]);
@@ -127,8 +131,21 @@ int test_mnist(void)
 #endif
 
 // HIMAX CAMERA init, configure, execute 
-#if defined(CAMERA)
+// #if defined(CAMERA)
   ImageInCam = (image_in_t *) pi_l2_malloc(AT_CAMERA_INPUT_SIZE_BYTES);
+// #if defined(PRINT_IMAGE)
+//   printf("Allocated memory\n");
+//   // int W = 30, H = 30;
+//   for (int i=0; i<H; i++)
+//   {
+//       for (int j=0; j<W; j++)
+//       {
+//           printf("%03d, ", ImageInCam[W*i + j]);
+//       }
+//       printf("\n");
+//   }
+// #endif  /* PRINT_IMAGE */
+  // memset(ImageInCam, 120, 10);
   if (ImageInCam == NULL) 
   {
     printf("[CAMERA] Failed to allocate memory for image\n");
@@ -138,11 +155,12 @@ int test_mnist(void)
   cam_conf.i2c_itf = 0;
   cam_conf.format = PI_CAMERA_QQVGA;        //160 by 120
   pi_open_from_conf(&himax, &cam_conf);
-  printf("[CAMERA] Open");
+
   if (pi_camera_open(&himax))
   {
     printf("[CAMERA] Failed to open camera driver\n");
     pmsis_exit(-7);
+    // goto end;
   }
   // static pi_buffer_t buffer;
   // pi_buffer_init(&buffer, PI_BUFFER_TYPE_L2, ImageInCam);
@@ -151,18 +169,27 @@ int test_mnist(void)
   pi_camera_control(&himax, PI_CAMERA_CMD_START, 0);
   printf("[CAMERA] Start\n");
   pi_time_wait_us(1000000);
+// #if defined(PRINT_IMAGE)
+//   printf("Before Camera capture\n");
+//   // int W = 30, H = 30;
+//   for (int i=0; i<H; i++)
+//   {
+//       for (int j=0; j<W; j++)
+//       {
+//           printf("%03d, ", ImageInCam[W*i + j]);
+//       }
+//       printf("\n");
+//   }
+// #endif  /* PRINT_IMAGE */
   pi_camera_capture(&himax, ImageInCam, CAM_WIDTH*CAM_HEIGHT);
   // pi_task_t *task_capture;
-  // task_capture = pi_task_block();
+  // task_capture = pi_task_block(NULL);
   // pi_camera_capture_async(&himax, ImageInCam, CAM_WIDTH*CAM_HEIGHT, task_capture);
   // pi_task_wait_on(task_capture);
+// #if defined(PRINT_IMAGE)
   pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);
-  printf("Captured image\n");
-#endif
-
-#if defined(PRINT_IMAGE) && defined(CAMERA)
   printf("AFTER Camera capture\n");
-  int W = 324, H = 244;
+  int W = 320, H = 240;
   for (int i=0; i<H; i++)
   {
     for (int j=0; j<W; j++)
@@ -171,12 +198,42 @@ int test_mnist(void)
     }
     printf("\n");
   }
-#endif  /* PRINT_IMAGE */  
+// #endif  /* PRINT_IMAGE */
+  // memset(ImageInCam, 126, 10);
   
+  
+  printf("Captured image\n");
+  // printf("[CAMERA] stopped\n");
+  // end_of_frame();
+// #endif 
+
+// #if defined(PRINT_IMAGE)
+//   printf("After Camera STOP\n");
+//   // int W = 30, H = 30;
+//   for (int i=0; i<H; i++)
+//   {
+//       for (int j=0; j<W; j++)
+//       {
+//           printf("%03d, ", ImageInCam[W*i + j]);
+//       }
+//       printf("\n");
+//   }
+// #endif  /* PRINT_IMAGE */
+
 // Using images from PC
-#if !defined(NO_IMAGE) && !defined(CAMERA)          
+#if !defined(CAMERA)
+  // // ImageIn = (image_in_t *) AT_L2_ALLOC(0, AT_INPUT_SIZE_BYTES);
+  // ImageIn = (image_in_t *) pi_l2_malloc(AT_INPUT_SIZE_BYTES);
+  // // memset(ImageIn, 5, 10);
+  // if (ImageIn == NULL)
+  // {
+  //     printf("Failed to open tensor dump file %s.\n", TENSOR_DUMP_FILE);
+  //     exit(-2);
+  // }
+#if !defined(NO_IMAGE)              
   printf("Reading image\n");
   //Reading Image from Bridge
+
   if (!(ImageIn = (image_in_t *) AT_L2_ALLOC(0, AT_INPUT_SIZE_BYTES))) {
       printf("Failed to allocate %ld bytes for %s\n", AT_INPUT_SIZE_BYTES, ImageName);
       pmsis_exit(-1);
@@ -188,19 +245,9 @@ int test_mnist(void)
       pmsis_exit(-2);
   }    
   printf("Finished reading image\n");
-#endif  /* NO_IMAGE && NO CAMERA */
+#endif  /* NO_IMAGE */
+#endif  /* NO CAMERA */
 
-#if defined(PRINT_IMAGE)
-  int W = 28, H = 28;
-  for (int i=0; i<H; i++)
-  {
-    for (int j=0; j<W; j++)
-    {
-      printf("%03d, ", ImageIn[W* i + j]);
-    }
-    printf("\n");
-  }
-#endif  /* PRINT_IMAGE */  
 
 // Allocate memory for output of Mnist network
   // ResOut = (short int *) AT_L2_ALLOC(0, 10 * sizeof(short int));
@@ -216,7 +263,7 @@ int test_mnist(void)
   uart_conf.enable_tx = 1;
   uart_conf.enable_rx = 0;
   pi_open_from_conf(&uart, &uart_conf);
-  printf("[UART] Open\n");
+  printf("[UART] Opened\n");
   if (pi_uart_open(&uart))
   {
       printf("[UART] open failed !\n");
@@ -244,57 +291,37 @@ int test_mnist(void)
       printf("Graph constructor exited with an error\n");
       pmsis_exit(-5);
   }
+// #if defined(PRINT_IMAGE)
+//   // int W = 30, H = 30;
+//   for (int i=0; i<H; i++)
+//   {
+//       for (int j=0; j<W; j++)
+//       {
+//           printf("%03d, ", ImageIn[W*i + j]);
+//       }
+//       printf("\n");
+//   }
+// #endif  /* PRINT_IMAGE */
 
 #if !defined(__EMUL__)
+//   pi_task_t *task_capture;
+//   task_capture = pi_task_block(NULL);
+// // insert cluster task//
+//   pi_task_wait_on(task_capture);
+
   printf("Setup cluster task\n");
   struct pi_cluster_task task = {0};
-  // pi_l2_malloc(&task, sizeof(pi_cluster_task));
   task.entry = cluster;
   task.arg = NULL;
   task.stack_size = (unsigned int) STACK_SIZE;
   task.slave_stack_size = (unsigned int) SLAVE_STACK_SIZE;
-  // printf("reached");
-  #if !defined (REAL_TIME)
   pi_cluster_send_task_to_cl(&cluster_dev, &task);
-  #endif
 #else 
   cluster()
 #endif  /*! __EMUL__ */  
 
-#if !defined (REAL_TIME)
   printf("Send uart byte to Crazyflie: %d\n\n",rec_digit);
   pi_uart_write(&uart, &rec_digit, 1);          
-#endif
-
-#if defined (REAL_TIME)
-  for (int i=0; i<4; i++)
-  {   
-  #if defined(CAMERA)
-    pi_camera_capture(&himax, ImageInCam, CAM_WIDTH*CAM_HEIGHT);
-    printf("Captured image\n");
-  #endif 
-
-    // Print image
-  #if defined(PRINT_IMAGE)
-    printf("Image found in memory and used by cluster task\n");
-    int W = 28, H = 28;
-    for (int i=0; i<H; i++)
-    {
-        for (int j=0; j<W; j++)
-        {
-            printf("%03d, ", ImageIn[W*i + j]);
-        }
-        printf("\n");
-    }
-  #endif  /* PRINT_IMAGE */
-
-  // Cluster task
-    printf("Call cluster\n");
-    pi_cluster_send_task_to_cl(&cluster_dev, &task);
-    printf("Send uart byte to Crazyflie: %d\n\n",rec_digit);
-    pi_uart_write(&uart, &rec_digit, 1);          
-  }   // looping
-#endif
 
   mnistCNN_Destruct();
 
@@ -323,16 +350,25 @@ int test_mnist(void)
   printf("[UART] closed\n");
 
 // Closing camera, uart, cluster
-#if defined (CAMERA)
   pi_l2_free(ImageInCam, AT_CAMERA_INPUT_SIZE_BYTES);
+// #if defined(PRINT_IMAGE)
+//   printf("Before Camera capture\n");
+//   // int W = 30, H = 30;
+//   for (int i=0; i<H; i++)
+//   {
+//       for (int j=0; j<W; j++)
+//       {
+//           printf("%03d, ", ImageInCam[W*i + j]);
+//       }
+//       printf("\n");
+//   }
+//   #endif
+  // pi_camera_control(&himax, PI_CAMERA_CMD_STOP, 0);
   pi_camera_close(&himax);
   printf("[CAMERA] closed\n");
-#endif
 
-#if !defined(CAMERA)
   pi_l2_free(ImageIn, AT_INPUT_SIZE_BYTES);
-#endif
-
+  printf("Imagein freed");
 #ifndef DONT_DUMP
   dt_close_dump_file();
 #endif
@@ -344,6 +380,8 @@ int test_mnist(void)
   pmsis_exit(0);
   return 0;
 }
+
+static rt_event_t *   event_cluster;
 
 #if defined(__EMUL__) && !defined(LINK_IMAGE_HEADER)
 int main(int argc, char *argv[])
@@ -369,6 +407,7 @@ int main()
   ImageName = "../../../samples/3362_6.pgm";
   #endif  /* LINK_IMAGE_NAME */
   printf("\n\n\t *** NNTOOL Mnist Example ***\n\n");
+  // event_cluster = rt_event_get_blocking(NULL);
 
   return pmsis_kickoff((void *) test_mnist);
 }
