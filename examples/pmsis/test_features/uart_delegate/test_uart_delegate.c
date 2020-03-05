@@ -13,10 +13,10 @@ void cluster_uart_helloworld(void *arg)
     uint32_t core_id = pi_core_id(), cluster_id = pi_cluster_id();
 
     cl_sync_spinlock_take(&spinlock);
-    sprintf(hello, "[%d %d] Hello World!\n", cluster_id, core_id);
+    sprintf(hello, "[0x%X 0x%X] Hello World!\n", cluster_id, core_id);
     /* Send a request to FC to write through uart and wait for termination of req. */
     pi_cl_uart_req_t req;
-    pi_cl_uart_write(&uart, hello, strlen(hello), &req);
+    pi_cl_uart_write(&uart, 0xFF, 1, &req);
     pi_cl_uart_write_wait(&req);
     cl_sync_spinlock_release(&spinlock);
 }
@@ -53,8 +53,8 @@ void test_uart_delegate(void)
     }
 
     uint32_t core_id = pi_core_id(), cluster_id = pi_cluster_id();
-    sprintf(hello, "[%d %d] Hello World!\n", cluster_id, core_id);
-    pi_uart_write(&uart, hello, strlen(hello));
+    sprintf(hello, "[0x%X 0x%X] Hello World!\n", cluster_id, core_id);
+    // pi_uart_write(&uart, hello, strlen(hello));
 
     struct pi_device cluster_dev = {0};
     struct pi_cluster_conf cl_conf = {0};

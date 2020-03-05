@@ -1,0 +1,175 @@
+
+./gap_sdk
+[commit]
+8ac6f6b7eb012817da1a81ffadd2e7805abb3cda
+
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+  (commit or discard the untracked or modified content in submodules)
+
+	modified:   examples (modified content, untracked content)
+	modified:   mbed-os (untracked content)
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+
+./gap_sdk/mbed-os
+[commit]
+f7bac6ba796245ea27f102b1f539fc91601b90c0
+
+HEAD detached at f7bac6b
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	targets/TARGET_GWT/TARGET_GAP8/driver/gap_hyperbus.c.ORIG
+	targets/TARGET_GWT/TARGET_GAP8/driver/gap_hyperbus.c.swap_cs
+	targets/TARGET_GWT/TARGET_GAP8/driver/gap_hyperbus.h.ORIG
+	targets/TARGET_GWT/TARGET_GAP8/driver/gap_hyperbus.h.swapped_cs
+	targets/TARGET_GWT/TARGET_GAP8/driver/gap_uart.c.BAK
+	targets/TARGET_GWT/TARGET_GAP8/driver/gap_uart.h.BAK
+	targets/TARGET_GWT/TARGET_GAP8/driver/gap_udma.c.BAK
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+
+./gap_sdk/freeRTOS
+[commit]
+7266d7185702bb92ddc55e03135e15fce8faf10a
+
+HEAD detached at 7266d71
+nothing to commit, working directory clean
+
+
+./gap_sdk/pulp-os
+[commit]
+e571854455acb699c0c7aa8704bbe87312500e84
+
+HEAD detached at e571854
+nothing to commit, working directory clean
+
+
+./gap_sdk/examples
+[commit]
+bf66ede004f707d15208239d1381d49259be62eb
+
+HEAD detached at bf66ede
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+  (commit or discard the untracked or modified content in submodules)
+
+	modified:   mbed-examples (untracked content)
+	modified:   pulp-examples/helloworld/Makefile
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	GAPOC_mbed/
+	vega_mbed_examples/
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+
+./gap_sdk/examples/mbed-examples
+[commit]
+d610e27e45c00be0811b281ff9cbecefb508cad1
+
+HEAD detached at d610e27
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	test_bsp/GAPUINO_HIMAX/imgOut.pgm
+	test_driver/test_GPIO/Makefile.ORIG
+	test_driver/test_HYPER_FLASH_DeepPowerDown/
+	test_driver/test_HYPER_FLASH_Fqcy/
+	test_driver/test_HYPER_RAM_Fqcy/
+	test_driver/test_QSPI_RAM/test_QSPI_RAM.c.FINAL
+	test_driver/test_QSPI_RAM/test_QSPI_RAM.c.SNAPSHOT
+	test_driver/test_QSPI_RAM/testset.ini
+	test_driver/test_SPI_Flashes/
+	test_driver/test_SPI_S25FS256S_QPI/test_SPI_QPI.c.ORIG
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+
+./gap_sdk/examples/freeRTOS-examples
+[commit]
+90ea882405e2bdd94c4faa419ca80a567852ef5a
+
+HEAD detached at 90ea882
+nothing to commit, working directory clean
+
+
+./gap_sdk/examples/pulp-examples
+[commit]
+bf66ede004f707d15208239d1381d49259be62eb
+
+HEAD detached at bf66ede
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+  (commit or discard the untracked or modified content in submodules)
+
+	modified:   ../mbed-examples (untracked content)
+	modified:   helloworld/Makefile
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	../GAPOC_mbed/
+	../vega_mbed_examples/
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+
+./gap_sdk/tf2gap8
+[commit]
+2f2d648065b80446ebaec5d85212bf2e08acbdce
+
+HEAD detached at 2f2d648
+nothing to commit, working directory clean
+
+
+./gap_sdk/tools/pulp_tools
+[commit]
+e415e9e623f23f8cf299b23a4757392489079e52
+
+HEAD detached at e415e9e
+nothing to commit, working directory clean
+
+
+./gap_sdk/tools/pulp_tools/json-tools
+[commit]
+2c3d54ae78d552bab0b991644e726a698e2b0d95
+
+HEAD detached at 2c3d54a
+nothing to commit, working directory clean
+
+
+./gap_sdk/tools/pulp_tools/pulp-configs
+[commit]
+73b0a715798410e6e833bb24ef9d58852ba2994a
+
+HEAD detached at 73b0a71
+nothing to commit, working directory clean
+
+
+./gap_sdk/tools/pulp_tools/pulp-debug-bridge
+[commit]
+4290a2bdbb4f81ae3c9dfe0cd851d5264ea95147
+
+HEAD detached at 4290a2b
+nothing to commit, working directory clean
+
+
+./gap_sdk/tools/pulp_tools/gap_flasher
+[commit]
+b40fbf0bc4fc81c3538033e0d15bdfcef5e28a58
+
+HEAD detached at b40fbf0
+nothing to commit, working directory clean
+
+

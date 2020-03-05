@@ -1,0 +1,1060 @@
+{
+  "identity": {
+    "filename": "BUILD_MODEL_8BIT/Mnist.tflite",
+    "fusions": [
+      "std_match_group"
+    ],
+    "is_adjusted": true
+  },
+  "info": {
+    "quantization": {
+      "NodeId_input_1###": {
+        "__type": "JsonSerializable",
+        "__module_name": "quantization.quantization_record",
+        "__class_name": "QuantizationRecord",
+        "__contents": {
+          "in_qs": [],
+          "out_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                8,
+                7,
+                true
+              ]
+            }
+          ]
+        }
+      },
+      "NodeId_DEPTHWISE_CONV_2D_0_0_fusion###DEPTHWISE_CONV_2D_0_0": {
+        "__type": "JsonSerializable",
+        "__module_name": "quantization.quantization_record",
+        "__class_name": "FilterQuantizationRecord",
+        "__contents": {
+          "in_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                8,
+                7,
+                true
+              ]
+            }
+          ],
+          "out_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                32,
+                14,
+                true
+              ]
+            }
+          ],
+          "calc_q": {
+            "__type": "JsonSerializable",
+            "__module_name": "quantization.qtype",
+            "__class_name": "QType",
+            "__contents": [
+              32,
+              14,
+              true
+            ]
+          },
+          "acc_q": {
+            "__type": "JsonSerializable",
+            "__module_name": "quantization.qtype",
+            "__class_name": "QType",
+            "__contents": [
+              32,
+              14,
+              true
+            ]
+          },
+          "biases_q": {
+            "__type": "JsonSerializable",
+            "__module_name": "quantization.qtype",
+            "__class_name": "QType",
+            "__contents": [
+              8,
+              7,
+              true
+            ]
+          },
+          "weights_q": {
+            "__type": "JsonSerializable",
+            "__module_name": "quantization.qtype",
+            "__class_name": "QType",
+            "__contents": [
+              8,
+              7,
+              true
+            ]
+          }
+        }
+      },
+      "NodeId_DEPTHWISE_CONV_2D_0_0_fusion###DEPTHWISE_CONV_2D_0_0_activation": {
+        "__type": "JsonSerializable",
+        "__module_name": "quantization.quantization_record",
+        "__class_name": "QuantizationRecord",
+        "__contents": {
+          "in_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                32,
+                14,
+                true
+              ]
+            }
+          ],
+          "out_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                8,
+                6,
+                true
+              ]
+            }
+          ]
+        }
+      },
+      "NodeId_DEPTHWISE_CONV_2D_0_0_fusion###": {
+        "__type": "JsonSerializable",
+        "__module_name": "quantization.quantization_record",
+        "__class_name": "QuantizationRecord",
+        "__contents": {
+          "in_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                8,
+                7,
+                true
+              ]
+            }
+          ],
+          "out_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                8,
+                6,
+                true
+              ]
+            }
+          ]
+        }
+      },
+      "NodeId_CONV_2D_0_1_fusion###CONV_2D_0_1": {
+        "__type": "JsonSerializable",
+        "__module_name": "quantization.quantization_record",
+        "__class_name": "FilterQuantizationRecord",
+        "__contents": {
+          "in_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                8,
+                6,
+                true
+              ]
+            }
+          ],
+          "out_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                8,
+                3,
+                true
+              ]
+            }
+          ],
+          "calc_q": {
+            "__type": "JsonSerializable",
+            "__module_name": "quantization.qtype",
+            "__class_name": "QType",
+            "__contents": [
+              32,
+              13,
+              true
+            ]
+          },
+          "acc_q": {
+            "__type": "JsonSerializable",
+            "__module_name": "quantization.qtype",
+            "__class_name": "QType",
+            "__contents": [
+              32,
+              13,
+              true
+            ]
+          },
+          "biases_q": {
+            "__type": "JsonSerializable",
+            "__module_name": "quantization.qtype",
+            "__class_name": "QType",
+            "__contents": [
+              8,
+              7,
+              true
+            ]
+          },
+          "weights_q": {
+            "__type": "JsonSerializable",
+            "__module_name": "quantization.qtype",
+            "__class_name": "QType",
+            "__contents": [
+              8,
+              7,
+              true
+            ]
+          }
+        }
+      },
+      "NodeId_CONV_2D_0_1_fusion###MAX_POOL_2D_0_2": {
+        "__type": "JsonSerializable",
+        "__module_name": "quantization.quantization_record",
+        "__class_name": "QuantizationRecord",
+        "__contents": {
+          "in_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                8,
+                3,
+                true
+              ]
+            }
+          ],
+          "out_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                8,
+                3,
+                true
+              ]
+            }
+          ]
+        }
+      },
+      "NodeId_CONV_2D_0_1_fusion###MAX_POOL_2D_0_2_activation": {
+        "__type": "JsonSerializable",
+        "__module_name": "quantization.quantization_record",
+        "__class_name": "QuantizationRecord",
+        "__contents": {
+          "in_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                8,
+                3,
+                true
+              ]
+            }
+          ],
+          "out_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                8,
+                3,
+                true
+              ]
+            }
+          ]
+        }
+      },
+      "NodeId_CONV_2D_0_1_fusion###": {
+        "__type": "JsonSerializable",
+        "__module_name": "quantization.quantization_record",
+        "__class_name": "QuantizationRecord",
+        "__contents": {
+          "in_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                8,
+                6,
+                true
+              ]
+            }
+          ],
+          "out_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                8,
+                3,
+                true
+              ]
+            }
+          ]
+        }
+      },
+      "NodeId_MAX_POOL_2D_0_3###": {
+        "__type": "JsonSerializable",
+        "__module_name": "quantization.quantization_record",
+        "__class_name": "QuantizationRecord",
+        "__contents": {
+          "in_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                8,
+                3,
+                true
+              ]
+            }
+          ],
+          "out_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                8,
+                3,
+                true
+              ]
+            }
+          ]
+        }
+      },
+      "NodeId_FULLY_CONNECTED_0_4###": {
+        "__type": "JsonSerializable",
+        "__module_name": "quantization.quantization_record",
+        "__class_name": "FilterQuantizationRecord",
+        "__contents": {
+          "in_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                8,
+                3,
+                true
+              ]
+            }
+          ],
+          "out_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                8,
+                2,
+                true
+              ]
+            }
+          ],
+          "calc_q": {
+            "__type": "JsonSerializable",
+            "__module_name": "quantization.qtype",
+            "__class_name": "QType",
+            "__contents": [
+              32,
+              10,
+              true
+            ]
+          },
+          "acc_q": {
+            "__type": "JsonSerializable",
+            "__module_name": "quantization.qtype",
+            "__class_name": "QType",
+            "__contents": [
+              32,
+              10,
+              true
+            ]
+          },
+          "biases_q": {
+            "__type": "JsonSerializable",
+            "__module_name": "quantization.qtype",
+            "__class_name": "QType",
+            "__contents": [
+              8,
+              7,
+              true
+            ]
+          },
+          "weights_q": {
+            "__type": "JsonSerializable",
+            "__module_name": "quantization.qtype",
+            "__class_name": "QType",
+            "__contents": [
+              8,
+              7,
+              true
+            ]
+          }
+        }
+      },
+      "NodeId_SOFTMAX_0_5###": {
+        "__type": "JsonSerializable",
+        "__module_name": "quantization.quantization_record",
+        "__class_name": "QuantizationRecord",
+        "__contents": {
+          "in_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                8,
+                2,
+                true
+              ]
+            }
+          ],
+          "out_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                16,
+                15,
+                true
+              ]
+            }
+          ]
+        }
+      },
+      "NodeId_output_1###": {
+        "__type": "JsonSerializable",
+        "__module_name": "quantization.quantization_record",
+        "__class_name": "QuantizationRecord",
+        "__contents": {
+          "in_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                16,
+                15,
+                true
+              ]
+            }
+          ],
+          "out_qs": [
+            {
+              "__type": "JsonSerializable",
+              "__module_name": "quantization.qtype",
+              "__class_name": "QType",
+              "__contents": [
+                16,
+                15,
+                true
+              ]
+            }
+          ]
+        }
+      },
+      "__quantizer": {
+        "__type": "JsonSerializable",
+        "__module_name": "quantization.simple_auto_quantify",
+        "__class_name": "SimpleQuantizer",
+        "__contents": {
+          "activation_stats": {
+            "NodeId_input_1###": {
+              "mean": 0.12941476590636258,
+              "std": 0.300613171141602,
+              "min": 0.0,
+              "max": 1.0,
+              "size": 784,
+              "wols": 144,
+              "sols": 144,
+              "min_out": 0.01568627450980392,
+              "max_out": 1.0,
+              "ibits": 2,
+              "qstats": {
+                "8": {
+                  "q": 7,
+                  "qsnr": 49
+                },
+                "16": {
+                  "q": 15,
+                  "qsnr": 97
+                },
+                "32": {
+                  "q": 31,
+                  "qsnr": 194
+                }
+              }
+            },
+            "NodeId_DEPTHWISE_CONV_2D_0_0_fusion###DEPTHWISE_CONV_2D_0_0": {
+              "mean": 0.1316098817589654,
+              "std": 0.3152529025136306,
+              "min": -1.3599230968922962,
+              "max": 1.821762771973861,
+              "size": 18432,
+              "wols": 3625,
+              "sols": 1743,
+              "min_out": 0.270667719990289,
+              "max_out": 1.6511939274001068,
+              "ibits": 2,
+              "qstats": {
+                "8": {
+                  "q": 6,
+                  "qsnr": 38
+                },
+                "16": {
+                  "q": 14,
+                  "qsnr": 86
+                },
+                "32": {
+                  "q": 30,
+                  "qsnr": 185
+                }
+              },
+              "min_acc": -1.3741761036217213,
+              "max_acc": 1.8745434278330086
+            },
+            "NodeId_DEPTHWISE_CONV_2D_0_0_fusion###DEPTHWISE_CONV_2D_0_0_activation": {
+              "mean": 0.16855713566428732,
+              "std": 0.26912676278430675,
+              "min": 0.0,
+              "max": 1.821762771973861,
+              "size": 18432,
+              "wols": 2723,
+              "sols": 1411,
+              "min_out": 0.4331417961036969,
+              "max_out": 1.6511939274001068,
+              "ibits": 2,
+              "qstats": {
+                "8": {
+                  "q": 6,
+                  "qsnr": 39
+                },
+                "16": {
+                  "q": 14,
+                  "qsnr": 87
+                },
+                "32": {
+                  "q": 30,
+                  "qsnr": 185
+                }
+              }
+            },
+            "NodeId_DEPTHWISE_CONV_2D_0_0_fusion###": {
+              "mean": 0.16855713566428732,
+              "std": 0.26912676278430675,
+              "min": 0.0,
+              "max": 1.821762771973861,
+              "size": 18432,
+              "wols": 2723,
+              "sols": 1411,
+              "min_out": 0.4331417961036969,
+              "max_out": 1.6511939274001068,
+              "ibits": 2,
+              "qstats": {
+                "8": {
+                  "q": 6,
+                  "qsnr": 39
+                },
+                "16": {
+                  "q": 14,
+                  "qsnr": 87
+                },
+                "32": {
+                  "q": 30,
+                  "qsnr": 185
+                }
+              }
+            },
+            "NodeId_CONV_2D_0_1_fusion###CONV_2D_0_1": {
+              "mean": -0.7157798457456239,
+              "std": 1.5804242633803403,
+              "min": -12.882615845869013,
+              "max": 11.621353575002278,
+              "size": 12800,
+              "wols": 1099,
+              "sols": 108,
+              "min_out": 2.2827284510282704,
+              "max_out": 10.114383455500864,
+              "ibits": 5,
+              "qstats": {
+                "8": {
+                  "q": 3,
+                  "qsnr": 34
+                },
+                "16": {
+                  "q": 11,
+                  "qsnr": 82
+                },
+                "32": {
+                  "q": 27,
+                  "qsnr": 179
+                }
+              },
+              "min_acc": -12.882615845869013,
+              "max_acc": 11.621353575002278
+            },
+            "NodeId_CONV_2D_0_1_fusion###MAX_POOL_2D_0_2": {
+              "mean": -0.19166569774534217,
+              "std": 1.5054668407015044,
+              "min": -10.237296280019939,
+              "max": 11.621353575002278,
+              "size": 3200,
+              "wols": 398,
+              "sols": 52,
+              "min_out": 2.25268503952834,
+              "max_out": 10.114383455500864,
+              "ibits": 5,
+              "qstats": {
+                "8": {
+                  "q": 3,
+                  "qsnr": 33
+                },
+                "16": {
+                  "q": 11,
+                  "qsnr": 81
+                },
+                "32": {
+                  "q": 27,
+                  "qsnr": 178
+                }
+              }
+            },
+            "NodeId_CONV_2D_0_1_fusion###MAX_POOL_2D_0_2_activation": {
+              "mean": 0.43233142981559725,
+              "std": 0.9340681558981778,
+              "min": 0.0,
+              "max": 11.621353575002278,
+              "size": 3200,
+              "wols": 587,
+              "sols": 445,
+              "min_out": 0.8466659600507435,
+              "max_out": 10.114383455500864,
+              "ibits": 5,
+              "qstats": {
+                "8": {
+                  "q": 3,
+                  "qsnr": 34
+                },
+                "16": {
+                  "q": 11,
+                  "qsnr": 83
+                },
+                "32": {
+                  "q": 27,
+                  "qsnr": 179
+                }
+              }
+            },
+            "NodeId_CONV_2D_0_1_fusion###": {
+              "mean": 0.43233142981559725,
+              "std": 0.9340681558981778,
+              "min": 0.0,
+              "max": 11.621353575002278,
+              "size": 3200,
+              "wols": 587,
+              "sols": 445,
+              "min_out": 0.8466659600507435,
+              "max_out": 10.114383455500864,
+              "ibits": 5,
+              "qstats": {
+                "8": {
+                  "q": 3,
+                  "qsnr": 34
+                },
+                "16": {
+                  "q": 11,
+                  "qsnr": 83
+                },
+                "32": {
+                  "q": 27,
+                  "qsnr": 179
+                }
+              }
+            },
+            "NodeId_MAX_POOL_2D_0_3###": {
+              "mean": 0.8515916223430456,
+              "std": 1.2561753067769497,
+              "min": 0.0,
+              "max": 11.621353575002278,
+              "size": 800,
+              "wols": 68,
+              "sols": 5,
+              "min_out": 3.343392637222765,
+              "max_out": 10.114383455500864,
+              "ibits": 5,
+              "qstats": {
+                "8": {
+                  "q": 3,
+                  "qsnr": 35
+                },
+                "16": {
+                  "q": 11,
+                  "qsnr": 84
+                },
+                "32": {
+                  "q": 27,
+                  "qsnr": 180
+                }
+              }
+            },
+            "NodeId_FULLY_CONNECTED_0_4###": {
+              "mean": -2.2310743698609965,
+              "std": 6.291967901997749,
+              "min": -19.087059562986592,
+              "max": 18.402925486404023,
+              "size": 10,
+              "wols": 0,
+              "sols": 0,
+              "min_out": 0,
+              "max_out": 0,
+              "ibits": 6,
+              "qstats": {
+                "8": {
+                  "q": 2,
+                  "qsnr": 42
+                },
+                "16": {
+                  "q": 10,
+                  "qsnr": 93
+                },
+                "32": {
+                  "q": 26,
+                  "qsnr": 186
+                }
+              },
+              "min_acc": -36.895012754869526,
+              "max_acc": 18.402925486404023
+            },
+            "NodeId_SOFTMAX_0_5###": {
+              "mean": 0.09999999999999996,
+              "std": 0.2951651705157496,
+              "min": 1.3727025487460044e-16,
+              "max": 0.9999994324837631,
+              "size": 10,
+              "wols": 2,
+              "sols": 2,
+              "min_out": 6.6462849968858554e-06,
+              "max_out": 0.9999919848086978,
+              "ibits": 1,
+              "qstats": {
+                "8": {
+                  "q": 7,
+                  "qsnr": 42
+                },
+                "16": {
+                  "q": 15,
+                  "qsnr": 93
+                },
+                "32": {
+                  "q": 31,
+                  "qsnr": 188
+                }
+              }
+            },
+            "NodeId_output_1###": {
+              "mean": 0.09999999999999996,
+              "std": 0.2951651705157496,
+              "min": 1.3727025487460044e-16,
+              "max": 0.9999994324837631,
+              "size": 10,
+              "wols": 2,
+              "sols": 2,
+              "min_out": 6.6462849968858554e-06,
+              "max_out": 0.9999919848086978,
+              "ibits": 1,
+              "qstats": {
+                "8": {
+                  "q": 7,
+                  "qsnr": 42
+                },
+                "16": {
+                  "q": 15,
+                  "qsnr": 93
+                },
+                "32": {
+                  "q": 31,
+                  "qsnr": 188
+                }
+              }
+            }
+          },
+          "filter_stats": {
+            "NodeId_DEPTHWISE_CONV_2D_0_0_fusion###DEPTHWISE_CONV_2D_0_0": {
+              "biases": {
+                "mean": 0.023871002718806267,
+                "std": 0.03244655579328537,
+                "min": -0.021356163546442986,
+                "max": 0.10441391915082932,
+                "size": 32,
+                "wols": 1,
+                "sols": 0,
+                "min_out": 0.10441391915082932,
+                "max_out": 0.10441391915082932,
+                "ibits": 1,
+                "qstats": {
+                  "8": {
+                    "q": 7,
+                    "qsnr": 25
+                  },
+                  "16": {
+                    "q": 15,
+                    "qsnr": 73
+                  },
+                  "32": {
+                    "q": 31,
+                    "qsnr": 179
+                  }
+                }
+              },
+              "weights": {
+                "mean": 0.02462908811867237,
+                "std": 0.09600367397069931,
+                "min": -0.24970334768295288,
+                "max": 0.24643179774284363,
+                "size": 800,
+                "wols": 0,
+                "sols": 0,
+                "min_out": 0,
+                "max_out": 0,
+                "ibits": 1,
+                "qstats": {
+                  "8": {
+                    "q": 7,
+                    "qsnr": 33
+                  },
+                  "16": {
+                    "q": 15,
+                    "qsnr": 81
+                  },
+                  "32": {
+                    "q": 31,
+                    "qsnr": 184
+                  }
+                }
+              }
+            },
+            "NodeId_CONV_2D_0_1_fusion###CONV_2D_0_1": {
+              "biases": {
+                "mean": -0.009631624445319176,
+                "std": 0.015132320113480091,
+                "min": -0.03512943163514137,
+                "max": 0.019901487976312637,
+                "size": 32,
+                "wols": 0,
+                "sols": 0,
+                "min_out": 0,
+                "max_out": 0,
+                "ibits": 1,
+                "qstats": {
+                  "8": {
+                    "q": 7,
+                    "qsnr": 18
+                  },
+                  "16": {
+                    "q": 15,
+                    "qsnr": 66
+                  },
+                  "32": {
+                    "q": 31,
+                    "qsnr": 165
+                  }
+                }
+              },
+              "weights": {
+                "mean": -0.0043474603444337845,
+                "std": 0.045300934463739395,
+                "min": -0.17811843752861023,
+                "max": 0.18007268011569977,
+                "size": 25600,
+                "wols": 52,
+                "sols": 0,
+                "min_out": 0.13095028698444366,
+                "max_out": 0.18007268011569977,
+                "ibits": 1,
+                "qstats": {
+                  "8": {
+                    "q": 7,
+                    "qsnr": 26
+                  },
+                  "16": {
+                    "q": 15,
+                    "qsnr": 74
+                  },
+                  "32": {
+                    "q": 31,
+                    "qsnr": 174
+                  }
+                }
+              }
+            },
+            "NodeId_FULLY_CONNECTED_0_4###": {
+              "biases": {
+                "mean": 0.001354297623038292,
+                "std": 0.013111123815178871,
+                "min": -0.012680682353675365,
+                "max": 0.03546329587697983,
+                "size": 10,
+                "wols": 1,
+                "sols": 1,
+                "min_out": 0.03546329587697983,
+                "max_out": 0.03546329587697983,
+                "ibits": 1,
+                "qstats": {
+                  "8": {
+                    "q": 7,
+                    "qsnr": 15
+                  },
+                  "16": {
+                    "q": 15,
+                    "qsnr": 64
+                  },
+                  "32": {
+                    "q": 31,
+                    "qsnr": 161
+                  }
+                }
+              },
+              "weights": {
+                "mean": -0.002417543902993202,
+                "std": 0.061134424060583115,
+                "min": -0.2083778977394104,
+                "max": 0.2396070659160614,
+                "size": 8000,
+                "wols": 13,
+                "sols": 0,
+                "min_out": 0.18316800892353058,
+                "max_out": 0.2396070659160614,
+                "ibits": 1,
+                "qstats": {
+                  "8": {
+                    "q": 7,
+                    "qsnr": 29
+                  },
+                  "16": {
+                    "q": 15,
+                    "qsnr": 77
+                  },
+                  "32": {
+                    "q": 31,
+                    "qsnr": 178
+                  }
+                }
+              }
+            }
+          },
+          "min_qsnr": 50.0,
+          "force_width": 8
+        }
+      }
+    }
+  },
+  "node_options": {},
+  "load_parameters": true,
+  "name": "Mnist",
+  "extra": {
+    "default_input_home_location": "AT_MEM_L2",
+    "default_input_exec_location": "AT_MEM_L2",
+    "default_output_home_location": "AT_MEM_L2",
+    "default_output_exec_location": "AT_MEM_L2",
+    "default_global_home_location": "AT_MEM_L3_HFLASH",
+    "default_global_exec_location": "AT_MEM_UNDEF",
+    "default_local_location": "AT_MEM_UNDEF",
+    "l2_ram_ext_managed": true,
+    "l3_ram_ext_managed": false,
+    "l3_flash_ext_managed": false,
+    "generate_checksums": false,
+    "include_project_header": false,
+    "checksum_file": "",
+    "dump_tensors": false,
+    "tensor_directory": ".",
+    "model_directory": ".",
+    "model_file": "model.c",
+    "at_ver": 2,
+    "memory_devices": {
+      "__type": "JsonSerializable",
+      "__module_name": "generation.memory_device_info",
+      "__class_name": "MemoryDeviceInfos",
+      "__contents": [
+        {
+          "memory_area": "AT_MEM_L1",
+          "size_var": "L1Memory",
+          "name": "{graphname}_L1_Memory",
+          "ext_managed": false,
+          "filename": null
+        },
+        {
+          "memory_area": "AT_MEM_L2",
+          "size_var": "L2Memory",
+          "name": "{graphname}_L2_Memory",
+          "ext_managed": false,
+          "filename": null
+        },
+        {
+          "memory_area": "AT_MEM_L3_HRAM",
+          "size_var": "L3Memory",
+          "name": "{graphname}_L3_Memory",
+          "ext_managed": 0,
+          "filename": null
+        },
+        {
+          "memory_area": "AT_MEM_L3_HFLASH",
+          "size_var": "L3Flash",
+          "name": "{graphname}_L3_Flash",
+          "ext_managed": 0,
+          "filename": "{graphname}_L3_Flash_Const.dat"
+        }
+      ]
+    },
+    "kernel_buffer_promote": true,
+    "kernel_partial_buffer_promote": true,
+    "kernel_nosolution_error": true,
+    "graph_monitor_cycles": false,
+    "graph_monitor_cvar_name": "AT_GraphPerf",
+    "graph_produce_node_names": false,
+    "graph_produce_node_cvar_name": "AT_GraphNodeNames",
+    "graph_produce_operinfos": false,
+    "graph_produce_operinfos_cvar_name": "AT_GraphOperInfosNames",
+    "graph_reorder_constant_in": true,
+    "graph_trace_exec": true,
+    "graph_noinline_node": false,
+    "graph_pref_l3_exec": "AT_MEM_L3_HRAM",
+    "graph_const_exec_from_flash": false,
+    "graph_pref_l3_home": "AT_MEM_L3_HFLASH"
+  }
+}

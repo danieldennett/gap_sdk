@@ -1,4 +1,4 @@
-/home/zhouxin/gap_sdk/examples/pmsis/helloworld/BUILD/GAP8_V2/GCC_RISCV/pulp-os/conf.o: \
+/home/zhouxin/gap_sdk2/examples/pmsis/helloworld/BUILD/GAP8_V2/GCC_RISCV/pulp-os/conf.o: \
  /home/zhouxin/gap_sdk/rtos/pulp/pulp-os/kernel/conf.c \
  /home/zhouxin/gap_sdk/install/GAP8_V2/include/rt/chips/gap/config.h \
  /home/zhouxin/gap_sdk/install/GAP8_V2/include/archi/pulp_defs.h \

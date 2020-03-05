@@ -17,7 +17,7 @@ static int alloc_size = 256;
 
 static void hello(void *arg)
 {
-  printf("[clusterID: 0x%2x] Hello from core %d\n", rt_cluster_id(), rt_core_id());
+  printf("[clusterID: 0x%2d] Hello from core %d\n", rt_cluster_id(), rt_core_id());
 }
 
 
