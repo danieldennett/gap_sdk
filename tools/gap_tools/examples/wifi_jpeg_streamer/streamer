@@ -4,7 +4,7 @@ import pmsis_tools as pt
 
 
 
-streamer = pt.Frame_streamer(transport=pt.Transport_socket(port=3333), show=True)
+streamer = pt.Frame_streamer(transport=pt.Transport_socket(port=5555), show=True)
 
 camera = streamer.get_stream('filtered')
 

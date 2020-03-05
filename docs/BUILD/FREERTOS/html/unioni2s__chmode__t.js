@@ -1,0 +1,27 @@
+var unioni2s__chmode__t =
+[
+    [ "ch0_lsb_first", "unioni2s__chmode__t.html#a5e72036f1fbdba8eef7ea9d5b6becd0c", null ],
+    [ "ch0_mode", "unioni2s__chmode__t.html#acad307186d9dc5190e3160204aeb40a0", null ],
+    [ "ch0_pdm_en", "unioni2s__chmode__t.html#a4bf17609f7b2b29dc216eefae1ed1d28", null ],
+    [ "ch0_pdm_usefilter", "unioni2s__chmode__t.html#a3b2a49e3ab4e370128ca4a688490b7fa", null ],
+    [ "ch0_snap_cam", "unioni2s__chmode__t.html#a9be72652f57144028f0503c1cbe4caa3", null ],
+    [ "ch0_useddr", "unioni2s__chmode__t.html#ac04fea6da426786c02a3498f10503b8e", null ],
+    [ "ch1_lsb_first", "unioni2s__chmode__t.html#a18cdeaeb7fdba572948f7789d80c52b8", null ],
+    [ "ch1_mode", "unioni2s__chmode__t.html#a5b5903c27ff3658e38464941094c103f", null ],
+    [ "ch1_pdm_en", "unioni2s__chmode__t.html#ad245aeba9d3a61cc74f3cb63f1e3e1d3", null ],
+    [ "ch1_pdm_usefilter", "unioni2s__chmode__t.html#ad532533e578b8d58328490ff02f018e6", null ],
+    [ "ch1_snap_cam", "unioni2s__chmode__t.html#ac9aee2de9e658fb47f2cf31d4f667d71", null ],
+    [ "ch1_useddr", "unioni2s__chmode__t.html#a3db5204e186e3d79018f3af2d5d2d69b", null ],
+    [ "field", "unioni2s__chmode__t.html#a7c7a0165d8165d36110ed91f3ac1ce7e", null ],
+    [ "reserved_0", "unioni2s__chmode__t.html#afb85fac6ed353298cd58aac6382b75a0", null ],
+    [ "reserved_1", "unioni2s__chmode__t.html#aed8ee62a53eb305774fca7da5afb6080", null ],
+    [ "reserved_2", "unioni2s__chmode__t.html#adbe13ae2a32ef56942544f6fc3eca5ed", null ],
+    [ "reserved_3", "unioni2s__chmode__t.html#a9074d9145d299dc46411caccf7a885fc", null ],
+    [ "reserved_4", "unioni2s__chmode__t.html#a4e4709f1b8ace48667c275d3e7b3aca2", null ],
+    [ "reserved_5", "unioni2s__chmode__t.html#aabec31edc1b8c97aea988a26d0a285b3", null ],
+    [ "reserved_6", "unioni2s__chmode__t.html#a5094c99c945dca549fcd0b9448d03de0", null ],
+    [ "reserved_7", "unioni2s__chmode__t.html#aebc19cb692697a6f1e934d935ec2f42c", null ],
+    [ "reserved_8", "unioni2s__chmode__t.html#a8eb18f9a692d3e52208974a10945b0a0", null ],
+    [ "reserved_9", "unioni2s__chmode__t.html#abd4678c4cc124401ad1b18cd55bf4993", null ],
+    [ "word", "unioni2s__chmode__t.html#abe5f83ae066eb39852c7886c8e340726", null ]
+];

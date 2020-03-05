@@ -120,10 +120,13 @@ static int open_wifi(struct pi_device *device)
 
   pi_nina_w10_conf_init(&nina_conf);
 
-  nina_conf.ssid = "TBD";
-  nina_conf.passwd = "TBD";
-  nina_conf.ip_addr = "TBD";
-  nina_conf.port = 3333;
+  /*nina_conf.ssid = "Bitcraze_guest";
+  nina_conf.passwd = "AwesomenessInProgress";*/
+
+  nina_conf.ssid = "Bitcraze";
+  nina_conf.passwd = "TrustIsGoodControlIsBetter";
+  nina_conf.ip_addr = "192.168.5.49";
+  nina_conf.port = 5555;
   pi_open_from_conf(device, &nina_conf);
   if (pi_transport_open(device))
     return -1;
@@ -147,39 +150,58 @@ static frame_streamer_t *open_streamer(char *name)
 
   return frame_streamer_open(&frame_streamer_conf);
 }
-
+static pi_task_t led_task;
+static int led_val = 0;
+static struct pi_device gpio_device;
+static void led_handle(void *arg)
+{
+  pi_gpio_pin_write(&gpio_device, 2, led_val);
+  led_val ^= 1;
+  pi_task_push_delayed_us(pi_task_callback(&led_task, led_handle, NULL), 500000);
+}
 
 int main()
 {
   printf("Entering main controller...\n");
 
+  
+
   //pi_time_wait_us(1*1000*1000);
 
   pi_freq_set(PI_FREQ_DOMAIN_FC, 150000000);
+
+    pi_gpio_pin_configure(&gpio_device, 2, PI_GPIO_OUTPUT);
+
+  pi_task_push_delayed_us(pi_task_callback(&led_task, led_handle, NULL), 500000);
 
   imgBuff0 = (unsigned char *)pmsis_l2_malloc((CAM_WIDTH*CAM_HEIGHT)*sizeof(unsigned char));
   if (imgBuff0 == NULL) {
       printf("Failed to allocate Memory for Image \n");
       return 1;
   }
+  printf("1\n");
 
   imgBuff1 = (unsigned char *)pmsis_l2_malloc((CAM_WIDTH*CAM_HEIGHT)*sizeof(unsigned char));
   if (imgBuff1 == NULL) {
       printf("Failed to allocate Memory for Image \n");
       return 1;
   }
+  printf("2\n");
 
   if (open_camera(&camera))
   {
     printf("Failed to open camera\n");
     return -1;
   }
+  printf("3\n");
 
   if (open_wifi(&wifi))
   {
     printf("Failed to open wifi\n");
     return -1;
   }
+
+  printf("4\n");
 
   streamer1 = open_streamer("camera");
   if (streamer1 == NULL)
@@ -191,6 +213,8 @@ int main()
   //if (streamer2 == NULL)
   //  return -1;
 
+  printf("5\n");
+
   pi_buffer_init(&buffer, PI_BUFFER_TYPE_L2, imgBuff0);
   pi_buffer_set_format(&buffer, CAM_WIDTH, CAM_HEIGHT, 1, PI_BUFFER_FORMAT_GRAY);
 
@@ -200,6 +224,7 @@ int main()
   pi_camera_control(&camera, PI_CAMERA_CMD_STOP, 0);
   pi_camera_capture_async(&camera, imgBuff0, CAM_WIDTH*CAM_HEIGHT, pi_task_callback(&task1, cam_handler, NULL));
   pi_camera_control(&camera, PI_CAMERA_CMD_START, 0);
+  printf("6\n");
 
   while(1)
   {
